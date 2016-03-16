@@ -55,34 +55,49 @@ class block_groups extends block_base
             //block is not shown if it is empty
             $this->content->text = '';
         }
-        $usercontext = context_user::instance($USER->id);
-        $access =has_capability('moodle/course:managegroups', $usercontext);
+
+        $coursecontext = context_course::instance($COURSE->id);
+        $access = has_capability('moodle/course:managegroups',  $coursecontext);
         echo'<pre>';
-        print_r($access);
+        print_r("$access");
         echo'</pre>';
-
-        if(!empty($allgroups)) {
-            //
-
-            $groups = groups_get_user_groups($COURSE->id, $USER->id);
-
-            if (count($groups) === 0) {
-                // block is hidden in case the user is not member of a group
-                $this->content->text = "";
-            } else {
-                $this->content->text = get_string('introduction', 'block_groups') . "</br>";
-                $groupstext = "";
-                foreach ($groups as $g => $value) {
-                    if(is_object($value) && property_exists($value,'name')) {
-                        $groupstext .= " " . $value->name . "</br>";
-                    }
+        if($access === TRUE){
+/*            echo'<pre>';
+            print_r("gehst du hier rein");
+            echo'</pre>';*/
+            $groupstext = "";
+            foreach ($allgroups as $g => $value) {
+                
+                if (is_object($value) && property_exists($value, 'name')) {
+                    $groupstext .= " " . $value->name . "</br>";
                 }
 
-                if($groupstext === ""){
+            }
+            $this->content->text = $groupstext;
+        }
+        else{
+            if (!empty($allgroups)) {
+                //
+
+                $groups = groups_get_user_groups($COURSE->id, $USER->id);
+
+                if (count($groups) === 0) {
+                    // block is hidden in case the user is not member of a group
                     $this->content->text = "";
-                }
-                else{
-                    $this->content->text =$groupstext;
+                } else {
+                    $this->content->text = get_string('introduction', 'block_groups') . "</br>";
+                    $groupstext = "";
+                    foreach ($groups as $g => $value) {
+                        if (is_object($value) && property_exists($value, 'name')) {
+                            $groupstext .= " " . $value->name . "</br>";
+                        }
+                    }
+
+                    if ($groupstext === "") {
+                        $this->content->text = "";
+                    } else {
+                        $this->content->text = $groupstext;
+                    }
                 }
             }
         }
