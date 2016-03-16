@@ -21,8 +21,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 
-$string['groups:addinstance'] = 'Add a new group block';
+$string['groups:addinstance'] = 'Add a new Group block';
+$string['groups:myaddinstance'] = 'Add a new Group block';
 $string['groups:myaddinstance'] = 'Add a new group block to Dashboard';
 $string['pluginname'] = 'Groups';
-$string['groups:introduction'] = 'You are enrolled in the following groups';
-$string['groups:nogroups'] = 'You are enrolled in the following groups';
+$string['introduction'] = 'You are enrolled in the following groups';
+$string['nogroups'] = 'There are no groups available';
+$string['addgroup'] = 'There are no groups available';

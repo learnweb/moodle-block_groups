@@ -34,39 +34,58 @@ class block_groups extends block_base
 
     public function get_content()
     {
+
         global $USER, $DB, $COURSE;
+
+
         if($this->content !== null){
             return $this ->content;
         }
 
         if (empty($this->instance)) {
-            $this->content = '';
+            $this->content = "";
             return $this->content;
         }
 
         $this->content = new stdClass;
-        /*$this->content->footer = html_writer::link(new moodle_url('/group.index.php', array('id' => $COURSE->id)),
-            'Gruppe ');*/
-        $this->content->groups = '';
 
         $allgroups = groups_get_all_groups($COURSE->id);
 
         if(empty($allgroups)){
-            //studierenden nicht anzeigen
-            $this->content->text =get_string('groups:nogroups','block_groups');
+            //block is not shown if it is empty
+            $this->content->text = '';
         }
-        if(!empty($allgroups)){
+        $usercontext = context_user::instance($USER->id);
+        $access =has_capability('moodle/course:managegroups', $usercontext);
+        echo'<pre>';
+        print_r($access);
+        echo'</pre>';
+
+        if(!empty($allgroups)) {
             //
-            $this->content->text =get_string('groups:introduction','block_groups');
+
             $groups = groups_get_user_groups($COURSE->id, $USER->id);
-            foreach($groups as $g => $value){
 
+            if (count($groups) === 0) {
+                // block is hidden in case the user is not member of a group
+                $this->content->text = "";
+            } else {
+                $this->content->text = get_string('introduction', 'block_groups') . "</br>";
+                $groupstext = "";
+                foreach ($groups as $g => $value) {
+                    if(is_object($value) && property_exists($value,'name')) {
+                        $groupstext .= " " . $value->name . "</br>";
+                    }
+                }
 
+                if($groupstext === ""){
+                    $this->content->text = "";
+                }
+                else{
+                    $this->content->text =$groupstext;
+                }
             }
-
         }
         return $this->content;
     }
-
-
 }
