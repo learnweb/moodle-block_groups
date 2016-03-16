@@ -58,23 +58,20 @@ class block_groups extends block_base
 
         $coursecontext = context_course::instance($COURSE->id);
         $access = has_capability('moodle/course:managegroups',  $coursecontext);
-        echo'<pre>';
-        print_r("$access");
-        echo'</pre>';
+
         if($access === TRUE){
-/*            echo'<pre>';
-            print_r("gehst du hier rein");
-            echo'</pre>';*/
+
             $groupstext = "";
             foreach ($allgroups as $g => $value) {
-                
+
                 if (is_object($value) && property_exists($value, 'name')) {
                     $groupstext .= " " . $value->name . "</br>";
                 }
-
             }
             $this->content->text = $groupstext;
+           // $this->contetnt->text .='<a href="'.$CFG->wwwroot.'/course/resources.php?id='.$course->id.'">''</a>';
         }
+        //Auch für admin zugehörige Gruppen anzeigen
         else{
             if (!empty($allgroups)) {
                 //
