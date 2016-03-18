@@ -35,7 +35,7 @@ class block_groups extends block_base
     public function get_content()
     {
 
-        global $USER, $DB, $COURSE;
+        global $USER, $DB, $COURSE, $CFG;
 
 
         if($this->content !== null){
@@ -43,60 +43,72 @@ class block_groups extends block_base
         }
 
         if (empty($this->instance)) {
-            $this->content = "";
+            $this->content = '';
             return $this->content;
         }
 
         $this->content = new stdClass;
-
+        $this->content->text = '';
         $allgroups = groups_get_all_groups($COURSE->id);
 
+        //in case no groups exist the block is hidden
         if(empty($allgroups)){
-            //block is not shown if it is empty
             $this->content->text = '';
         }
 
         $coursecontext = context_course::instance($COURSE->id);
         $access = has_capability('moodle/course:managegroups',  $coursecontext);
 
+        // Users who are able to manage groups see all groups
         if($access === TRUE){
 
-            $groupstext = "";
+            $groupstext = get_string('viewallgroups', 'block_groups') . "</br>";
+            $grouparray = array();
             foreach ($allgroups as $g => $value) {
-
                 if (is_object($value) && property_exists($value, 'name')) {
-                    $groupstext .= " " . $value->name . "</br>";
+                    $grouparray[$g] = $value->name ;
                 }
             }
-            $this->content->text = $groupstext;
-           // $this->contetnt->text .='<a href="'.$CFG->wwwroot.'/course/resources.php?id='.$course->id.'">''</a>';
+            if(count($grouparray)==0) {
+                $groupstext = "";
+            }
+            else{
+
+                $listallgroups = html_writer::alist($grouparray);
+                $groupstext .= $listallgroups;
+
+                $courseshown = $this->page->course->id;
+                $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">modify groups</a></br>';
+            }
+            $this->content->text .= $groupstext;
+            echo '<pre>';
+            print_r($grouparray);
+            echo'</pre>';
         }
-        //Auch für admin zugehörige Gruppen anzeigen
-        else{
-            if (!empty($allgroups)) {
-                //
+
+        if (!empty($allgroups)) {
 
                 $groups = groups_get_user_groups($COURSE->id, $USER->id);
 
-                if (count($groups) === 0) {
-                    // block is hidden in case the user is not member of a group
-                    $this->content->text = "";
-                } else {
-                    $this->content->text = get_string('introduction', 'block_groups') . "</br>";
-                    $groupstext = "";
+                if (empty($groups[0])) {
+                    // block is hidden or ends in case the user is not a member of a group
+                    $this->content->text .= '';
+                }
+                else {
+                    $this->content->text .= get_string('introduction', 'block_groups') . "</br>";
+
                     foreach ($groups as $g => $value) {
                         if (is_object($value) && property_exists($value, 'name')) {
-                            $groupstext .= " " . $value->name . "</br>";
+                            $membergroupsarray[$g] = $value->name;
                         }
                     }
 
-                    if ($groupstext === "") {
-                        $this->content->text = "";
+                    if (empty($membergroupsarray)) {
+                        $this->content->text .= '';
                     } else {
-                        $this->content->text = $groupstext;
+                        $this->content->text .= html_writer::alist($membergroupsarray);
                     }
                 }
-            }
         }
         return $this->content;
     }

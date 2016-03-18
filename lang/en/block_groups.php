@@ -28,3 +28,4 @@ $string['pluginname'] = 'Groups';
 $string['introduction'] = 'You are enrolled in the following groups';
 $string['nogroups'] = 'There are no groups available';
 $string['addgroup'] = 'There are no groups available';
+$string['viewallgroups'] = 'The following groups exist ';
