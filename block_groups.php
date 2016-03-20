@@ -50,9 +50,9 @@ class block_groups extends block_base
         $this->content = new stdClass;
         $this->content->text = '';
         $allgroups = groups_get_all_groups($COURSE->id);
-
+        $allgroupings = groups_get_all_groupings($COURSE->id);
         //in case no groups exist the block is hidden
-        if(empty($allgroups)){
+        if(empty($allgroups) && empty($allgroupings)){
             $this->content->text = '';
         }
 
@@ -62,27 +62,42 @@ class block_groups extends block_base
         // Users who are able to manage groups see all groups
         if($access === TRUE){
 
-            $groupstext = get_string('viewallgroups', 'block_groups') . "</br>";
+
             $grouparray = array();
+            $groupingarray = array();
+
+            //speichert groupings und groups in ein array
             foreach ($allgroups as $g => $value) {
                 if (is_object($value) && property_exists($value, 'name')) {
                     $grouparray[$g] = $value->name ;
                 }
             }
+            foreach ($allgroupings as $g => $value) {
+                if (is_object($value) && property_exists($value, 'name')) {
+                    $groupingarray[$g] = $value->name ;
+                }
+            }
+
             if(count($grouparray)==0) {
                 $groupstext = "";
             }
             else{
 
-                $listallgroups = html_writer::alist($grouparray);
-                $groupstext .= $listallgroups;
+                if(!(empty($groupingarray)) ){
+                    $groupstext = get_string('viewallgroupings', 'block_groups') . "</br>";
+                    $listallgrouping = html_writer::alist($groupingarray);
+                    $groupstext .= $listallgrouping;
 
-                $courseshown = $this->page->course->id;
-                $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">modify groups</a></br>';
+                }
+
+                    $groupstext .= get_string('viewallgroups', 'block_groups') . "</br>";
+                    $listallgroups = html_writer::alist($grouparray);
+                    $groupstext .= $listallgroups;
+                    $courseshown = $this->page->course->id;
+                    $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">modify groups</a></br>';
             }
-            $this->content->text .= $groupstext;
             echo '<pre>';
-            print_r($grouparray);
+            print_r(groups_get_all_groupings($COURSE->id));
             echo'</pre>';
         }
 
@@ -105,11 +120,14 @@ class block_groups extends block_base
 
                     if (empty($membergroupsarray)) {
                         $this->content->text .= '';
-                    } else {
-                        $this->content->text .= html_writer::alist($membergroupsarray);
+                    }
+                    else {
+                        $groupstext .= get_string('member', 'block_groups') . "</br>";
+                        $groupstext .= html_writer::alist($membergroupsarray);
                     }
                 }
         }
+        $this->content->text .= $groupstext;
         return $this->content;
     }
 }
