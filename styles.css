@@ -1,1 +1,4 @@
-.block_groups
+.block_groups .block_tree {
+    margin: 0;
+    list-style: none;
+}

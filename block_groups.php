@@ -20,17 +20,19 @@
  * Date: 16.03.16
  * Time: 09:23
  */
-class block_groups extends block_base
+class block_groups extends block_tree
 {
-
+    //public $content_type = BLOCK_TYPE_TREE;
     /**Initialises the block*/
     public function init(){
         $this->title = get_string('pluginname','block_groups');
     }
+
     /** Returns the content object
      *
      * @return stdObject
      */
+
 
     public function get_content()
     {
@@ -47,12 +49,8 @@ class block_groups extends block_base
         }
 
         $this->content = new stdClass;
+
         $this->content->text = '';
-        $allgroups = groups_get_all_groups($COURSE->id);
-        $allgroupings = groups_get_all_groupings($COURSE->id);
-        if(empty($allgroups) && empty($allgroupings)){
-            $this->content->text = '';
-        }
 
         $coursecontext = context_course::instance($COURSE->id);
         $access = has_capability('moodle/course:managegroups',  $coursecontext);
@@ -62,19 +60,17 @@ class block_groups extends block_base
             $this->content->text .= $this->get_content_teaching();
         }
 
-        if (!empty($allgroups)) {
-                $this->content->text .= $this->get_content_groupmembers();
-        }
+        $this->content->text .= $this->get_content_groupmembers();
+
         return $this->content;
     }
 
 
-
-    /** Returns a list of Groups and Groupings
+    /**
      *
-     * To every Member who has the capability to manage courses is an overview of all existing groups and groupings displayed
+     * Returns a List of all existing groups and groupings
      *
-     * @return stdObject
+     * @return string
      */
     private function get_content_teaching(){
         global  $COURSE, $CFG;
@@ -95,7 +91,7 @@ class block_groups extends block_base
             }
         }
 
-        if(count($grouparray)==0) {
+        if(count($grouparray) == 0) {
             $groupstext = '';
             return $groupstext;
         }
@@ -117,7 +113,12 @@ class block_groups extends block_base
     }
 
 
-
+    /**
+     *
+     * Returns all groups where the current user has a valid membership.
+     *
+     * @return string
+     */
     private function get_content_groupmembers(){
         global  $COURSE, $USER;
 
