@@ -35,7 +35,7 @@ class block_groups extends block_base
     public function get_content()
     {
 
-        global $USER, $DB, $COURSE, $CFG;
+        global  $DB, $COURSE, $CFG;
 
 
         if($this->content !== null){
@@ -49,9 +49,7 @@ class block_groups extends block_base
 
         $this->content = new stdClass;
         $this->content->text = '';
-        $allgroups = groups_get_all_groups($COURSE->id);
-        $allgroupings = groups_get_all_groupings($COURSE->id);
-        //in case no groups exist the block is hidden
+
         if(empty($allgroups) && empty($allgroupings)){
             $this->content->text = '';
         }
@@ -61,73 +59,89 @@ class block_groups extends block_base
 
         // Users who are able to manage groups see all groups
         if($access === TRUE){
-
-
-            $grouparray = array();
-            $groupingarray = array();
-
-            //speichert groupings und groups in ein array
-            foreach ($allgroups as $g => $value) {
-                if (is_object($value) && property_exists($value, 'name')) {
-                    $grouparray[$g] = $value->name ;
-                }
-            }
-            foreach ($allgroupings as $g => $value) {
-                if (is_object($value) && property_exists($value, 'name')) {
-                    $groupingarray[$g] = $value->name ;
-                }
-            }
-
-            if(count($grouparray)==0) {
-                $groupstext = "";
-            }
-            else{
-
-                if(!(empty($groupingarray)) ){
-                    $groupstext = get_string('viewallgroupings', 'block_groups') . "</br>";
-                    $listallgrouping = html_writer::alist($groupingarray);
-                    $groupstext .= $listallgrouping;
-
-                }
-
-                    $groupstext .= get_string('viewallgroups', 'block_groups') . "</br>";
-                    $listallgroups = html_writer::alist($grouparray);
-                    $groupstext .= $listallgroups;
-                    $courseshown = $this->page->course->id;
-                    $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">modify groups</a></br>';
-            }
-            echo '<pre>';
-            print_r(groups_get_all_groupings($COURSE->id));
-            echo'</pre>';
+            $this->content->text .= $this->get_content_teaching();
         }
 
         if (!empty($allgroups)) {
-
-                $groups = groups_get_user_groups($COURSE->id, $USER->id);
-
-                if (empty($groups[0])) {
-                    // block is hidden or ends in case the user is not a member of a group
-                    $this->content->text .= '';
-                }
-                else {
-                    $this->content->text .= get_string('introduction', 'block_groups') . "</br>";
-
-                    foreach ($groups as $g => $value) {
-                        if (is_object($value) && property_exists($value, 'name')) {
-                            $membergroupsarray[$g] = $value->name;
-                        }
-                    }
-
-                    if (empty($membergroupsarray)) {
-                        $this->content->text .= '';
-                    }
-                    else {
-                        $groupstext .= get_string('member', 'block_groups') . "</br>";
-                        $groupstext .= html_writer::alist($membergroupsarray);
-                    }
-                }
+                $this->content->text .= $this->get_content_groupmembers();
         }
-        $this->content->text .= $groupstext;
+
         return $this->content;
     }
+
+
+
+
+    private function get_content_teaching(){
+        global  $COURSE, $CFG;
+        $grouparray = array();
+        $groupingarray = array();
+        $allgroups = groups_get_all_groups($COURSE->id);
+        $allgroupings = groups_get_all_groupings($COURSE->id);
+        $groupstext = '';
+
+        foreach ($allgroups as $g => $value) {
+            if (is_object($value) && property_exists($value, 'name')) {
+                $grouparray[$g] = $value->name ;
+            }
+        }
+        foreach ($allgroupings as $g => $value) {
+            if (is_object($value) && property_exists($value, 'name')) {
+                $groupingarray[$g] = $value->name ;
+            }
+        }
+
+        if(count($grouparray)==0) {
+            $groupstext = '';
+            return $groupstext;
+        }
+        else{
+
+            if(!(empty($groupingarray)) ){
+                $groupstext = get_string('viewallgroupings', 'block_groups') . "</br>";
+                $listallgrouping = html_writer::alist($groupingarray);
+                $groupstext .= $listallgrouping;
+
+            }
+
+            $groupstext .= get_string('viewallgroups', 'block_groups') . "</br>";
+            $listallgroups = html_writer::alist($grouparray);
+            $groupstext .= $listallgroups;
+            $courseshown = $this->page->course->id;
+            $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">modify groups</a></br>';
+            return $groupstext;
+        }
+    }
+
+
+
+    private function get_content_groupmembers(){
+        global  $COURSE, $USER;
+
+        $groups = groups_get_user_groups($COURSE->id, $USER->id);
+
+        if (empty($groups[0])) {
+            $this->content->text .= '';
+            return $this->content;
+        }
+
+        $this->content->text .= get_string('introduction', 'block_groups') . "</br>";
+        foreach ($groups as $g => $value) {
+            if (is_object($value) && property_exists($value, 'name')) {
+                $membergroupsarray[$g] = $value->name;
+            }
+        }
+
+        if (empty($membergroupsarray)) {
+            $groupstext ='';
+            return $groupstext;
+        }
+
+        $groupstext ='';
+        $groupstext .= get_string('member', 'block_groups') . "</br>";
+        $groupstext .= html_writer::alist($membergroupsarray);
+        return $groupstext;
+
+    }
+
 }
