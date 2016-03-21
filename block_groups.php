@@ -35,11 +35,10 @@ class block_groups extends block_base
     public function get_content()
     {
 
-        global  $DB, $COURSE, $CFG;
-
+        global $COURSE;
 
         if($this->content !== null){
-            return $this ->content;
+            return $this->content;
         }
 
         if (empty($this->instance)) {
@@ -49,7 +48,8 @@ class block_groups extends block_base
 
         $this->content = new stdClass;
         $this->content->text = '';
-
+        $allgroups = groups_get_all_groups($COURSE->id);
+        $allgroupings = groups_get_all_groupings($COURSE->id);
         if(empty($allgroups) && empty($allgroupings)){
             $this->content->text = '';
         }
@@ -65,13 +65,17 @@ class block_groups extends block_base
         if (!empty($allgroups)) {
                 $this->content->text .= $this->get_content_groupmembers();
         }
-
         return $this->content;
     }
 
 
 
-
+    /** Returns a list of Groups and Groupings
+     *
+     * To every Member who has the capability to manage courses is an overview of all existing groups and groupings displayed
+     *
+     * @return stdObject
+     */
     private function get_content_teaching(){
         global  $COURSE, $CFG;
         $grouparray = array();
@@ -101,7 +105,6 @@ class block_groups extends block_base
                 $groupstext = get_string('viewallgroupings', 'block_groups') . "</br>";
                 $listallgrouping = html_writer::alist($groupingarray);
                 $groupstext .= $listallgrouping;
-
             }
 
             $groupstext .= get_string('viewallgroups', 'block_groups') . "</br>";
@@ -118,30 +121,26 @@ class block_groups extends block_base
     private function get_content_groupmembers(){
         global  $COURSE, $USER;
 
-        $groups = groups_get_user_groups($COURSE->id, $USER->id);
+        $memberarray = array();
+        $allgroups = groups_get_my_groups();
 
-        if (empty($groups[0])) {
-            $this->content->text .= '';
-            return $this->content;
+
+        foreach ($allgroups as $allgroupnr => $valueall) {
+
+                if ($valueall->courseid == $COURSE->id) {
+                    $memberarray[] = $valueall->name;
+                }
         }
 
-        $this->content->text .= get_string('introduction', 'block_groups') . "</br>";
-        foreach ($groups as $g => $value) {
-            if (is_object($value) && property_exists($value, 'name')) {
-                $membergroupsarray[$g] = $value->name;
-            }
-        }
-
-        if (empty($membergroupsarray)) {
+        if (empty($memberarray)) {
             $groupstext ='';
             return $groupstext;
         }
 
         $groupstext ='';
         $groupstext .= get_string('member', 'block_groups') . "</br>";
-        $groupstext .= html_writer::alist($membergroupsarray);
+        $groupstext .= html_writer::alist($memberarray);
         return $groupstext;
-
     }
 
 }
