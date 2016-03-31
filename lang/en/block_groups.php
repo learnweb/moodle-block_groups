@@ -24,10 +24,12 @@
 $string['groups:addinstance'] = 'Add a new Group block';
 $string['groups:myaddinstance'] = 'Add a new Group block';
 $string['groups:myaddinstance'] = 'Add a new group block to Dashboard';
-$string['pluginname'] = 'Groups';
+$string['pluginname'] = 'Groups and Groupings';
 $string['introduction'] = 'You are enrolled in the following groups';
 $string['nogroups'] = 'There are no groups available';
 $string['addgroup'] = 'There are no groups available';
-$string['viewallgroups'] = 'Groups ';
-$string['viewallgroupings'] = 'Groupings ';
+$string['groups'] = 'Groups ';
+$string['groupings'] = 'Groupings ';
 $string['member'] = 'Member: ';
+$string['brackets'] = '   ({$a})';
+$string['modify'] = 'modify groups';

@@ -1,4 +1,31 @@
-.block_groups .block_tree {
-    margin: 0;
+input[type=checkbox] {
+    /*visibility: hidden;*/
+}
+input[type="checkbox"]:checked {
+
+}
+.block_groups div.memberlist *{
     list-style: none;
+}
+.block_groups #checkbox ~ul{
+
+}
+.block_groups #checkboxgrouping  ~ ul{
+    display: none;
+}
+.block_groups #checkboxgrouping:checked ~ul{
+    display : block;
+    list-style: none;
+}
+.block_groups .checkboxgrouping + label span{
+
+}
+.block_groups #checkboxgroup ~ ul {
+    display: none;
+}
+.block_groups #checkboxgroup:checked ~ ul{
+    display : block;
+    list-style: none;
+}
+.block_groups .checkboxgroup + label span{
 }

@@ -20,7 +20,7 @@
  * Date: 16.03.16
  * Time: 09:23
  */
-class block_groups extends block_tree
+class block_groups extends block_base
 {
     //public $content_type = BLOCK_TYPE_TREE;
     /**Initialises the block*/
@@ -73,7 +73,7 @@ class block_groups extends block_tree
      * @return string
      */
     private function get_content_teaching(){
-        global  $COURSE, $CFG;
+        global  $COURSE, $CFG, $OUTPUT;
         $grouparray = array();
         $groupingarray = array();
         $allgroups = groups_get_all_groups($COURSE->id);
@@ -82,12 +82,14 @@ class block_groups extends block_tree
 
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
-                $grouparray[$g] = $value->name ;
+                $a =count(groups_get_members($value->id));
+                $grouparray[$g] = $value->name . get_string('brackets','block_groups', $a);
             }
         }
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
-                $groupingarray[$g] = $value->name ;
+                $a =count(groups_get_grouping_members($value->id));
+                $groupingarray[$g] = $value->name  . get_string('brackets','block_groups', $a) ;
             }
         }
 
@@ -96,18 +98,30 @@ class block_groups extends block_tree
             return $groupstext;
         }
         else{
-
+            $groupstext .='<div class="checkbox">';
             if(!(empty($groupingarray)) ){
-                $groupstext = get_string('viewallgroupings', 'block_groups') . "</br>";
-                $listallgrouping = html_writer::alist($groupingarray);
-                $groupstext .= $listallgrouping;
-            }
+                //checkbox als api besser einbinden -> select_option icon aendern t/up
 
-            $groupstext .= get_string('viewallgroups', 'block_groups') . "</br>";
-            $listallgroups = html_writer::alist($grouparray);
-            $groupstext .= $listallgroups;
+                //public static function checkbox($name, $value, $checked = true, $label = '', array $attributes = null)
+                /*$name = "checkboxgrouping";
+                $label = get_string('groups','block_groups');
+                $groupstext .= html_writer::checkbox($name, "1", false, $label , null);*/
+
+                $groupstext .='<div class="checkboxgrouping">';
+                $groupstext .='<input type="checkbox" value="1" id="checkboxgrouping" name="checkboxgrouping" />';
+                $groupstext .= '<label for="checkboxgrouping">'. get_string('groupings','block_groups').'</label>';
+                $groupstext .= html_writer::alist($groupingarray);
+                $groupstext .='</div>';
+            }
+            $groupstext .='<div class="checkboxgroup">';
+            $groupstext .='<input type="checkbox" value="1" id="checkboxgroup" name="checkboxgroup" />';
+            $groupstext .= '<label for="checkboxgroup">'. get_string('groups','block_groups').'</label>';
+            $groupstext .= html_writer::alist($grouparray);
+            $groupstext .='</div>';
+            $groupstext .='</div>';
             $courseshown = $this->page->course->id;
-            $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">modify groups</a></br>';
+            $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'. get_string('modify', 'block_groups'). '</a></br>';
+
             return $groupstext;
         }
     }
@@ -120,14 +134,13 @@ class block_groups extends block_tree
      * @return string
      */
     private function get_content_groupmembers(){
-        global  $COURSE, $USER;
+        global  $COURSE;
 
         $memberarray = array();
         $allgroups = groups_get_my_groups();
 
 
         foreach ($allgroups as $allgroupnr => $valueall) {
-
                 if ($valueall->courseid == $COURSE->id) {
                     $memberarray[] = $valueall->name;
                 }
@@ -139,8 +152,10 @@ class block_groups extends block_tree
         }
 
         $groupstext ='';
+        $groupstext .= '<div class="memberlist">';
         $groupstext .= get_string('member', 'block_groups') . "</br>";
         $groupstext .= html_writer::alist($memberarray);
+        $groupstext .= '</div>';
         return $groupstext;
     }
 
