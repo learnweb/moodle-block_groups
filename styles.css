@@ -1,31 +1,48 @@
 input[type=checkbox] {
-    /*visibility: hidden;*/
+    visibility: hidden;
+    cursor: pointer;
+    position:absolute;
+    text-align: left;
 }
-input[type="checkbox"]:checked {
-
+input[type=checkbox] ~label{
+    margin-left: 0%;
+}
+.block_groups div.memberlist::before{
+    content:url('[[pix:t/collapsed]]');
 }
 .block_groups div.memberlist *{
-    list-style: none;
+    list-style: square;
 }
-.block_groups #checkbox ~ul{
-
+.block_groups #checkboxgrouping ~ label::before {
+    content:url('[[pix:t/collapsed]]');
 }
-.block_groups #checkboxgrouping  ~ ul{
+.block_groups #checkboxgrouping  ~ul{
     display: none;
 }
-.block_groups #checkboxgrouping:checked ~ul{
-    display : block;
-    list-style: none;
+.block_groups #checkboxgrouping:checked{
+    display: none;
+    list-style: square;
 }
-.block_groups .checkboxgrouping + label span{
-
+.block_groups #checkboxgrouping:checked ~ label::before {
+    content:url('[[pix:t/expanded]]');
+}
+.block_groups #checkboxgrouping:checked ~ ul{
+    display : block;
+    list-style: square;
+}
+.block_groups #checkboxgroup ~ label::before {
+    content:url('[[pix:t/collapsed]]');
 }
 .block_groups #checkboxgroup ~ ul {
     display: none;
 }
 .block_groups #checkboxgroup:checked ~ ul{
     display : block;
-    list-style: none;
+    list-style: square url("sqpurple.gif");
 }
-.block_groups .checkboxgroup + label span{
+.block_groups #checkboxgroup:checked ~ label::before {
+    content:url('[[pix:t/expanded]]');
+}
+.block_groups a{
+    margin-left: 10%;
 }

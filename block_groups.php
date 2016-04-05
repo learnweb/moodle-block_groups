@@ -49,19 +49,16 @@ class block_groups extends block_base
         }
 
         $this->content = new stdClass;
-
         $this->content->text = '';
 
         $coursecontext = context_course::instance($COURSE->id);
         $access = has_capability('moodle/course:managegroups',  $coursecontext);
 
-        // Users who are able to manage groups see all groups
         if($access === TRUE){
             $this->content->text .= $this->get_content_teaching();
         }
 
         $this->content->text .= $this->get_content_groupmembers();
-
         return $this->content;
     }
 
@@ -100,21 +97,19 @@ class block_groups extends block_base
         else{
             $contentcheckbox ='';
             if(!(empty($groupingarray)) ){
-                //checkbox als api besser einbinden -> select_option icon aendern t/up
-
+                // select_option icon aendern t/up
                 $contentgrouping = html_writer::tag('label',get_string('groupings','block_groups'),array('for'=>"checkboxgrouping"));
                 $contentgrouping .= html_writer::alist($groupingarray);
                 $contentgrouping2 = html_writer::tag('input', $contentgrouping, array('type'=>"checkbox",'value'=>"1", 'id'=>"checkboxgrouping", 'name'=>"checkboxgrouping"));
                 $contentcheckbox .= html_writer::tag('div', $contentgrouping2, array('class' => "checkboxgrouping"));
 
             }
-            $attributesgroup = array('class="checkboxgroup">');
-            $contentgroups ='<input type="checkbox" value="1" id="checkboxgroup" name="checkboxgroup" />';
-            $contentgroups .= html_writer::tag('label for="checkboxgroup"',get_string('groups','block_groups'),null );
-            $contentgroups .= html_writer::alist($grouparray);
 
-            $contentcheckbox .= html_writer::tag('div', $contentgroups, $attributesgroup);
-            $groupstext .= html_writer::tag('div class="checkbox"', $contentcheckbox,null);
+            $contentgroups = html_writer::tag('label',get_string('groups','block_groups'),array('for'=>"checkboxgroup") );
+            $contentgroups .= html_writer::alist($grouparray);
+            $contentgroups2 = html_writer::tag('input', $contentgroups, array('type'=>"checkbox",'value'=>"1", 'id'=>"checkboxgroup", 'name'=>"checkboxgroup"));
+            $contentcheckbox .= html_writer::tag('div', $contentgroups2, array('class'=>"checkboxgroup"));
+            $groupstext .= html_writer::tag('div', $contentcheckbox,array('class'=>'checkbox'));
             $courseshown = $this->page->course->id;
             $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'. get_string('modify', 'block_groups'). '</a></br>';
 
@@ -129,12 +124,12 @@ class block_groups extends block_base
      *
      * @return string
      */
+
     private function get_content_groupmembers(){
         global  $COURSE;
 
         $memberarray = array();
         $allgroups = groups_get_my_groups();
-
 
         foreach ($allgroups as $allgroupnr => $valueall) {
                 if ($valueall->courseid == $COURSE->id) {
@@ -146,12 +141,9 @@ class block_groups extends block_base
             $groupstext ='';
             return $groupstext;
         }
-
-        $groupstext ='';
-        $groupstext .= '<div class="memberlist">';
-        $groupstext .= get_string('member', 'block_groups') . "</br>";
-        $groupstext .= html_writer::alist($memberarray);
-        $groupstext .= '</div>';
+        $membercontent = get_string('member', 'block_groups');
+        $membercontent .= html_writer::alist($memberarray);
+        $groupstext = html_writer::tag('div', $membercontent,array('class'=>'memberlist'));
         return $groupstext;
     }
 
