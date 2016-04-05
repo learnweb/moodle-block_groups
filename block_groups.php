@@ -98,27 +98,23 @@ class block_groups extends block_base
             return $groupstext;
         }
         else{
-            $groupstext .='<div class="checkbox">';
+            $contentcheckbox ='';
             if(!(empty($groupingarray)) ){
                 //checkbox als api besser einbinden -> select_option icon aendern t/up
 
-                //public static function checkbox($name, $value, $checked = true, $label = '', array $attributes = null)
-                /*$name = "checkboxgrouping";
-                $label = get_string('groups','block_groups');
-                $groupstext .= html_writer::checkbox($name, "1", false, $label , null);*/
+                $contentgrouping = html_writer::tag('label',get_string('groupings','block_groups'),array('for'=>"checkboxgrouping"));
+                $contentgrouping .= html_writer::alist($groupingarray);
+                $contentgrouping2 = html_writer::tag('input', $contentgrouping, array('type'=>"checkbox",'value'=>"1", 'id'=>"checkboxgrouping", 'name'=>"checkboxgrouping"));
+                $contentcheckbox .= html_writer::tag('div', $contentgrouping2, array('class' => "checkboxgrouping"));
 
-                $groupstext .='<div class="checkboxgrouping">';
-                $groupstext .='<input type="checkbox" value="1" id="checkboxgrouping" name="checkboxgrouping" />';
-                $groupstext .= '<label for="checkboxgrouping">'. get_string('groupings','block_groups').'</label>';
-                $groupstext .= html_writer::alist($groupingarray);
-                $groupstext .='</div>';
             }
-            $groupstext .='<div class="checkboxgroup">';
-            $groupstext .='<input type="checkbox" value="1" id="checkboxgroup" name="checkboxgroup" />';
-            $groupstext .= '<label for="checkboxgroup">'. get_string('groups','block_groups').'</label>';
-            $groupstext .= html_writer::alist($grouparray);
-            $groupstext .='</div>';
-            $groupstext .='</div>';
+            $attributesgroup = array('class="checkboxgroup">');
+            $contentgroups ='<input type="checkbox" value="1" id="checkboxgroup" name="checkboxgroup" />';
+            $contentgroups .= html_writer::tag('label for="checkboxgroup"',get_string('groups','block_groups'),null );
+            $contentgroups .= html_writer::alist($grouparray);
+
+            $contentcheckbox .= html_writer::tag('div', $contentgroups, $attributesgroup);
+            $groupstext .= html_writer::tag('div class="checkbox"', $contentcheckbox,null);
             $courseshown = $this->page->course->id;
             $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'. get_string('modify', 'block_groups'). '</a></br>';
 
