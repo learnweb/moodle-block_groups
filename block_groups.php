@@ -58,6 +58,10 @@ class block_groups extends block_base
             $this->content->text .= $this->get_content_teaching();
         }
 
+        if($access === FALSE){
+            $this->title = get_string('pluginname2','block_groups');
+        }
+
         $this->content->text .= $this->get_content_groupmembers();
         return $this->content;
     }
@@ -98,18 +102,18 @@ class block_groups extends block_base
             $contentcheckbox ='';
             if(!(empty($groupingarray)) ){
                 // select_option icon aendern t/up
-                $contentgrouping = html_writer::tag('label',get_string('groupings','block_groups'),array('for'=>"checkboxgrouping"));
+                $contentgrouping = html_writer::tag('label',get_string('groupings','block_groups'),array('for'=>"blockgroupsandgroupingcheckboxgrouping"));
                 $contentgrouping .= html_writer::alist($groupingarray);
-                $contentgrouping2 = html_writer::tag('input', $contentgrouping, array('type'=>"checkbox",'value'=>"1", 'id'=>"checkboxgrouping", 'name'=>"checkboxgrouping"));
-                $contentcheckbox .= html_writer::tag('div', $contentgrouping2, array('class' => "checkboxgrouping"));
+                $contentgrouping2 = html_writer::tag('input', $contentgrouping, array('type'=>"checkbox",'value'=>"1", 'id'=>"blockgroupsandgroupingcheckboxgrouping", 'name'=>"checkboxgrouping"));
+                $contentcheckbox .= html_writer::tag('div', $contentgrouping2, array('class' => "blockgroupsandgroupingcheckboxgrouping"));
 
             }
 
-            $contentgroups = html_writer::tag('label',get_string('groups','block_groups'),array('for'=>"checkboxgroup") );
+            $contentgroups = html_writer::tag('label',get_string('groups','block_groups'),array('for'=>"blockgroupsandgroupingcheckboxgroup") );
             $contentgroups .= html_writer::alist($grouparray);
-            $contentgroups2 = html_writer::tag('input', $contentgroups, array('type'=>"checkbox",'value'=>"1", 'id'=>"checkboxgroup", 'name'=>"checkboxgroup"));
-            $contentcheckbox .= html_writer::tag('div', $contentgroups2, array('class'=>"checkboxgroup"));
-            $groupstext .= html_writer::tag('div', $contentcheckbox,array('class'=>'checkbox'));
+            $contentgroups2 = html_writer::tag('input', $contentgroups, array('type'=>"checkbox",'value'=>"1", 'id'=>"blockgroupsandgroupingcheckboxgroup", 'name'=>"checkboxgroup"));
+            $contentcheckbox .= html_writer::tag('div', $contentgroups2, array('class'=>"blockgroupsandgroupingcheckboxgroup"));
+            $groupstext .= html_writer::tag('div', $contentcheckbox,array('class'=>'blockgroupsandgroupinggroupandgroupingcheckbox'));
             $courseshown = $this->page->course->id;
             $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'. get_string('modify', 'block_groups'). '</a></br>';
 
@@ -141,7 +145,7 @@ class block_groups extends block_base
             $groupstext ='';
             return $groupstext;
         }
-        $membercontent = get_string('member', 'block_groups');
+        $membercontent = get_string('introduction', 'block_groups');
         $membercontent .= html_writer::alist($memberarray);
         $groupstext = html_writer::tag('div', $membercontent,array('class'=>'memberlist'));
         return $groupstext;
