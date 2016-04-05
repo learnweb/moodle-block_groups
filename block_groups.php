@@ -22,7 +22,7 @@
  */
 class block_groups extends block_base
 {
-    //public $content_type = BLOCK_TYPE_TREE;
+ 
     /**Initialises the block*/
     public function init(){
         $this->title = get_string('pluginname','block_groups');

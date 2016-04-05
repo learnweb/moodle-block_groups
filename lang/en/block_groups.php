@@ -31,6 +31,5 @@ $string['nogroups'] = 'There are no groups available';
 $string['addgroup'] = 'There are no groups available';
 $string['groups'] = 'Groups ';
 $string['groupings'] = 'Groupings ';
-$string['member'] = 'Member: ';
 $string['brackets'] = '   ({$a})';
 $string['modify'] = 'modify groups';

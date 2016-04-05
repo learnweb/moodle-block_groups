@@ -13,13 +13,7 @@ input[type=checkbox] ~label{
 .block_groups div.memberlist::before{
 
 }
-.block_groups img {
-    width: 16px;
-    height: 16px;
-    margin-top: 3px;
-    margin-right: 5px;
-    vertical-align: top;
-}
+
 .block_groups div.memberlist *{
     list-style: url('[[pix:i/navigationitem]]');
 
