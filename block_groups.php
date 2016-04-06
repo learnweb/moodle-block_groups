@@ -133,14 +133,13 @@ class block_groups extends block_base
                     array('class' => "blockgroupsandgroupingcheckboxgroup"));
             $groupstext .= html_writer::tag('div', $contentcheckbox,
                     array('class' => 'blockgroupsandgroupinggroupandgroupingcheckbox'));
-            $courseshown = $this->page->course->id;
+            $courseshown = $COURSE->id;
             $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'.
                     get_string('modify', 'block_groups'). '</a></br>';
 
             return $groupstext;
         }
     }
-
 
     /**
      * Returns all registered groups.
