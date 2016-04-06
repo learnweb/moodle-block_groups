@@ -46,9 +46,9 @@ class block_groups extends block_base
      * @return object $this->content
      */
     public function get_content() {
-        // ... @var course renders the current course.
+        // Record the current course.
         global $COURSE;
-        // ... @var boolean renders the capability to manage courses.
+        // Records the capability to manage courses.
         $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
 
         if ($this->content !== null) {
@@ -82,19 +82,19 @@ class block_groups extends block_base
      * @return string
      */
     private function block_groups_get_content_teaching() {
-        // ...@var course,cfg renders the current course and cfg.
         global  $COURSE, $CFG;
-        // ...@var array initialises an array of groups.
+        // Initialises an array of groups.
         $groupsarray = array();
-        // ...@var array initialises an array of groupings.
+        // Initialises an array of groupings.
         $groupingsarray = array();
-        // ...@var array renders all groups.
+        // Array to save all groups.
         $allgroups = groups_get_all_groups($COURSE->id);
-        // ...@var array renders all groupings.
+        // Array to save all groupings.
         $allgroupings = groups_get_all_groupings($COURSE->id);
-        // ...@var string initialises the string.
+        // String initialises an empty string.
         $groupstext = '';
 
+        // Groups and Grouping Names are saved in arrays.
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $a = count(groups_get_members($value->id));
@@ -108,6 +108,7 @@ class block_groups extends block_base
             }
         }
 
+        // Empty block or block with checkboxes
         if (count($groupsarray) == 0) {
             $groupstext = '';
             return $groupstext;
@@ -148,22 +149,23 @@ class block_groups extends block_base
      */
 
     private function block_groups_get_content_groupmembers() {
-        // ...@var course renders the current course.
+        // Records the current course.
         global  $COURSE;
-        // ...@var array initialises an array to save the enrolled groups.
+        // Initialises an array to save the enrolled groups.
         $enrolledgroups = array();
-        // ...@var list renders all enrolled groups.
+        // List renders all enrolled groups.
         $allgroups = groups_get_my_groups();
         foreach ($allgroups as $valueall) {
             if ($valueall->courseid == $COURSE->id) {
                     $enrolledgroups[] = $valueall->name;
             }
         }
-
+        // Returns an empty block.
         if (empty($enrolledgroups)) {
             $groupstext = '';
             return $groupstext;
         }
+        // List all enrolled groups.
         $membercontent = get_string('introduction', 'block_groups');
         $membercontent .= html_writer::alist($enrolledgroups);
         $groupstext = html_writer::tag('div', $membercontent, array('class' => 'memberlist'));

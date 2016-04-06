@@ -15,4 +15,7 @@ The Block displays all existing groups and groupings as well as all enrolled gro
 The Block displays all enrolled groups to students:</br>
 ![Students' View](https://cloud.githubusercontent.com/assets/18289780/14318694/6bcaae1a-fc0e-11e5-822b-75e5b45316d5.png)
 
+[![Build Status](https://travis-ci.org/learnweb/moodle-block_groups.svg?branch=master)]
+(https://travis-ci.org/learnweb/moodle-block_groups)
+
 
