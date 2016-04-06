@@ -15,14 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Created by IntelliJ IDEA.
- * User: nina
- * Date: 16.03.16
- * Time: 09:31
+ * Version details
+ * @package block_groups
+ * @category   block
+ * @copyright 2016 N Herrmann
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-//defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2015111601;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2015111000;        // Requires this Moodle version
-$plugin->component = 'block_groups'; // Full name of the plugin (used for diagnostics)
+$plugin->version   = 2016040700;     // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2015111000;     // Requires this Moodle version.
+$plugin->component = 'block_groups'; // Full name of the plugin (used for diagnostics).
+$plugin->release = 'v3.0-r1';
+$plugin->maturity = MATURITY_BETA;

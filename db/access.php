@@ -15,12 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Created by IntelliJ IDEA.
- * User: nina
- * Date: 16.03.16
- * Time: 09:27
+ *  This file contains navigation block caps.
+ *
+ * @package block_groups
+ * @category   block
+ * @copyright 2016 N Herrmann
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-//defined('MOODLE_INTERNAL') || die();
+
+ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 

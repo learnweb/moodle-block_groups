@@ -15,31 +15,43 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Created by IntelliJ IDEA.
- * User: nina
- * Date: 16.03.16
- * Time: 09:23
+ * The file contains a class to build a Group Block
+ *
+ * @package block_groups
+ * @category   block
+ * @copyright 2016 N Herrmann
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+/**
+ * The block_group class
+ *
+ * Used to produce a group and grouping block.
+ *
+ * @package block_groups
+ * @category   block
+ * @copyright 2016 N Herrmann
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_groups extends block_base
 {
- 
+
     /**Initialises the block*/
-    public function init(){
-        $this->title = get_string('pluginname','block_groups');
+    public function init() {
+        $this->title = get_string('pluginname', 'block_groups');
     }
 
-    /** Returns the content object
+    /**
+     * Returns the content object
      *
-     * @return stdObject
+     * @return object $this->content
      */
-
-
-    public function get_content()
-    {
-
+    public function get_content() {
+        /** @var course renders the current course */
         global $COURSE;
+        /** @var boolean renders the capability to manage courses*/
+        $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
 
-        if($this->content !== null){
+        if ($this->content !== null) {
             return $this->content;
         }
 
@@ -51,71 +63,78 @@ class block_groups extends block_base
         $this->content = new stdClass;
         $this->content->text = '';
 
-        $coursecontext = context_course::instance($COURSE->id);
-        $access = has_capability('moodle/course:managegroups',  $coursecontext);
-
-        if($access === TRUE){
-            $this->content->text .= $this->get_content_teaching();
+        if ($access === true) {
+            $this->content->text .= $this->block_groups_get_content_teaching();
         }
 
-        if($access === FALSE){
-            $this->title = get_string('pluginname2','block_groups');
+        if ($access === false) {
+            $this->title = get_string('pluginname2', 'block_groups');
         }
 
-        $this->content->text .= $this->get_content_groupmembers();
+        $this->content->text .= $this->block_groups_get_content_groupmembers();
         return $this->content;
     }
 
 
     /**
-     *
      * Returns a List of all existing groups and groupings
      *
      * @return string
      */
-    private function get_content_teaching(){
-        global  $COURSE, $CFG, $OUTPUT;
-        $grouparray = array();
-        $groupingarray = array();
+    private function block_groups_get_content_teaching() {
+        /** @var course,cfg renders the current course and cfg*/
+        global  $COURSE, $CFG;
+        /** @var array initialises an array of groups*/
+        $groupsarray = array();
+        /** @var array initialises an array of groupings*/
+        $groupingsarray = array();
+        /** @var array renders all groups*/
         $allgroups = groups_get_all_groups($COURSE->id);
+        /** @var array renders all groupings*/
         $allgroupings = groups_get_all_groupings($COURSE->id);
         $groupstext = '';
 
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
-                $a =count(groups_get_members($value->id));
-                $grouparray[$g] = $value->name . get_string('brackets','block_groups', $a);
+                $a = count(groups_get_members($value->id));
+                $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a);
             }
         }
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
-                $a =count(groups_get_grouping_members($value->id));
-                $groupingarray[$g] = $value->name  . get_string('brackets','block_groups', $a) ;
+                $a = count(groups_get_grouping_members($value->id));
+                $groupingsarray[$g] = $value->name  . get_string('brackets', 'block_groups', $a);
             }
         }
 
-        if(count($grouparray) == 0) {
+        if (count($groupsarray) == 0) {
             $groupstext = '';
             return $groupstext;
-        }
-        else{
-            $contentcheckbox ='';
-            if(!(empty($groupingarray)) ){
-                // select_option icon aendern t/up
-                $contentgrouping = html_writer::tag('label',get_string('groupings','block_groups'),array('for'=>"blockgroupsandgroupingcheckboxgrouping"));
-                $contentgrouping .= html_writer::alist($groupingarray);
-                $contentgrouping2 = html_writer::tag('input', $contentgrouping, array('type'=>"checkbox",'value'=>"1", 'id'=>"blockgroupsandgroupingcheckboxgrouping", 'name'=>"checkboxgrouping"));
-                $contentcheckbox .= html_writer::tag('div', $contentgrouping2, array('class' => "blockgroupsandgroupingcheckboxgrouping"));
+        } else {
+            $contentcheckbox = '';
+            if (!(empty($groupingsarray))) {
+                $contentgrouping = html_writer::tag('label', get_string('groupings', 'block_groups'),
+                        array('for' => "blockgroupsandgroupingcheckboxgrouping"));
+                $contentgrouping .= html_writer::alist($groupingsarray);
+                $contentgroupingcheckbox = html_writer::tag('input', $contentgrouping, array('type' => "checkbox",
+                        'value' => "1", 'id' => "blockgroupsandgroupingcheckboxgrouping", 'name' => "checkboxgrouping"));
+                $contentcheckbox .= html_writer::tag('div', $contentgroupingcheckbox,
+                        array('class' => "blockgroupsandgroupingcheckboxgrouping"));
 
             }
 
-            $contentgroups = html_writer::tag('label',get_string('groups','block_groups'),array('for'=>"blockgroupsandgroupingcheckboxgroup") );
-            $contentgroups .= html_writer::alist($grouparray);
-            $contentgroups2 = html_writer::tag('input', $contentgroups, array('type'=>"checkbox",'value'=>"1", 'id'=>"blockgroupsandgroupingcheckboxgroup", 'name'=>"checkboxgroup"));
-            $contentcheckbox .= html_writer::tag('div', $contentgroups2, array('class'=>"blockgroupsandgroupingcheckboxgroup"));
-            $groupstext .= html_writer::tag('div', $contentcheckbox,array('class'=>'blockgroupsandgroupinggroupandgroupingcheckbox'));
+            $contentgroups = html_writer::tag('label', get_string('groups', 'block_groups'),
+                    array('for' => "blockgroupsandgroupingcheckboxgroup"));
+            $contentgroups .= html_writer::alist($groupsarray);
+            $contentgroupscheckbox = html_writer::tag('input', $contentgroups, array('type' => "checkbox", 'value' => "1",
+                    'id' => "blockgroupsandgroupingcheckboxgroup", 'name' => "checkboxgroup"));
+            $contentcheckbox .= html_writer::tag('div', $contentgroupscheckbox,
+                    array('class' => "blockgroupsandgroupingcheckboxgroup"));
+            $groupstext .= html_writer::tag('div', $contentcheckbox,
+                    array('class' => 'blockgroupsandgroupinggroupandgroupingcheckbox'));
             $courseshown = $this->page->course->id;
-            $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'. get_string('modify', 'block_groups'). '</a></br>';
+            $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'.
+                    get_string('modify', 'block_groups'). '</a></br>';
 
             return $groupstext;
         }
@@ -123,32 +142,30 @@ class block_groups extends block_base
 
 
     /**
-     *
      * Returns all groups where the current user has a valid membership.
      *
      * @return string
      */
 
-    private function get_content_groupmembers(){
+    private function block_groups_get_content_groupmembers() {
         global  $COURSE;
 
-        $memberarray = array();
+        $enrolledgroups = array();
         $allgroups = groups_get_my_groups();
 
         foreach ($allgroups as $allgroupnr => $valueall) {
-                if ($valueall->courseid == $COURSE->id) {
-                    $memberarray[] = $valueall->name;
-                }
+            if ($valueall->courseid == $COURSE->id) {
+                    $enrolledgroups[] = $valueall->name;
+            }
         }
 
-        if (empty($memberarray)) {
-            $groupstext ='';
+        if (empty($enrolledgroups)) {
+            $groupstext = '';
             return $groupstext;
         }
         $membercontent = get_string('introduction', 'block_groups');
-        $membercontent .= html_writer::alist($memberarray);
-        $groupstext = html_writer::tag('div', $membercontent,array('class'=>'memberlist'));
+        $membercontent .= html_writer::alist($enrolledgroups);
+        $groupstext = html_writer::tag('div', $membercontent, array('class' => 'memberlist'));
         return $groupstext;
     }
-
 }

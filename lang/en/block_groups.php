@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: nina
- * Date: 16.03.16
- * Time: 09:54
- */
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -19,6 +14,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ *  This file contains language strings used in the group block
+ * @package block_groups
+ * @category   block
+ * @copyright 2016 N Herrmann
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 
 $string['groups:addinstance'] = 'Add a new Group block';
@@ -28,7 +30,6 @@ $string['pluginname'] = 'Groups and Groupings';
 $string['pluginname2'] = 'Groups';
 $string['introduction'] = 'You are enrolled in the following groups';
 $string['nogroups'] = 'There are no groups available';
-$string['addgroup'] = 'There are no groups available';
 $string['groups'] = 'Groups ';
 $string['groupings'] = 'Groupings ';
 $string['brackets'] = '   ({$a})';
