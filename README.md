@@ -10,10 +10,10 @@ This plugin should go into moodle/blocks/groups. Moodle plugin directory link wi
 <h1>Comparison of teachers' and students' view</h1>
 
 The Block displays all existing groups and groupings as well as all enrolled groups to the teacher</br>
-<img src="Lehrender_Sicht.png">
+![Teachers' View](https://cloud.githubusercontent.com/assets/18289780/14318700/724efc78-fc0e-11e5-9918-74a9e1a71bf7.png)
+
 
 The Block displays all enrolled groups to students:</br>
-https://cloud.githubusercontent.com/assets/18289780/14316454/5287de1a-fc03-11e5-8a6b-4d212ab09299.png
-<img src="Student_Sicht.png">
+![Students' View](https://cloud.githubusercontent.com/assets/18289780/14318694/6bcaae1a-fc0e-11e5-822b-75e5b45316d5.png)
 
 
