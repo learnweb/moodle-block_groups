@@ -154,8 +154,7 @@ class block_groups extends block_base
         $enrolledgroups = array();
         // ...@var list renders all enrolled groups.
         $allgroups = groups_get_my_groups();
-
-        foreach ($allgroups as $allgroupnr => $valueall) {
+        foreach ($allgroups as $valueall) {
             if ($valueall->courseid == $COURSE->id) {
                     $enrolledgroups[] = $valueall->name;
             }

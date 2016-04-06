@@ -12,7 +12,6 @@ This plugin should go into moodle/blocks/groups. Moodle plugin directory link wi
 The Block displays all existing groups and groupings as well as all enrolled groups to the teacher</br>
 ![Teachers' View](https://cloud.githubusercontent.com/assets/18289780/14318700/724efc78-fc0e-11e5-9918-74a9e1a71bf7.png)
 
-
 The Block displays all enrolled groups to students:</br>
 ![Students' View](https://cloud.githubusercontent.com/assets/18289780/14318694/6bcaae1a-fc0e-11e5-822b-75e5b45316d5.png)
 
