@@ -23,7 +23,6 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 $string['groups:addinstance'] = 'Add a new Group block';
 $string['groups:myaddinstance'] = 'Add a new Group block';
 $string['groups:myaddinstance'] = 'Add a new group block to Dashboard';

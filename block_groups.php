@@ -117,9 +117,9 @@ class block_groups extends block_base
                 $contentgrouping = html_writer::tag('label', get_string('groupings', 'block_groups'),
                         array('for' => "blockgroupsandgroupingcheckboxgrouping"));
                 $contentgrouping .= html_writer::alist($groupingsarray);
-                $contentgroupingcheckbox = html_writer::tag('input', $contentgrouping, array('type' => "checkbox",
+                $groupingcheckbox = html_writer::tag('input', $contentgrouping, array('type' => "checkbox",
                         'value' => "1", 'id' => "blockgroupsandgroupingcheckboxgrouping", 'name' => "checkboxgrouping"));
-                $contentcheckbox .= html_writer::tag('div', $contentgroupingcheckbox,
+                $contentcheckbox .= html_writer::tag('div', $groupingcheckbox,
                         array('class' => "blockgroupsandgroupingcheckboxgrouping"));
 
             }
@@ -127,9 +127,9 @@ class block_groups extends block_base
             $contentgroups = html_writer::tag('label', get_string('groups', 'block_groups'),
                     array('for' => "blockgroupsandgroupingcheckboxgroup"));
             $contentgroups .= html_writer::alist($groupsarray);
-            $contentgroupscheckbox = html_writer::tag('input', $contentgroups, array('type' => "checkbox", 'value' => "1",
+            $groupscheckbox = html_writer::tag('input', $contentgroups, array('type' => "checkbox", 'value' => "1",
                     'id' => "blockgroupsandgroupingcheckboxgroup", 'name' => "checkboxgroup"));
-            $contentcheckbox .= html_writer::tag('div', $contentgroupscheckbox,
+            $contentcheckbox .= html_writer::tag('div', $groupscheckbox,
                     array('class' => "blockgroupsandgroupingcheckboxgroup"));
             $groupstext .= html_writer::tag('div', $contentcheckbox,
                     array('class' => 'blockgroupsandgroupinggroupandgroupingcheckbox'));
