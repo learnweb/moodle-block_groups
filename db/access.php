@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *  This file contains navigation block caps.
+ * This file contains the capabilities for the group block.
  *
  * @package block_groups
  * @category   block

@@ -25,7 +25,7 @@
 /**
  * The block_group class
  *
- * Used to produce a group and grouping block.
+ * Displays a group and grouping block.
  *
  * @package block_groups
  * @category   block
@@ -46,9 +46,9 @@ class block_groups extends block_base
      * @return object $this->content
      */
     public function get_content() {
-        /** @var course renders the current course */
+        // ... @var course renders the current course.
         global $COURSE;
-        /** @var boolean renders the capability to manage courses*/
+        // ... @var boolean renders the capability to manage courses.
         $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
 
         if ($this->content !== null) {
@@ -82,16 +82,17 @@ class block_groups extends block_base
      * @return string
      */
     private function block_groups_get_content_teaching() {
-        /** @var course,cfg renders the current course and cfg*/
+        // ...@var course,cfg renders the current course and cfg.
         global  $COURSE, $CFG;
-        /** @var array initialises an array of groups*/
+        // ...@var array initialises an array of groups.
         $groupsarray = array();
-        /** @var array initialises an array of groupings*/
+        // ...@var array initialises an array of groupings.
         $groupingsarray = array();
-        /** @var array renders all groups*/
+        // ...@var array renders all groups.
         $allgroups = groups_get_all_groups($COURSE->id);
-        /** @var array renders all groupings*/
+        // ...@var array renders all groupings.
         $allgroupings = groups_get_all_groupings($COURSE->id);
+        // ...@var string initialises the string.
         $groupstext = '';
 
         foreach ($allgroups as $g => $value) {
@@ -142,15 +143,17 @@ class block_groups extends block_base
 
 
     /**
-     * Returns all groups where the current user has a valid membership.
+     * Returns all registered groups.
      *
      * @return string
      */
 
     private function block_groups_get_content_groupmembers() {
+        // ...@var course renders the current course.
         global  $COURSE;
-
+        // ...@var array initialises an array to save the enrolled groups.
         $enrolledgroups = array();
+        // ...@var list renders all enrolled groups.
         $allgroups = groups_get_my_groups();
 
         foreach ($allgroups as $allgroupnr => $valueall) {
