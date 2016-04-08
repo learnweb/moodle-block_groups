@@ -126,7 +126,6 @@ class block_groups extends block_base
                         'value' => "1", 'id' => "blockgroupsandgroupingcheckboxgrouping", 'name' => "checkboxgrouping"));
                 $contentcheckbox .= html_writer::tag('div', $groupingcheckbox,
                         array('class' => "blockgroupsandgroupingcheckboxgrouping"));
-
             }
 
             $contentgroups = html_writer::tag('label', get_string('groups', 'block_groups'),
@@ -137,7 +136,7 @@ class block_groups extends block_base
             $contentcheckbox .= html_writer::tag('div', $groupscheckbox,
                     array('class' => "blockgroupsandgroupingcheckboxgroup"));
             $groupstext .= html_writer::tag('div', $contentcheckbox,
-                    array('class' => 'blockgroupsandgroupinggroupandgroupingcheckbox'));
+                    array('class' => 'blockgroupandgroupingcheckbox'));
             $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'.
                     get_string('modify', 'block_groups'). '</a></br>';
 
@@ -153,14 +152,14 @@ class block_groups extends block_base
 
     private function block_groups_get_content_groupmembers() {
         // Records the current course.
-        global  $COURSE;
+        global $COURSE;
         // Initialises an array to save the enrolled groups.
         $enrolledgroups = array();
         // List renders all enrolled groups.
         $allgroups = groups_get_my_groups();
         foreach ($allgroups as $valueall) {
             if ($valueall->courseid == $COURSE->id) {
-                    $enrolledgroups[] = $valueall->name;
+                $enrolledgroups[] = $valueall->name;
             }
         }
         // Returns an empty block.
@@ -174,8 +173,12 @@ class block_groups extends block_base
         $groupstext = html_writer::tag('div', $membercontent, array('class' => 'memberlist'));
         return $groupstext;
     }
-    function applicable_formats() {
-        // Default case: the block can be used in courses and site index, but not in activities
+    /**
+     * The Block is only availeable at course-view pages
+     *
+     * @return array
+     */
+    public function applicable_formats() {
         return array('course-view' => true, 'mod' => false, 'tag' => false);
     }
 }
