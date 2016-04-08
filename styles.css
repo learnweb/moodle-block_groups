@@ -49,5 +49,5 @@ input[type=checkbox] ~label{
     content:url('[[pix:t/expanded]]');
 }
 .block_groups a{
-    margin-left: 5px;
+    margin-left: 0;
 }

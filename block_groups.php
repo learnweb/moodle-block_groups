@@ -93,6 +93,8 @@ class block_groups extends block_base
         $allgroupings = groups_get_all_groupings($COURSE->id);
         // String initialises an empty string.
         $groupstext = '';
+        // Integer to identify the current course.
+        $courseshown = $COURSE->id;
 
         // Groups and Grouping Names are saved in arrays.
         foreach ($allgroups as $g => $value) {
@@ -108,9 +110,11 @@ class block_groups extends block_base
             }
         }
 
-        // Empty block or block with checkboxes
+        // Empty block or block with checkboxes.
         if (count($groupsarray) == 0) {
-            $groupstext = '';
+            $groupstext = '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'.
+                get_string('modify', 'block_groups'). '</a></br>';
+            $groupstext .= get_string('nogroups', 'block_groups');
             return $groupstext;
         } else {
             $contentcheckbox = '';
@@ -134,7 +138,6 @@ class block_groups extends block_base
                     array('class' => "blockgroupsandgroupingcheckboxgroup"));
             $groupstext .= html_writer::tag('div', $contentcheckbox,
                     array('class' => 'blockgroupsandgroupinggroupandgroupingcheckbox'));
-            $courseshown = $COURSE->id;
             $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'.
                     get_string('modify', 'block_groups'). '</a></br>';
 
@@ -170,5 +173,9 @@ class block_groups extends block_base
         $membercontent .= html_writer::alist($enrolledgroups);
         $groupstext = html_writer::tag('div', $membercontent, array('class' => 'memberlist'));
         return $groupstext;
+    }
+    function applicable_formats() {
+        // Default case: the block can be used in courses and site index, but not in activities
+        return array('course-view' => true, 'mod' => false, 'tag' => false);
     }
 }
