@@ -47,7 +47,7 @@ class block_groups extends block_base
      */
     public function get_content() {
         // Record the current course.
-        global $COURSE;
+        global $COURSE,$DB;
         // Records the capability to manage courses.
         $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
 
@@ -70,7 +70,6 @@ class block_groups extends block_base
         if ($access === false) {
             $this->title = get_string('pluginname2', 'block_groups');
         }
-
         $this->content->text .= $this->block_groups_get_content_groupmembers();
         return $this->content;
     }
@@ -82,7 +81,7 @@ class block_groups extends block_base
      * @return string
      */
     private function block_groups_get_content_teaching() {
-        global  $COURSE, $CFG;
+        global  $COURSE, $CFG, $DB;
         // Initialises an array of groups.
         $groupsarray = array();
         // Initialises an array of groupings.
@@ -95,8 +94,14 @@ class block_groups extends block_base
         $groupstext = '';
         // Integer to identify the current course.
         $courseshown = $COURSE->id;
-
         // Groups and Grouping Names are saved in arrays.
+
+        global $DB;
+
+        $dbman = $DB->get_manager();
+        /*echo'<pre>';
+        echo $DB->get_record('block_groups',null);
+        echo '</pre>';*/
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $a = count(groups_get_members($value->id));
