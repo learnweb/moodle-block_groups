@@ -98,9 +98,9 @@ class block_groups extends block_base
 
         global $DB;
 
-        $dbman = $DB->get_manager();
-        /*echo'<pre>';
-        echo $DB->get_record('block_groups',null);
+        $dbman = $DB->get_manager();/*
+        echo'<pre>';
+        echo $DB->get_record('block_groups_hide',array());
         echo '</pre>';*/
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
@@ -108,6 +108,7 @@ class block_groups extends block_base
                 $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a);
             }
         }
+
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $a = count(groups_get_grouping_members($value->id));
