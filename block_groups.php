@@ -101,14 +101,13 @@ class block_groups extends block_base
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $a = count(groups_get_members($value->id));
-                $href = '//localhost/moodle/course/view.php?id=' . $COURSE->id;
+                $href = '//localhost/moodle/blocks/groups/upgradedatabase.php?id=' . $COURSE->id . '&groupid=' . $value->id;
                 $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'));
                 $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
                 $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a) .
                     html_writer::link($href , $ausrichtungdiv);
             }
         }
-
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $a = count(groups_get_grouping_members($value->id));
