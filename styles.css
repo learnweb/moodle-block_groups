@@ -53,6 +53,6 @@ input[type=checkbox] ~label{
 .block_groups a{
     margin-left: 0;
 }
-.block_groups #rightalign *{
-    text-align: right;
+.block_groups .rightalign * {
+    float: right;
 }

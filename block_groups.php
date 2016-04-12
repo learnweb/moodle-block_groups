@@ -47,7 +47,7 @@ class block_groups extends block_base
      */
     public function get_content() {
         // Record the current course.
-        global $COURSE,$DB;
+        global $COURSE;
         // Records the capability to manage courses.
         $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
 
@@ -81,7 +81,7 @@ class block_groups extends block_base
      * @return string
      */
     private function block_groups_get_content_teaching() {
-        global  $COURSE, $CFG, $DB, $PAGE,$OUTPUT;
+        global  $COURSE, $CFG, $DB,$OUTPUT;
         // Initialises an array of groups.
         $groupsarray = array();
         // Initialises an array of groupings.
@@ -96,19 +96,16 @@ class block_groups extends block_base
         $courseshown = $COURSE->id;
         // Groups and Grouping Names are saved in arrays.
 
-        global $DB;
-
         $dbman = $DB->get_manager();
 
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $a = count(groups_get_members($value->id));
                 $href = 'http://localhost/moodle/course/view.php?id=3';
-                $img = html_writer::img($OUTPUT->pix_url('t/hide'), 'missing');
+                $img = html_writer::img($OUTPUT->pix_url('t/hide'), 'hide group');
                 $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
                 $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a) .
                     html_writer::link($href , $ausrichtungdiv);
-
             }
         }
 
