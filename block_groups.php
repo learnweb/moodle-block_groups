@@ -103,10 +103,11 @@ class block_groups extends block_base
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $a = count(groups_get_members($value->id));
-                $href = '/blocks/groups/block_groups.php';
-                $img = html_writer::img($OUTPUT->pix_url('t/hide'),'missing');
+                $href = 'http://localhost/moodle/course/view.php?id=3';
+                $img = html_writer::img($OUTPUT->pix_url('t/hide'), 'missing');
                 $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
-                $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a) . html_writer::link($href , $ausrichtungdiv);
+                $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a) .
+                    html_writer::link($href , $ausrichtungdiv);
 
             }
         }
