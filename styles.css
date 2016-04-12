@@ -37,6 +37,7 @@ input[type=checkbox] ~label{
 .block_groups #blockgroupsandgroupingcheckboxgroup ~ label::before {
     content:url('[[pix:t/collapsed]]');
 }
+
 .block_groups #blockgroupsandgroupingcheckboxgroup ~ ul {
     display: none;
 
@@ -45,9 +46,13 @@ input[type=checkbox] ~label{
     display : block;
     list-style: url('[[pix:i/navigationitem]]');
 }
+
 .block_groups #blockgroupsandgroupingcheckboxgroup:checked ~ label::before {
     content:url('[[pix:t/expanded]]');
 }
 .block_groups a{
     margin-left: 0;
+}
+.block_groups #rightalign *{
+    text-align: right;
 }
