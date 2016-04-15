@@ -33,7 +33,6 @@ if (!empty($id)) {
         if (empty($counter)) {
             $DB->import_record('block_groups_hide', array('id' => $groupid));
             redirect($CFG->wwwroot . '/course/view.php?id=' . $id);
-//        get_local_referer
             exit();
         }
         if (!empty($counter)) {

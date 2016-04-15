@@ -95,9 +95,6 @@ class block_groups extends block_base
         // Integer to identify the current course.
         $courseshown = $COURSE->id;
         // Groups and Grouping Names are saved in arrays.
-
-        $dbman = $DB->get_manager();
-
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $a = count(groups_get_members($value->id));
