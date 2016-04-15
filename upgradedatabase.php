@@ -29,10 +29,10 @@ $groupid          = optional_param('groupid', 0, PARAM_INT);
 echo $id;
 if (!empty($id)) {
     if (!empty($groupid)) {
-        $counter = $DB->get_records('block_groups_hide', array('groupid' => $groupid));
-        $insertionarray = array('groupid' => $groupid);
+        $counter = $DB->get_records('block_groups_hide', array('id'=>$groupid,'groupid' => $groupid));
+        $insertionarray = array('id' => $groupid);
         if (empty($counter)) {
-            $DB->insert_record('block_groups_hide', array('groupid' => $groupid, 'visibility' => 1));
+            $DB->insert_record('block_groups_hide', array('id'=>$groupid,'groupid' => $groupid));
             redirect($CFG->wwwroot . '/course/view.php?id=' . $id);
 //        get_local_referer
             exit();
