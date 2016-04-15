@@ -29,17 +29,21 @@ $groupid          = optional_param('groupid', 0, PARAM_INT);
 echo $id;
 if (!empty($id)) {
     if (!empty($groupid)) {
-        $counter = $DB->get_records('block_groups_hide', array('id'=>$groupid,'groupid' => $groupid));
-        $insertionarray = array('id' => $groupid);
+        $counter = $DB->get_records('block_groups_hide', array('id' => $groupid));
         if (empty($counter)) {
-            $DB->insert_record('block_groups_hide', array('id'=>$groupid,'groupid' => $groupid));
+            $DB->import_record('block_groups_hide', array('id' => $groupid));
             redirect($CFG->wwwroot . '/course/view.php?id=' . $id);
 //        get_local_referer
             exit();
         }
         if (!empty($counter)) {
-            $DB->delete_records('block_groups_hide', $insertionarray);
+            $DB->delete_records('block_groups_hide', array('id' => $groupid));
             redirect($CFG->wwwroot . '/course/view.php?id=' . $id);
+            exit();
+        } else {
+            exit();
         }
     }
+    exit();
 }
+exit();
