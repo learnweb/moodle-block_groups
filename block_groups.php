@@ -81,7 +81,7 @@ class block_groups extends block_base
      * @return string
      */
     private function block_groups_get_content_teaching() {
-        global  $COURSE, $CFG, $DB,$OUTPUT;
+        global  $COURSE, $CFG, $DB, $OUTPUT;
         // Initialises an array of groups.
         $groupsarray = array();
         // Initialises an array of groupings.
@@ -106,6 +106,9 @@ class block_groups extends block_base
                 $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
                 $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a) .
                     html_writer::link($href , $ausrichtungdiv);
+                if (!empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
+                    $groupsarray[$g] .= get_string('hidden', 'block_groups');
+                }
             }
         }
         foreach ($allgroupings as $g => $value) {
@@ -144,7 +147,6 @@ class block_groups extends block_base
                     array('class' => 'blockgroupandgroupingcheckbox'));
             $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'.
                     get_string('modify', 'block_groups'). '</a></br>';
-
             return $groupstext;
         }
     }
@@ -162,10 +164,21 @@ class block_groups extends block_base
         $enrolledgroups = array();
         // List renders all enrolled groups.
         $allgroups = groups_get_my_groups();
-        foreach ($allgroups as $valueall) {
-            $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
-            if (($valueall->courseid == $COURSE->id) & (empty($counter))) {
-                $enrolledgroups[] = $valueall->name;
+        // Records the capability to manage courses.
+        $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
+        if ($access === false) {
+            foreach ($allgroups as $valueall) {
+                $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
+                if (($valueall->courseid == $COURSE->id) & (empty($counter))) {
+                    $enrolledgroups[] = $valueall->name;
+                }
+            }
+        }
+        if ($access === true) {
+            foreach ($allgroups as $valueall) {
+                if ($valueall->courseid == $COURSE->id) {
+                    $enrolledgroups[] = $valueall->name;
+                }
             }
         }
         // Returns an empty block.
