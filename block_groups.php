@@ -98,13 +98,18 @@ class block_groups extends block_base
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $a = count(groups_get_members($value->id));
-                $href = '//localhost/moodle/blocks/groups/upgradedatabase.php?id=' . $COURSE->id . '&groupid=' . $value->id;
-                $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'));
-                $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
-                $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a) .
-                    html_writer::link($href , $ausrichtungdiv);
                 if (!empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
-                    $groupsarray[$g] .= get_string('hidden', 'block_groups');
+                    $href = $CFG->wwwroot . '/blocks/groups/upgradedatabase.php?id=' . $COURSE->id . '&groupid=' . $value->id;
+                    $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'));
+                    $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
+                    $groupsarray[$g] = html_writer::tag('div', $value->name . get_string('brackets', 'block_groups', $a),
+                            array('class' => "hiddengroups")). html_writer::link($href , $ausrichtungdiv);
+                } else {
+                    $href = $CFG->wwwroot . '/blocks/groups/upgradedatabase.php?id=' . $COURSE->id . '&groupid=' . $value->id;
+                    $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'));
+                    $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
+                    $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a) .
+                        html_writer::link($href , $ausrichtungdiv);
                 }
             }
         }
@@ -165,16 +170,23 @@ class block_groups extends block_base
         $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
         if ($access === false) {
             foreach ($allgroups as $valueall) {
-                $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
-                if (($valueall->courseid == $COURSE->id) & (empty($counter))) {
-                    $enrolledgroups[] = $valueall->name;
+                if (($valueall->courseid == $COURSE->id)) {
+                    $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
+                    if(empty($counter)) {
+                        $enrolledgroups[] = $valueall->name;
+                    }
                 }
             }
         }
         if ($access === true) {
             foreach ($allgroups as $valueall) {
                 if ($valueall->courseid == $COURSE->id) {
-                    $enrolledgroups[] = $valueall->name;
+                    $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
+                    if(empty($counter)) {
+                        $enrolledgroups[] = $valueall->name;
+                    } else {
+                        $enrolledgroups[] = html_writer::tag('div', $valueall->name, array('class' => "hiddengroups"));
+                    }
                 }
             }
         }

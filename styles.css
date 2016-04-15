@@ -56,3 +56,6 @@ input[type=checkbox] ~label{
 .block_groups .rightalign * {
     float: right;
 }
+.block_groups .hiddengroups {
+    opacity : 0.5;
+}

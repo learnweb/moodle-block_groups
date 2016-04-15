@@ -34,4 +34,3 @@ $string['groupings'] = 'Groupings ';
 $string['brackets'] = '   ({$a})';
 $string['modify'] = 'modify groups';
 $string['hidegroup'] = 'hide group';
-$string['hidden'] = '(hidden)';
