@@ -97,18 +97,17 @@ class block_groups extends block_base
         // Groups and Grouping Names are saved in arrays.
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
-                $a = count(groups_get_members($value->id));
+                $countmembers = count(groups_get_members($value->id));
+                $href = $CFG->wwwroot . '/blocks/groups/upgradedatabase.php?id=' . $COURSE->id . '&groupid=' . $value->id;
                 if (!empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
-                    $href = $CFG->wwwroot . '/blocks/groups/upgradedatabase.php?id=' . $COURSE->id . '&groupid=' . $value->id;
                     $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'));
                     $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
-                    $groupsarray[$g] = html_writer::tag('div', $value->name . get_string('brackets', 'block_groups', $a),
+                    $groupsarray[$g] = html_writer::tag('span', $value->name . get_string('brackets', 'block_groups', $countmembers),
                             array('class' => "hiddengroups")). html_writer::link($href , $ausrichtungdiv);
                 } else {
-                    $href = $CFG->wwwroot . '/blocks/groups/upgradedatabase.php?id=' . $COURSE->id . '&groupid=' . $value->id;
                     $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'));
                     $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
-                    $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a) .
+                    $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $countmembers) .
                         html_writer::link($href , $ausrichtungdiv);
                 }
             }
@@ -168,25 +167,13 @@ class block_groups extends block_base
         $allgroups = groups_get_my_groups();
         // Records the capability to manage courses.
         $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
-        if ($access === false) {
-            foreach ($allgroups as $valueall) {
-                if (($valueall->courseid == $COURSE->id)) {
-                    $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
-                    if(empty($counter)) {
-                        $enrolledgroups[] = $valueall->name;
-                    }
-                }
-            }
-        }
-        if ($access === true) {
-            foreach ($allgroups as $valueall) {
-                if ($valueall->courseid == $COURSE->id) {
-                    $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
-                    if(empty($counter)) {
-                        $enrolledgroups[] = $valueall->name;
-                    } else {
-                        $enrolledgroups[] = html_writer::tag('div', $valueall->name, array('class' => "hiddengroups"));
-                    }
+        foreach ($allgroups as $valueall) {
+            if (($valueall->courseid == $COURSE->id)) {
+                $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
+                if (empty($counter)) {
+                    $enrolledgroups[] = $valueall->name;
+                } else if ($access === true) {
+                    $enrolledgroups[] = html_writer::tag('div', $valueall->name, array('class' => "hiddengroups"));
                 }
             }
         }

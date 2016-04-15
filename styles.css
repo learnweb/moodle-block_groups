@@ -53,7 +53,7 @@ input[type=checkbox] ~label{
 .block_groups a{
     margin-left: 0;
 }
-.block_groups .rightalign * {
+.block_groups .rightalign {
     float: right;
 }
 .block_groups .hiddengroups {
