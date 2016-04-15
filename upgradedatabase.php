@@ -23,14 +23,23 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
         require_once('../../config.php');
-global $DB;
+global $DB, $CFG;
 $id               = optional_param('id', 0, PARAM_INT);
 $groupid          = optional_param('groupid', 0, PARAM_INT);
 echo $id;
 if (!empty($id)) {
     if (!empty($groupid)) {
-        $DB->insert_record('block_groups_hide', array('groupid'=> $groupid, 'visibility'=> 1));
-        '<meta http-equiv="refresh" content="5; URL=//localhost/moodle/course/view.php?id='. $id. '>';
-        exit();
+        $counter = $DB->get_records('block_groups_hide', array('groupid' => $groupid));
+        $insertionarray = array('groupid' => $groupid);
+        if (empty($counter)) {
+            $DB->insert_record('block_groups_hide', array('groupid' => $groupid, 'visibility' => 1));
+            redirect($CFG->wwwroot . '/course/view.php?id=' . $id);
+//        get_local_referer
+            exit();
+        }
+        if (!empty($counter)) {
+            $DB->delete_records('block_groups_hide', $insertionarray);
+            redirect($CFG->wwwroot . '/course/view.php?id=' . $id);
+        }
     }
 }

@@ -6,12 +6,11 @@
     <TABLES>
         <TABLE NAME="block_groups_hide" COMMENT="groups block">
             <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="groupid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-                <FIELD NAME="visibility" TYPE="int" LENGTH="1" SEQUENCE="false"/>
             </FIELDS>
             <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="groupid" TYPE="foreign" FIELDS="groupid"/>
+                <!--<KEY NAME="gradeid" TYPE="foreign" FIELDS="gradeid" REFTABLE="assign_grades" REFFIELDS="id"/>-->
             </KEYS>
         </TABLE>
     </TABLES>

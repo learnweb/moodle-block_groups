@@ -106,6 +106,10 @@ class block_groups extends block_base
                 $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
                 $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a) .
                     html_writer::link($href , $ausrichtungdiv);
+               /* echo '<pre>';
+                $counter = $DB->get_records('block_groups_hide', array('groupid' => $value->id));
+                echo print_r(empty($counter));
+                echo'</pre>';*/
             }
         }
         foreach ($allgroupings as $g => $value) {
