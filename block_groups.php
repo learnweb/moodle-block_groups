@@ -106,10 +106,6 @@ class block_groups extends block_base
                 $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
                 $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $a) .
                     html_writer::link($href , $ausrichtungdiv);
-               /* echo '<pre>';
-                $counter = $DB->get_records('block_groups_hide', array('groupid' => $value->id));
-                echo print_r(empty($counter));
-                echo'</pre>';*/
             }
         }
         foreach ($allgroupings as $g => $value) {
@@ -161,13 +157,14 @@ class block_groups extends block_base
 
     private function block_groups_get_content_groupmembers() {
         // Records the current course.
-        global $COURSE;
+        global $COURSE, $DB;
         // Initialises an array to save the enrolled groups.
         $enrolledgroups = array();
         // List renders all enrolled groups.
         $allgroups = groups_get_my_groups();
         foreach ($allgroups as $valueall) {
-            if ($valueall->courseid == $COURSE->id) {
+            $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
+            if (($valueall->courseid == $COURSE->id) & (empty($counter))) {
                 $enrolledgroups[] = $valueall->name;
             }
         }
