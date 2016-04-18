@@ -81,51 +81,38 @@ class block_groups extends block_base
      * @return string
      */
     private function block_groups_get_content_teaching() {
-        global  $COURSE, $CFG, $DB, $OUTPUT, $PAGE;
-        // Initialises an array of groups.
-        $groupsarray = array();
-        // Initialises an array of groupings.
-        $groupingsarray = array();
+        global  $COURSE, $PAGE, $DB, $CFG;
         // Array to save all groups.
         $allgroups = groups_get_all_groups($COURSE->id);
         // Array to save all groupings.
         $allgroupings = groups_get_all_groupings($COURSE->id);
         // String initialises an empty string.
         $groupstext = '';
-        // Integer to identify the current course.
-        $courseshown = $COURSE->id;
         // Calls the renderer
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
         // Groups and Grouping Names are saved in arrays.
+        $groupsarray = array();
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $countmembers = count(groups_get_members($value->id));
                 $href = $CFG->wwwroot . '/blocks/groups/upgradedatabase.php?id=' . $COURSE->id . '&groupid=' . $value->id;
                 if (empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
-                    $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'));
-                    $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
-                    $groupsarray[$g] = html_writer::tag('span', $value->name . get_string('brackets', 'block_groups',
-                                $countmembers), array('class' => "hiddengroups")). html_writer::link($href , $ausrichtungdiv);
+                    $groupsarray[] = $renderer->get_groupsarrayempty($value, $href, $countmembers);
                 } else {
-                    $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'));
-                    $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
-                    $groupsarray[$g] = $value->name . get_string('brackets', 'block_groups', $countmembers) .
-                        html_writer::link($href , $ausrichtungdiv);
+                    $groupsarray[] = $renderer->get_groupsarraynonempty($value, $href, $countmembers);
                 }
             }
         }
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
-                $a = count(groups_get_grouping_members($value->id));
-                $groupingsarray[$g] = $value->name  . get_string('brackets', 'block_groups', $a);
+                $groupingsarray[$g] = $renderer->get_groupingsarray($value);
             }
         }
-
+        // Groups and Grouping Names are saved in arrays.
         // Empty block or block with checkboxes.
         if (count($groupsarray) == 0) {
-            $groupstext = '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'.
-                get_string('modify', 'block_groups'). '</a></br>';
+            $groupstext .= $renderer->get_link();
             $groupstext .= get_string('nogroups', 'block_groups');
             return $groupstext;
         } else {
@@ -146,13 +133,15 @@ class block_groups extends block_base
 
     private function block_groups_get_content_groupmembers() {
         // Records the current course.
-        global $COURSE, $DB;
+        global $COURSE, $DB, $PAGE;
         // Initialises an array to save the enrolled groups.
         $enrolledgroups = array();
         // List renders all enrolled groups.
         $allgroups = groups_get_my_groups();
         // Records the capability to manage courses.
         $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
+        /* @var $renderer block_groups_renderer*/
+        $renderer = $PAGE->get_renderer('block_groups');
         foreach ($allgroups as $valueall) {
             if (($valueall->courseid == $COURSE->id)) {
                 $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
@@ -168,10 +157,7 @@ class block_groups extends block_base
             $groupstext = '';
             return $groupstext;
         }
-        // List all enrolled groups.
-        $membercontent = get_string('introduction', 'block_groups');
-        $membercontent .= html_writer::alist($enrolledgroups);
-        $groupstext = html_writer::tag('div', $membercontent, array('class' => 'memberlist'));
+        $groupstext = $renderer->get_membership_content($enrolledgroups);
         return $groupstext;
     }
     /**
