@@ -95,7 +95,8 @@ class block_groups extends block_base
         // Integer to identify the current course.
         $courseshown = $COURSE->id;
         // Calls the renderer
-        $renderer = $PAGE->get_renderer('blocks_groups');
+        /* @var $renderer block_groups_renderer*/
+        $renderer = $PAGE->get_renderer('block_groups');
         // Groups and Grouping Names are saved in arrays.
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
@@ -129,10 +130,10 @@ class block_groups extends block_base
             return $groupstext;
         } else {
             if (!(empty($groupingsarray))) {
-//                $groupstext .= $renderer->teaching_grouplist($groupingsarray);
+                $groupstext .= $renderer->teaching_groupingslist($groupingsarray);
             }
-//            $groupstext .= $renderer->teaching_grouplist($groupsarray);
-//            $groupstext .= $renderer->get_link();
+            $groupstext .= $renderer->teaching_groupslist($groupsarray);
+            $groupstext .= $renderer->get_link();
             return $groupstext;
         }
     }

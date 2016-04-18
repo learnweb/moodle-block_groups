@@ -23,15 +23,14 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
-class blocks_groups_renderer extends plugin_renderer_base
-{
+class block_groups_renderer extends plugin_renderer_base {
     /**
-     * Fill gap
+     * Lists grouping in html format
      *
      * @param $groupingarray
      * @return string
      */
-    public function teaching_groupingslist(array $groupingarray) {
+    public function teaching_groupingslist($groupingarray) {
         $groupingsarray = $groupingarray;
         $contentgrouping = html_writer::tag('label', get_string('groupings', 'block_groups'),
             array('for' => "blockgroupsandgroupingcheckboxgrouping"));
@@ -42,12 +41,12 @@ class blocks_groups_renderer extends plugin_renderer_base
             array('class' => "blockgroupsandgroupingcheckboxgrouping"));
     }
     /**
-     * Fill gap
+     * Lists groups in html format
      *
      * @param $grouparray
      * @return string
      */
-    public function teaching_grouplist(array $grouparray) {
+    public function teaching_groupslist($grouparray) {
         // Initializes the content of the checkbox.
         $contentcheckbox = '';
         // Initializes the Arrays.
@@ -66,7 +65,7 @@ class blocks_groups_renderer extends plugin_renderer_base
         return $html;
     }
     /**
-     * Fill gap
+     * Generates a link.
      *
      * @return string
      */
