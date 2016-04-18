@@ -49,7 +49,7 @@ class block_groups extends block_base
         // Record the current course.
         global $COURSE;
         // Records the capability to manage courses.
-        $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
+        $access = has_capability('moodle/course:managegroups', context_course::instance($COURSE->id));
 
         if ($this->content !== null) {
             return $this->content;
@@ -81,7 +81,7 @@ class block_groups extends block_base
      * @return string
      */
     private function block_groups_get_content_teaching() {
-        global  $COURSE, $CFG, $DB, $OUTPUT;
+        global  $COURSE, $CFG, $DB, $OUTPUT, $PAGE;
         // Initialises an array of groups.
         $groupsarray = array();
         // Initialises an array of groupings.
@@ -94,16 +94,18 @@ class block_groups extends block_base
         $groupstext = '';
         // Integer to identify the current course.
         $courseshown = $COURSE->id;
+        // Calls the renderer
+        $renderer = $PAGE->get_renderer('blocks_groups');
         // Groups and Grouping Names are saved in arrays.
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $countmembers = count(groups_get_members($value->id));
                 $href = $CFG->wwwroot . '/blocks/groups/upgradedatabase.php?id=' . $COURSE->id . '&groupid=' . $value->id;
-                if (!empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
+                if (empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
                     $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'));
                     $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
-                    $groupsarray[$g] = html_writer::tag('span', $value->name . get_string('brackets', 'block_groups', $countmembers),
-                            array('class' => "hiddengroups")). html_writer::link($href , $ausrichtungdiv);
+                    $groupsarray[$g] = html_writer::tag('span', $value->name . get_string('brackets', 'block_groups',
+                                $countmembers), array('class' => "hiddengroups")). html_writer::link($href , $ausrichtungdiv);
                 } else {
                     $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'));
                     $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
@@ -126,28 +128,11 @@ class block_groups extends block_base
             $groupstext .= get_string('nogroups', 'block_groups');
             return $groupstext;
         } else {
-            $contentcheckbox = '';
             if (!(empty($groupingsarray))) {
-                $contentgrouping = html_writer::tag('label', get_string('groupings', 'block_groups'),
-                        array('for' => "blockgroupsandgroupingcheckboxgrouping"));
-                $contentgrouping .= html_writer::alist($groupingsarray);
-                $groupingcheckbox = html_writer::tag('input', $contentgrouping, array('type' => "checkbox",
-                        'value' => "1", 'id' => "blockgroupsandgroupingcheckboxgrouping", 'name' => "checkboxgrouping"));
-                $contentcheckbox .= html_writer::tag('div', $groupingcheckbox,
-                        array('class' => "blockgroupsandgroupingcheckboxgrouping"));
+//                $groupstext .= $renderer->teaching_grouplist($groupingsarray);
             }
-
-            $contentgroups = html_writer::tag('label', get_string('groups', 'block_groups'),
-                    array('for' => "blockgroupsandgroupingcheckboxgroup"));
-            $contentgroups .= html_writer::alist($groupsarray);
-            $groupscheckbox = html_writer::tag('input', $contentgroups, array('type' => "checkbox", 'value' => "1",
-                    'id' => "blockgroupsandgroupingcheckboxgroup", 'name' => "checkboxgroup"));
-            $contentcheckbox .= html_writer::tag('div', $groupscheckbox,
-                    array('class' => "blockgroupsandgroupingcheckboxgroup"));
-            $groupstext .= html_writer::tag('div', $contentcheckbox,
-                    array('class' => 'blockgroupandgroupingcheckbox'));
-            $groupstext .= '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'.
-                    get_string('modify', 'block_groups'). '</a></br>';
+//            $groupstext .= $renderer->teaching_grouplist($groupsarray);
+//            $groupstext .= $renderer->get_link();
             return $groupstext;
         }
     }
@@ -170,7 +155,7 @@ class block_groups extends block_base
         foreach ($allgroups as $valueall) {
             if (($valueall->courseid == $COURSE->id)) {
                 $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
-                if (empty($counter)) {
+                if (!empty($counter)) {
                     $enrolledgroups[] = $valueall->name;
                 } else if ($access === true) {
                     $enrolledgroups[] = html_writer::tag('div', $valueall->name, array('class' => "hiddengroups"));

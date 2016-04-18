@@ -22,7 +22,7 @@
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-        require_once('../../config.php');
+require_once('../../config.php');
 global $DB, $CFG;
 $id               = optional_param('id', 0, PARAM_INT);
 $groupid          = optional_param('groupid', 0, PARAM_INT);
