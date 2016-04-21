@@ -32,11 +32,11 @@ class block_groups_renderer extends plugin_renderer_base {
      */
     public function teaching_groupingslist($groupingsarray) {
         $empty = '';
-        $contentgrouping = html_writer::tag('label', get_string('groupings', 'block_groups'),
+        $contentgrouping = html_writer::tag('input', $empty, array('type' => "checkbox",
+            'value' => "1", 'class' => "blockgroupsandgroupingcheckbox", 'id' => 'checkboxgrouping'));
+        $contentgrouping .= html_writer::tag('label', get_string('groupings', 'block_groups'),
             array('for' => "checkboxgrouping"));
         $contentgrouping .= html_writer::alist($groupingsarray);
-        $contentgrouping .= html_writer::tag('input', $empty, array('type' => "checkbox",
-            'value' => "1", 'class' => "blockgroupsandgroupingcheckbox", 'name' => 'checkboxgrouping'));
         return html_writer::tag('div', $contentgrouping, array('class' => "wrapperblockgroupsandgroupingcheckbox"));
     }
     /**
@@ -47,12 +47,12 @@ class block_groups_renderer extends plugin_renderer_base {
      */
     public function teaching_groupslist($groupsarray) {
         $empty = '';
-        $contentgroups = html_writer::tag('label', get_string('groups', 'block_groups'),
+        $contentgroups = html_writer::tag('input', $empty, array('type' => "checkbox", 'value' => "1",
+            'class' => "blockgroupsandgroupingcheckbox", 'id' => 'checkboxgroup'));
+        $contentgroups .= html_writer::tag('label', get_string('groups', 'block_groups'),
             array('for' => "checkboxgroup"));
         $contentgroups .= html_writer::alist($groupsarray);
-        $contentgroups = html_writer::tag('input', $empty, array('type' => "checkbox", 'value' => "1",
-            'class' => "blockgroupsandgroupingcheckbox", 'name' => 'checkboxgroup'));
-        return html_writer::tag('div', $contentgroups, array('class' => 'wrapperblockgroupandgroupingcheckbox'));
+        return html_writer::tag('div', $contentgroups, array('class' => 'wrapperblockgroupsandgroupingcheckbox'));
     }
     /**
      * Generates a link to refer to the groupsmodify page.
