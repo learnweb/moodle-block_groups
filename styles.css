@@ -10,6 +10,31 @@ input[type=checkbox] ~label{
 .block_groups div.memberlist {
     list-style: url('[[pix:i/navigationitem]]');
 }
+.block_groups .wrapperblockgroupsandgroupingcheckbox {
+
+}
+.block_groups .wrapperblockgroupsandgroupingcheckbox ~ label{
+    padding-left: 0;
+}
+.block_groups .blockgroupsandgroupingcheckbox ~ label::before {
+    content:url('[[pix:t/collapsed]]');
+}
+.block_groups .wrapperblockgroupsandgroupingcheckbox  * ul{
+    display: none;
+    visibility: hidden;
+}
+.block_groups .wrapperblockgroupsandgroupingcheckbox:checked ~ label::before {
+    content:url('[[pix:t/expanded]]');
+}
+.block_groups .wrapperblockgroupsandgroupingcheckbox:checked ~ ul{
+    display : block;
+    list-style: url('[[pix:i/navigationitem]]');
+    padding-left : 11px;
+}
+.block_groups .blockgroupsandgroupingcheckbox:checked ~ label ::before{
+    content:url('[[pix:t/expanded]]');
+
+}
 .block_groups #blockgroupsandgroupingcheckboxgrouping ~ label::before {
     content:url('[[pix:t/collapsed]]');
 }
@@ -19,17 +44,13 @@ input[type=checkbox] ~label{
 .block_groups #blockgroupsandgroupingcheckboxgrouping  ~ul{
     display: none;
 }
-.block_groups #blockgroupsandgroupingcheckboxgrouping:checked{
-    display: none;
-    list-style: url('[[pix:i/navigationitem]]');
-}
 .block_groups #blockgroupsandgroupingcheckboxgrouping:checked ~ label::before {
     content:url('[[pix:t/expanded]]');
 }
 .block_groups #blockgroupsandgroupingcheckboxgrouping:checked ~ ul{
     display : block;
     list-style: url('[[pix:i/navigationitem]]');
-
+    padding-left : 11px;
 }
 .block_groups #blockgroupsandgroupingcheckboxgroup ~ label{
     padding-left: 0;
@@ -40,13 +61,12 @@ input[type=checkbox] ~label{
 
 .block_groups #blockgroupsandgroupingcheckboxgroup ~ ul {
     display: none;
-
 }
 .block_groups #blockgroupsandgroupingcheckboxgroup:checked ~ ul{
     display : block;
     list-style: url('[[pix:i/navigationitem]]');
+    padding-left : 11px;
 }
-
 .block_groups #blockgroupsandgroupingcheckboxgroup:checked ~ label::before {
     content:url('[[pix:t/expanded]]');
 }

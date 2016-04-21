@@ -31,13 +31,13 @@ class block_groups_renderer extends plugin_renderer_base {
      * @return string
      */
     public function teaching_groupingslist($groupingsarray) {
+        $empty = '';
         $contentgrouping = html_writer::tag('label', get_string('groupings', 'block_groups'),
-            array('for' => "blockgroupsandgroupingcheckboxgrouping"));
+            array('for' => "checkboxgrouping"));
         $contentgrouping .= html_writer::alist($groupingsarray);
-        $groupingcheckbox = html_writer::tag('input', $contentgrouping, array('type' => "checkbox",
-            'value' => "1", 'id' => "blockgroupsandgroupingcheckboxgrouping", 'name' => "checkboxgrouping"));
-        return html_writer::tag('div', $groupingcheckbox,
-            array('class' => "blockgroupsandgroupingcheckboxgrouping"));
+        $contentgrouping .= html_writer::tag('input', $empty, array('type' => "checkbox",
+            'value' => "1", 'class' => "blockgroupsandgroupingcheckbox", 'name' => 'checkboxgrouping'));
+        return html_writer::tag('div', $contentgrouping, array('class' => "wrapperblockgroupsandgroupingcheckbox"));
     }
     /**
      * Lists groups in html format
@@ -46,22 +46,16 @@ class block_groups_renderer extends plugin_renderer_base {
      * @return string
      */
     public function teaching_groupslist($groupsarray) {
-        // Initializes the content of the checkbox.
-        $contentcheckbox = '';
-        // Initializes the output.
-        $html = '';
+        $empty = '';
         $contentgroups = html_writer::tag('label', get_string('groups', 'block_groups'),
-            array('for' => "blockgroupsandgroupingcheckboxgroup"));
+            array('for' => "checkboxgroup"));
         $contentgroups .= html_writer::alist($groupsarray);
-        $groupscheckbox = html_writer::tag('input', $contentgroups, array('type' => "checkbox", 'value' => "1",
-            'id' => "blockgroupsandgroupingcheckboxgroup", 'name' => "checkboxgroup"));
-        $contentcheckbox .= html_writer::tag('div', $groupscheckbox,
-            array('class' => "blockgroupsandgroupingcheckboxgroup"));
-        return html_writer::tag('div', $contentcheckbox,
-            array('class' => 'blockgroupandgroupingcheckbox'));
+        $contentgroups = html_writer::tag('input', $empty, array('type' => "checkbox", 'value' => "1",
+            'class' => "blockgroupsandgroupingcheckbox", 'name' => 'checkboxgroup'));
+        return html_writer::tag('div', $contentgroups, array('class' => 'wrapperblockgroupandgroupingcheckbox'));
     }
     /**
-     * Generates a link.
+     * Generates a link to refer to the groupsmodify page.
      *
      * @return string
      */
@@ -72,6 +66,11 @@ class block_groups_renderer extends plugin_renderer_base {
         return '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'.
             get_string('modify', 'block_groups'). '</a></br>';
     }
+    /**
+     * Generates components for groupsarrayitems that are not hidden
+     *
+     * @return string
+     */
     public function get_groupsarrayempty($value, $href, $countmembers) {
         global $OUTPUT;
         $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'));
@@ -79,12 +78,16 @@ class block_groups_renderer extends plugin_renderer_base {
         return html_writer::tag('span', $value->name . get_string('brackets', 'block_groups',
                     $countmembers), array('class' => "hiddengroups")) . html_writer::link($href, $ausrichtungdiv);
     }
+    /**
+     * Generates components for groupsarrayitems that are hidden
+     *
+     * @return string
+     */
     public function get_groupsarraynonempty($value, $href, $countmembers) {
         global $OUTPUT;
         $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'));
         $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
-        return $value->name . get_string('brackets', 'block_groups', $countmembers) .
-            html_writer::link($href , $ausrichtungdiv);
+        return $value->name . get_string('brackets', 'block_groups', $countmembers) . html_writer::link($href , $ausrichtungdiv);
     }
     public function get_groupingsarray($value) {
         $a = count(groups_get_grouping_members($value->id));
@@ -94,5 +97,8 @@ class block_groups_renderer extends plugin_renderer_base {
         $membercontent = get_string('introduction', 'block_groups');
         $membercontent .= html_writer::alist($enrolledgroups);
         return html_writer::tag('div', $membercontent, array('class' => 'memberlist'));
+    }
+    public function get_tag_hiddengroups($name) {
+        return html_writer::tag('div', $name, array('class' => "hiddengroups"));
     }
 }

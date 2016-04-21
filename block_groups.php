@@ -148,7 +148,7 @@ class block_groups extends block_base
                 if (!empty($counter)) {
                     $enrolledgroups[] = $valueall->name;
                 } else if ($access === true) {
-                    $enrolledgroups[] = html_writer::tag('div', $valueall->name, array('class' => "hiddengroups"));
+                    $enrolledgroups[] = $renderer->get_tag_hiddengroups($valueall->name);
                 }
             }
         }
