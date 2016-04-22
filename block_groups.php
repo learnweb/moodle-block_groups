@@ -96,7 +96,7 @@ class block_groups extends block_base
         foreach ($allgroups as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $countmembers = count(groups_get_members($value->id));
-                $href = $CFG->wwwroot . '/blocks/groups/upgradedatabase.php?id=' . $COURSE->id . '&groupid=' . $value->id;
+                $href = $CFG->wwwroot . '/blocks/groups/upgradedatabase.php?courseid=' . $COURSE->id . '&groupid=' . $value->id;
                 if (empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
                     $groupsarray[] = $renderer->get_groupsarrayempty($value, $href, $countmembers);
                 } else {
