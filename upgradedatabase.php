@@ -29,26 +29,29 @@ $courseid         = required_param('courseid', PARAM_INT);
 $groupid          = required_param('groupid', PARAM_INT);
 
 $PAGE->set_url('/blocks/groups/upgradedatabase.php');
-$PAGE->set_context(context_course::instance($courseid));
-require_capability('moodle/course:managegroups', context_course::instance($courseid));
-$existence = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
-$counter = $DB->get_records('block_groups_hide', array('id' => $groupid, ));
-if (!empty($existence)) {
-    if (empty($counter)) {
-        $DB->import_record('block_groups_hide', array('id' => $groupid));
-        redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
-        exit();
-    }
-    if (!empty($counter)) {
-        $DB->delete_records('block_groups_hide', array('id' => $groupid));
-        redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
-        exit();
+// In Case the given id of the course is not available in the database exit message is shown.
+if(!empty($DB->get_record('course', array('id' => $courseid)))){
+    $PAGE->set_context(context_course::instance($courseid));
+    require_capability('moodle/course:managegroups', context_course::instance($courseid));
+    $groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
+    $groupvisible = $DB->get_records('block_groups_hide', array('id' => $groupid, ));
+    if (!empty($groupsuitable)) {
+        if (empty($groupvisible)) {
+            $DB->import_record('block_groups_hide', array('id' => $groupid));
+            redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
+            exit();
+        }
+        if (!empty($groupvisible)) {
+            $DB->delete_records('block_groups_hide', array('id' => $groupid));
+            redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
+            exit();
+        } else {
+            notice(get_string('nochangeindatabasepossible', 'block_groups'), $CFG->wwwroot . '/course/view.php?id=' . $courseid);
+            exit();
+        }
     } else {
         notice(get_string('nochangeindatabasepossible', 'block_groups'), $CFG->wwwroot . '/course/view.php?id=' . $courseid);
         exit();
     }
-} else {
-    notice(get_string('nochangeindatabasepossible', 'block_groups'), $CFG->wwwroot . '/course/view.php?id=' . $courseid);
-    exit();
 }
-exit();
+exit(get_string('nocourse', 'block_groups'));

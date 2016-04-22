@@ -34,7 +34,6 @@
  */
 class block_groups extends block_base
 {
-
     /**Initialises the block*/
     public function init() {
         $this->title = get_string('pluginname', 'block_groups');
