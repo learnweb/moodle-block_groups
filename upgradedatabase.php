@@ -22,7 +22,6 @@
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-    // Message hinzufügen überprüfen ob gruppe zu kurs gehört.
 require_once('../../config.php');
 require_login();
 
@@ -30,28 +29,26 @@ $courseid         = required_param('courseid', PARAM_INT);
 $groupid          = required_param('groupid', PARAM_INT);
 
 $PAGE->set_url('/blocks/groups/upgradedatabase.php');
-echo $courseid;
+$PAGE->set_context(context_course::instance($courseid));
 require_capability('moodle/course:managegroups', context_course::instance($courseid));
-
-if (!empty($courseid)) {
-    if (!empty($groupid)) {
-        $counter = $DB->get_records('block_groups_hide', array('id' => $groupid));
-        if (empty($counter)) {
-            $DB->import_record('block_groups_hide', array('id' => $groupid));
-            redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
-            exit();
-        }
-        if (!empty($counter)) {
-            $DB->delete_records('block_groups_hide', array('id' => $groupid));
-            redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
-            exit();
-        } else {
-            $message = get_string('nochangeindatabase', 'block_groups');
-            notice($message, $CFG->wwwroot . '/my');
-            exit();
-        }
+$existence = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
+$counter = $DB->get_records('block_groups_hide', array('id' => $groupid, ));
+if (!empty($existence)) {
+    if (empty($counter)) {
+        $DB->import_record('block_groups_hide', array('id' => $groupid));
+        redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
+        exit();
     }
-    notice(get_string('novalidgroup', 'block_groups'), $CFG->wwwroot . '/my');
+    if (!empty($counter)) {
+        $DB->delete_records('block_groups_hide', array('id' => $groupid));
+        redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
+        exit();
+    } else {
+        notice(get_string('nochangeindatabasepossible', 'block_groups'), $CFG->wwwroot . '/course/view.php?id=' . $courseid);
+        exit();
+    }
+} else {
+    notice(get_string('nochangeindatabasepossible', 'block_groups'), $CFG->wwwroot . '/course/view.php?id=' . $courseid);
+    exit();
 }
-notice(get_string('notenrolled', 'block_groups'));
 exit();

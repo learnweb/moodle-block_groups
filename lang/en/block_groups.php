@@ -34,7 +34,5 @@ $string['groupings'] = 'Groupings ';
 $string['brackets'] = '   ({$a})';
 $string['modify'] = 'modify groups';
 $string['hidegroup'] = 'hide group';
-$string['nochangeindatabase'] = 'The required change was not possible';
-$string['noaccess'] = 'You are not allowed to execute these changes.';
-$string['notenrolled'] = 'Something went wrong, login again.';
-$string['novalidgroup'] = 'The chosen group is not valid';
+$string['nochangeindatabasepossible'] = 'The required change was not possible';
+
