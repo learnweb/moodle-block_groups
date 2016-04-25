@@ -87,7 +87,8 @@ class block_groups_renderer extends plugin_renderer_base {
         global $OUTPUT;
         $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'));
         $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
-        return $value->name . get_string('brackets', 'block_groups', $countmembers) . html_writer::link($href , $ausrichtungdiv);
+        return $value->name . get_string('brackets', 'block_groups', $countmembers) . html_writer::link($href , $ausrichtungdiv,
+            array('onclick' => $this->call_javascript()));
     }
     public function get_groupingsarray($value) {
         $a = count(groups_get_grouping_members($value->id));
@@ -100,5 +101,16 @@ class block_groups_renderer extends plugin_renderer_base {
     }
     public function get_tag_hiddengroups($name) {
         return html_writer::tag('div', $name, array('class' => "hiddengroups"));
+    }
+    public function call_javascript_is_allowed_from_ajax() {
+        return true;
+    }
+    public function call_javascript() {
+        $javascript_text = 'var inhalt = document.getElementsByTagName("li")';
+        $extracontent = html_writer::tag('script', $javascript_text, array('type' => 'text/javascript'));
+        /*<script type="text/javascript">
+        var inhalt = document.getElementsByTagName('p');
+        console.log(inhalt);
+        </script>*/
     }
 }
