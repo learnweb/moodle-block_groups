@@ -30,7 +30,7 @@ $groupid          = required_param('groupid', PARAM_INT);
 
 $PAGE->set_url('/blocks/groups/upgradedatabase.php');
 // In Case the given id of the course is not available in the database exit message is shown.
-if(!empty($DB->get_record('course', array('id' => $courseid)))){
+if (!empty($DB->get_record('course', array('id' => $courseid)))) {
     $PAGE->set_context(context_course::instance($courseid));
     require_capability('moodle/course:managegroups', context_course::instance($courseid));
     $groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
