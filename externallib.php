@@ -24,7 +24,7 @@
  */
 require_once("$CFG->libdir/externallib.php");
 
-class local_groups_external extends external_api{
+class block_groups_visibility_change extends external_api{
 
     public static function create_output_parameters() {
         return new external_function_parameters(
@@ -34,24 +34,19 @@ class local_groups_external extends external_api{
                         array(
                             'id' => new external_value(PARAM_INT, 'id of group'),
                             'courseid' => new external_value(PARAM_INT, 'id of course'),
-                            'name' => new external_value(PARAM_TEXT, 'multilang compatible name, course unique'),
-                            'visibility' => new external_value(PARAM_INT, 'Visibility of Course'),
-//                            'enrolmentkey' => new external_value(PARAM_RAW, 'group enrol secret phrase'),
                         )
                     )
                 )
             )
         );
     }
-    public static function create_output_return() {
+    public static function create_output_returns() {
         return new external_multiple_structure(
             new external_single_structure(
                 array(
                     'id' => new external_value(PARAM_INT, 'id of group'),
                     'courseid' => new external_value(PARAM_INT, 'id of course'),
-                    'name' => new external_value(PARAM_TEXT, 'multilang compatible name, course unique'),
                     'visibility' => new external_value(PARAM_INT, 'Visibility of Course'),
-//                    'enrolmentkey' => new external_value(PARAM_RAW, 'group enrol secret phrase'),
                 )
             )
         );

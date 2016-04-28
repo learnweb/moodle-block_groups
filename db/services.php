@@ -24,15 +24,15 @@
  */
 $functions = array(
     'block_groups_create_output' => array(
-        'classname' => 'services_for_groups',
-        'methodname' => 'call_javascript', // Implement this function into the above class.
+        'classname' => 'block_groups_visibility_change',
+        'methodname' => 'create_output', // Implement this function into the above class.
         'classpath'   => 'blocks/groups/externallib.php',
         'description' => 'Service to provide group with information',
         'type' => 'write', // The value is 'write' if your function does any database change, otherwise it is 'read'.
         'capabilities' => 'moodle/course:managegroups',
         'ajax' => true,
     )
-);
+);/*
 $services = array(
     'create_output' => array(
         'functions' => array ('block_groups_create_output'), // Web service functions of this service.
@@ -42,4 +42,4 @@ $services = array(
         // into the administration.
         'enabled' => 1,                     // If enabled, the service can be reachable on a default installation.
     )
-);
+);*/

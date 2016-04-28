@@ -106,10 +106,7 @@ class block_groups_renderer extends plugin_renderer_base {
         return true;
     }
     public function call_javascript($groupvalue) {
-        require(['core/ajax'], function(ajax) {
-            $newinput = ajax.call([
-                { methodname: 'block_groups_create_output', args: { component: '$groups' } }
-             ]);
-            }
+
+    // Insert js file that executes a function to change div + group on request.
     }
 }
