@@ -28,7 +28,7 @@ require_login();
 $courseid         = required_param('courseid', PARAM_INT);
 $groupid          = required_param('groupid', PARAM_INT);
 
-$PAGE->set_url('/blocks/groups/upgradedatabase.php');
+$PAGE->set_url('/blocks/groups/changevisibility.php');
 // In Case the given id of the course is not available in the database exit message is shown.
 if (!empty($DB->get_record('course', array('id' => $courseid)))) {
     $PAGE->set_context(context_course::instance($courseid));
