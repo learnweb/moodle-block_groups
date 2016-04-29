@@ -52,7 +52,7 @@ class block_groups_visibility_change extends external_api{
         );
     }
     public static function create_output($groups) {
-        global $CFG, $DB;
+        /*global $CFG, $DB;
         require_once("$CFG->dirroot/group/lib.php");
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
         $transaction = $DB->start_delegated_transaction();
@@ -70,9 +70,7 @@ class block_groups_visibility_change extends external_api{
             }
         }
         $transaction->allow_commit();
-        return $groups;
+        return $groups;*/
+        return 'Some stupid testing script';
     }
-/*    public function create_output_is_allowed_from_ajax() {
-        return true;
-    }*/
 }
