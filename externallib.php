@@ -29,48 +29,40 @@ class block_groups_visibility_change extends external_api{
     public static function create_output_parameters() {
         return new external_function_parameters(
             array(
-                'groups' => new external_multiple_structure(
-                    new external_single_structure(
+                'groups' => new external_single_structure(
                         array(
                             'id' => new external_value(PARAM_INT, 'id of group'),
                             'courseid' => new external_value(PARAM_INT, 'id of course'),
                         )
                     )
                 )
-            )
         );
     }
     public static function create_output_returns() {
-        return new external_multiple_structure(
-            new external_single_structure(
-                array(
-                    'id' => new external_value(PARAM_INT, 'id of group'),
-                    'courseid' => new external_value(PARAM_INT, 'id of course'),
-                    'visibility' => new external_value(PARAM_INT, 'Visibility of Course'),
-                )
+        return new external_single_structure(
+            array(
+                'id' => new external_value(PARAM_INT, 'id of group'),
+                'courseid' => new external_value(PARAM_INT, 'id of course'),
+                'visibility' => new external_value(PARAM_INT, 'Visibility of Course'),
             )
         );
     }
     public static function create_output($groups) {
-        /*global $CFG, $DB;
-        require_once("$CFG->dirroot/group/lib.php");
+        global $DB;
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
         $transaction = $DB->start_delegated_transaction();
         // If an exception is thrown in the below code, all DB queries in this code will be rollback.
-        foreach ($params['groups'] as $group) {
-            $groupsuitable = $DB->get_record('groups', array('id' => $group->id, 'courseid' => $group->courseid));
-            $groupvisible = $DB->get_records('block_groups_hide', array('id' => $group->id, ));
-            if (!empty($groupsuitable)) {
-                if (empty($groupvisible)) {
-                    $DB->import_record('block_groups_hide', array('id' => $group->id));
-                }
-                if (!empty($groupvisible)) {
-                    $DB->delete_records('block_groups_hide', array('id' => $group->id));
-                }
+        $groupsuitable = $DB->get_record('groups', array('id' => $params['groups']['id'],
+            'courseid' => $params['groups']['courseid']));
+        $groupvisible = $DB->get_records('block_groups_hide', array('id' => $groups['id'], ));
+        if (!empty($groupsuitable)) {
+            if (empty($groupvisible)) {
+                $DB->import_record('block_groups_hide', array('id' => $groups['id']));
+            }
+            if (!empty($groupvisible)) {
+                $DB->delete_records('block_groups_hide', array('id' => $groups['id']));
             }
         }
         $transaction->allow_commit();
-        return $groups;*/
-        return 'Some stupid testing script';
     }
 }

@@ -90,7 +90,7 @@ class block_groups extends block_base
         // Calls the renderer
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
-        //
+        // Calls Javascript if availeable.
         $PAGE->requires->js_call_amd('block_groups/blocks_groups_visibility', 'initialise', array($COURSE->id));
         // Groups and Grouping Names are saved in arrays.
         $groupsarray = array();

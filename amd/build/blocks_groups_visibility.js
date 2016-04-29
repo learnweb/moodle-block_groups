@@ -29,12 +29,14 @@ define(['jquery','core/ajax'], function($, ajax) {
             $('.block_groups_toggle').on('click', this.changevisibility);
         },
         changevisibility: function (event) {
-            console.log('hallo');
+            console.log($(this).data('groupid'));
             var promises = ajax.call([
-                { methodname: 'block_groups_create_output', args: {groups:[{id: 1, courseid: 5}]}}
+                { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
+                    courseid: $(this).data('courseid')}}}
             ]);
             promises[0].done(function(response) {
-                    console.log('ausgabe des webservice' + response);
+                    console.log('ausgabe des webservice');
+                    //$(this).innerHTML
                 }).fail(function(ex) {
                 console.log('fail' , ex);
                 });
