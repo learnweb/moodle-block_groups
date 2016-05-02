@@ -34,6 +34,7 @@ var CSS = {
     },
 // The CSS selectors we use.
     SELECTOR = {
+        ACTIVITYLI: 'li.activity',
         ACTIONAREA: '.actions',
         ACTIVITYICON : 'img.activityicon',
         CONTENTAFTERLINK : 'div.contentafterlink',
@@ -46,7 +47,7 @@ define(['jquery','core/ajax'], function($, ajax) {
         initialise: function(courseid){
             $('.block_groups_toggle').on('click', this.changevisibility);
         },
-        changevisibility: function (event) {
+        changevisibility: function (ev) {
             var node = ev.target;
             var promises = ajax.call([
                 { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
@@ -54,12 +55,16 @@ define(['jquery','core/ajax'], function($, ajax) {
             ]);
             promises[0].done(function(response) {
                 var action = node.getData('action');
+                console.log(action);
+                    //activity = node.ancestor(SELECTOR.ACTIVITYLI);
                 switch(action) {
                 case
-                    'hide': this.hidestatement(ev, node, action);
+                    'hide':
+                    this.hidegroup(ev, node, action);
                         break;
                 case
-                    'show': this.showstatement();
+                    'show':
+                    //this.showstatement();
                         break;
                 default:
                     // Nothing to do here!
@@ -70,24 +75,38 @@ define(['jquery','core/ajax'], function($, ajax) {
                 });
             return false;
         },
-        hidestatement: function(ev, node,  action){
+        /**
+         * Sets the frame for hiding groups
+         * @param ev
+         * @param activity
+         * @param action
+         */
+        hidegroup: function(ev, activity, action){
             var element = activity;
-            var value = this.handle_resource_dim(button, activity, action);
+            var value = this.handle_resource_dim(ev,activity, action);
 
-            // Send the request
-            var data = {
+            // Send the request, Spinner needs to be added
+            /*var data = {
                 'class': 'resource',
                 'field': 'visible',
                 'value': value,
                 'id': Y.Moodle.core_course.util.cm.getId(element)
             };
             var spinner = this.add_spinner(element);
-            this.send_request(data, spinner);
+            this.send_request(data, spinner);*/
 
             return this;
         },
-        showstatement: function(){
-
+        /**
+         * Dims the titel of a group
+         * @param activity
+         * @param action
+         */
+        handle_resource_dim: function (ev, activity, action){
+            var node = ev.target;
+            var nextaction = (action === 'hide') ? 'show': 'hide';
+            // Update button info.
+            node.setAttrs({'src': M.util.image_url('t/' + nextaction)});
         },
         add_spinner: function(activity) {
             var actionarea = activity.one(SELECTOR.ACTIONAREA);
