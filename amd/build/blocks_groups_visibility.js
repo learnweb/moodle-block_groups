@@ -23,24 +23,78 @@
 /**
  * @module block_overview/helloworld
  */
+var CSS = {
+        ACTIVITYINSTANCE : 'activityinstance',
+        AVAILABILITYINFODIV : 'div.availabilityinfo',
+        DIMCLASS : 'dimmed',
+        DIMMEDTEXT : 'dimmed_text',
+        HIDE : 'hide',
+        SECTIONHIDDENCLASS : 'hidden',
+        SHOW : 'editing_show',
+    },
+// The CSS selectors we use.
+    SELECTOR = {
+        ACTIONAREA: '.actions',
+        ACTIVITYICON : 'img.activityicon',
+        CONTENTAFTERLINK : 'div.contentafterlink',
+        HIDE : 'a.editing_hide',
+        SHOW : 'a.'+CSS.SHOW,
+        SHOWHIDE : 'a.editing_showhide'
+    };
 define(['jquery','core/ajax'], function($, ajax) {
     return {
         initialise: function(courseid){
             $('.block_groups_toggle').on('click', this.changevisibility);
         },
         changevisibility: function (event) {
-            console.log($(this).data('groupid'));
+            var node = ev.target;
             var promises = ajax.call([
                 { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
                     courseid: $(this).data('courseid')}}}
             ]);
             promises[0].done(function(response) {
-                    console.log('ausgabe des webservice');
-                    //$(this).innerHTML
+                var action = node.getData('action');
+                switch(action) {
+                case
+                    'hide': this.hidestatement(ev, node, action);
+                        break;
+                case
+                    'show': this.showstatement();
+                        break;
+                default:
+                    // Nothing to do here!
+                    break;
+                }
                 }).fail(function(ex) {
                 console.log('fail' , ex);
                 });
             return false;
+        },
+        hidestatement: function(ev, node,  action){
+            var element = activity;
+            var value = this.handle_resource_dim(button, activity, action);
+
+            // Send the request
+            var data = {
+                'class': 'resource',
+                'field': 'visible',
+                'value': value,
+                'id': Y.Moodle.core_course.util.cm.getId(element)
+            };
+            var spinner = this.add_spinner(element);
+            this.send_request(data, spinner);
+
+            return this;
+        },
+        showstatement: function(){
+
+        },
+        add_spinner: function(activity) {
+            var actionarea = activity.one(SELECTOR.ACTIONAREA);
+            if (actionarea) {
+                return M.util.add_spinner(Y, actionarea);
+            }
+            return null;
         }
     }
 });
