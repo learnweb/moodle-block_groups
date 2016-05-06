@@ -43,77 +43,75 @@ var CSS = {
         SHOWHIDE : 'a.editing_showhide'
     };
 define(['jquery','core/ajax'], function($, ajax) {
-    return {
-        initialise: function(courseid){
-            $('.block_groups_toggle').on('click', this.changevisibility);
-        },
-        changevisibility: function (ev) {
-            var node = ev.target;
-            var promises = ajax.call([
-                { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
-                    courseid: $(this).data('courseid')}}}
-            ]);
-            promises[0].done(function(response) {
-                var action = node.getData('action');
-                console.log(action);
-                    //activity = node.ancestor(SELECTOR.ACTIVITYLI);
-                switch(action) {
+
+    var changevisibility = function (ev) {
+        var node = ev.target;
+        var promises = ajax.call([
+            { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
+                courseid: $(this).data('courseid')}}}
+        ]);
+        //works only with ancestor
+        var action = $(this).data('action');
+        //completelink = node.getAncestorByClassName('block_groups_toggle');
+
+        promises[0].done(function(response) {
+            switch(action) {
                 case
-                    'hide':
-                    this.hidegroup(ev, node, action);
-                        break;
+                'hide':
+                    hidegroup(ev, node, action);
+                    break;
                 case
-                    'show':
-                    //this.showstatement();
-                        break;
+                'show':
+                    hidegroup(ev, node, action);
+                    break;
                 default:
                     // Nothing to do here!
                     break;
-                }
-                }).fail(function(ex) {
-                console.log('fail' , ex);
-                });
-            return false;
-        },
-        /**
-         * Sets the frame for hiding groups
-         * @param ev
-         * @param activity
-         * @param action
-         */
-        hidegroup: function(ev, activity, action){
-            var element = activity;
-            var value = this.handle_resource_dim(ev,activity, action);
-
-            // Send the request, Spinner needs to be added
-            /*var data = {
-                'class': 'resource',
-                'field': 'visible',
-                'value': value,
-                'id': Y.Moodle.core_course.util.cm.getId(element)
-            };
-            var spinner = this.add_spinner(element);
-            this.send_request(data, spinner);*/
-
-            return this;
-        },
-        /**
-         * Dims the titel of a group
-         * @param activity
-         * @param action
-         */
-        handle_resource_dim: function (ev, activity, action){
-            var node = ev.target;
-            var nextaction = (action === 'hide') ? 'show': 'hide';
-            // Update button info.
-            node.setAttrs({'src': M.util.image_url('t/' + nextaction)});
-        },
-        add_spinner: function(activity) {
-            var actionarea = activity.one(SELECTOR.ACTIONAREA);
-            if (actionarea) {
-                return M.util.add_spinner(Y, actionarea);
             }
-            return null;
+        }).fail(function(ex) {
+            console.log('fail' , ex);
+        });
+        return false;
+    };
+    /**
+     * Sets the frame for hiding groups
+     * @param ev
+     * @param node
+     * @param action
+     */
+    function hidegroup (ev, node, action) {
+        console.log('whats wrong with you?');
+        var value = handle_resource_dim(ev, action);
+
+        /*
+         var spinner = add_spinner(element);
+         send_request(data, spinner);*/
+    };
+    /**
+     * Dims the titel of a group
+     * @param activity
+     * @param action
+     */
+    function handle_resource_dim (ev, action){
+        var node = ev.target;
+        var lastaction = action;
+        var nextaction = (action === 'hide') ? 'show': 'hide';
+        // Update button info.
+        console.log(node);
+                    ev.getElementsByTagName('block_toggle_groups').setAttribute('src', M.util.image_url('t/' + nextaction));
+        //setAttrs({'src': M.util.image_url('t/' + nextaction)});
+    };
+    function add_spinner(activity) {
+        var actionarea = activity.one(SELECTOR.ACTIONAREA);
+        if (actionarea) {
+            return M.util.add_spinner(Y, actionarea);
+        }
+        return null;
+    };
+
+    return {
+        initialise: function(courseid){
+            $('.block_groups_toggle').on('click', changevisibility);
         }
     }
 });
