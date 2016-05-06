@@ -43,12 +43,12 @@ class block_groups_visibility_change extends external_api{
             array(
                 'id' => new external_value(PARAM_INT, 'id of group'),
                 'courseid' => new external_value(PARAM_INT, 'id of course'),
-                'visibility' => new external_value(PARAM_INT, 'Visibility of Course'),
+                'newelement' => new external_value(PARAM_RAW, 'replace html-element')
             )
         );
     }
     public static function create_output($groups) {
-        global $DB;
+        global $DB, $PAGE, $CFG, $COURSE;
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
         $transaction = $DB->start_delegated_transaction();
         // If an exception is thrown in the below code, all DB queries in this code will be rollback.
@@ -64,5 +64,17 @@ class block_groups_visibility_change extends external_api{
             }
         }
         $transaction->allow_commit();
+        $renderer = $PAGE->get_renderer('block_groups');
+        $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $COURSE->id . '&groupid=' . $params['groups']['id'];
+        $countmembers = count(groups_get_members($params['groups']['id']));
+        $myvalueobject = groups_get_group_name($params['groups']['id']);
+        
+        if (empty($groupvisible)) {
+            $params['groups']['newelement'] = $renderer->get_groupsarrayempty($myvalueobject, $href, $countmembers);
+        }
+        if (!empty($groupvisible)) {
+            $params['groups']['newelement'] = $renderer->get_groupsarraynonempty($myvalueobject, $href, $countmembers);
+        }
+        return  $params['groups'];
     }
 }

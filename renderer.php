@@ -105,4 +105,5 @@ class block_groups_renderer extends plugin_renderer_base {
     public function get_tag_hiddengroups($name) {
         return html_writer::tag('div', $name, array('class' => "hiddengroups"));
     }
+
 }

@@ -45,62 +45,19 @@ var CSS = {
 define(['jquery','core/ajax'], function($, ajax) {
 
     var changevisibility = function (ev) {
-        var node = ev.target;
         var promises = ajax.call([
             { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
                 courseid: $(this).data('courseid')}}}
         ]);
-        //works only with ancestor
-        var action = $(this).data('action');
-        //completelink = node.getAncestorByClassName('block_groups_toggle');
-
+        var action = $(this).data('action'),
+            that = this;
         promises[0].done(function(response) {
-            switch(action) {
-                case
-                'hide':
-                    hidegroup(ev, node, action);
-                    break;
-                case
-                'show':
-                    hidegroup(ev, node, action);
-                    break;
-                default:
-                    // Nothing to do here!
-                    break;
-            }
-        }).fail(function(ex) {
-            console.log('fail' , ex);
+            var newelement = response['newelement'];
+            $(that).replaceWith(newelement);
         });
         return false;
     };
-    /**
-     * Sets the frame for hiding groups
-     * @param ev
-     * @param node
-     * @param action
-     */
-    function hidegroup (ev, node, action) {
-        console.log('whats wrong with you?');
-        var value = handle_resource_dim(ev, action);
 
-        /*
-         var spinner = add_spinner(element);
-         send_request(data, spinner);*/
-    };
-    /**
-     * Dims the titel of a group
-     * @param activity
-     * @param action
-     */
-    function handle_resource_dim (ev, action){
-        var node = ev.target;
-        var lastaction = action;
-        var nextaction = (action === 'hide') ? 'show': 'hide';
-        // Update button info.
-        console.log(node);
-                    ev.getElementsByTagName('block_toggle_groups').setAttribute('src', M.util.image_url('t/' + nextaction));
-        //setAttrs({'src': M.util.image_url('t/' + nextaction)});
-    };
     function add_spinner(activity) {
         var actionarea = activity.one(SELECTOR.ACTIONAREA);
         if (actionarea) {

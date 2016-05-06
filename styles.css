@@ -33,3 +33,6 @@
 .block_groups .hiddengroups {
     opacity : 0.5;
 }
+.block_groups .normalgroups {
+    opacity : 1;
+}
