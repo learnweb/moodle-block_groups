@@ -49,11 +49,12 @@ define(['jquery','core/ajax'], function($, ajax) {
             { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
                 courseid: $(this).data('courseid')}}}
         ]);
-        var action = $(this).data('action'),
-            that = this;
+        var action = $(this).data('action');
+
         promises[0].done(function(response) {
             var newelement = response['newelement'];
-            $(that).replaceWith(newelement);
+            $('.group-'+response['id']).replaceWith(newelement);
+            $('.group-'+response['id']+' .block_groups_toggle').on('click', changevisibility);
         });
         return false;
     };

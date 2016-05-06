@@ -75,10 +75,11 @@ class block_groups_renderer extends plugin_renderer_base {
         global $OUTPUT;
         $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'));
         $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
-        return html_writer::tag('span', $value->name . get_string('brackets', 'block_groups',
+        $nearly = html_writer::tag('span', $value->name . get_string('brackets', 'block_groups',
                 $countmembers), array('class' => "hiddengroups")) . html_writer::link($href, $ausrichtungdiv,
             array('class' => 'block_groups_toggle', 'data-groupid' => $value->id, 'data-courseid' => $value->courseid,
                 'data-action' => 'show'));
+            return html_writer::tag('span', $nearly, array('class' => 'group-'. $value->id));
     }
     /**
      * Generates components for groupsarrayitems that are hidden
@@ -89,9 +90,10 @@ class block_groups_renderer extends plugin_renderer_base {
         global $OUTPUT;
         $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'));
         $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
-        return $value->name . get_string('brackets', 'block_groups', $countmembers) . html_writer::link($href , $ausrichtungdiv,
+        $nearly = $value->name . get_string('brackets', 'block_groups', $countmembers) . html_writer::link($href , $ausrichtungdiv,
             array('class' => 'block_groups_toggle', 'data-groupid' => $value->id, 'data-courseid' => $value->courseid,
                 'data-action' => 'hide'));
+            return html_writer::tag('span', $nearly, array('class' => 'group-'. $value->id));
     }
     public function get_groupingsarray($value) {
         $a = count(groups_get_grouping_members($value->id));
