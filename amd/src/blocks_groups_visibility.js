@@ -47,6 +47,36 @@ define(['jquery','core/ajax'], function($, ajax) {
         return false;
     };
     /**
+     * Initialises Spinner.
+     */
+    var add_spinner = function () {
+        var WAITICON = {'pix':"i/loading_small",'component':'moodle'};
+        // TODO check which variable the spinner should be stick on.
+        // Check if spinner is already there
+        if ($('.block_groups_toggle').one('.spinner')) {
+            return $('.block_groups_toggle').one('.spinner');
+        }
+
+        var spinner = $('.block_groups_toggle').create('<img />')
+            .setAttribute('src', $('.block_groups_toggle').util.image_url(WAITICON.pix, WAITICON.component))
+            .addClass('spinner')
+            .addClass('iconsmall')
+            .hide();
+
+        $('.block_groups_toggle').append(spinner);
+        return spinner;
+    };
+    /**
+     * Manages the Spinner.
+     */
+    var handle_spinner = function () {
+        var url = 0,
+            config = 0;
+        // TODO replace with j query method.
+        var transaction = Y.io._map['io:0'] || new IO();
+        return transaction.send.apply(transaction, [url, config]);
+    };
+    /**
      * Calls for the main method.
      */
     return {
