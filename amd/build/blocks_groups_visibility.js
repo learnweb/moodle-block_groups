@@ -23,7 +23,10 @@
 
 define(['jquery','core/ajax'], function($, ajax) {
 
-    var changevisibility = function (ev) {
+    /**
+     * Method that calls for an ajax script and replaces and/or changes the output components.
+     */
+    var changevisibility = function () {
         var promises = ajax.call([
             { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
                 courseid: $(this).data('courseid')}}}
@@ -31,21 +34,24 @@ define(['jquery','core/ajax'], function($, ajax) {
         var action = $(this).data('action');
 
         promises[0].done(function(response) {
-            var newelement = response['newelement'];
+            var newelement = response.newelement;
             $('.group-' + response['id']).replaceWith(newelement);
-            if(response['visibility'] === 0) {
-                $('.membergroup-' + response['id']).removeClass('hiddengroups');
+            if(response.visibility === 1) {
+                $('.membergroup-' + response.id).removeClass('hiddengroups');
             }
-            if(response['visibility'] === 1) {
-                $('.membergroup-' + response['id']).addClass('hiddengroups');
+            if(response.visibility === 0) {
+                $('.membergroup-' + response.id).addClass('hiddengroups');
             }
-            $('.group-' + response['id'] + ' .block_groups_toggle').on('click', changevisibility);
+            $('.group-' + response.id + ' .block_groups_toggle').on('click', changevisibility);
 
         });
         return false;
     };
+    /**
+     * Calls for the main method.
+     */
     return {
-        initialise: function(courseid){
+        initialise: function(){
             $('.block_groups_toggle').on('click', changevisibility);
         }
     }

@@ -128,8 +128,7 @@ class block_groups_renderer extends plugin_renderer_base {
      * @return string
      */
     public function get_tag_hiddengroups($group) {
-        $between = html_writer::tag('span', $group->name, array('class' => "hiddengroups"));
-        return html_writer::tag('span', $between, array('class' => 'membergroup-'. $group->id));
+        return html_writer::tag('span', $group->name, array('class' => "hiddengroups" . ' membergroup-'. $group->id));
     }
     /**
      * Returns the html-text for visible groups.

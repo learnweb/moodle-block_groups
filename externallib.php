@@ -89,12 +89,14 @@ class block_groups_visibility_change extends external_api{
         $output = array('groups' => array('id' => $params['groups']['id'], 'courseid' => $params['groups']['courseid']));
         // Generates the Output component.
         if (empty($groupvisible)) {
+//            ohne hidegroups geschrieben
             $output['groups']['newelement'] = $renderer->get_groupsarraynonempty($myvalueobject, $href, $countmembers);
-            $output['groups']['visibility'] = 0;
+            $output['groups']['visibility'] = 1;
         }
         if (!empty($groupvisible)) {
+//            hide groups wird reingeschrieben
             $output['groups']['newelement'] = $renderer->get_groupsarrayempty($myvalueobject, $href, $countmembers);
-            $output['groups']['visibility'] = 1;
+            $output['groups']['visibility'] = 0;
         }
         return  $output['groups'];
     }
