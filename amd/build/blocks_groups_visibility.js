@@ -32,11 +32,11 @@ define(['jquery','core/ajax'], function($, ajax) {
 
         promises[0].done(function(response) {
             var newelement = response['newelement'];
-            $('.group-'+response['id']).replaceWith(newelement);
-            if(response['visibility']===0) {
+            $('.group-' + response['id']).replaceWith(newelement);
+            if(response['visibility'] === 0) {
                 $('.membergroup-' + response['id']).removeClass('hiddengroups');
             }
-            if(response['visibility']===1) {
+            if(response['visibility'] === 1) {
                 $('.membergroup-' + response['id']).addClass('hiddengroups');
             }
             $('.group-' + response['id'] + ' .block_groups_toggle').on('click', changevisibility);
