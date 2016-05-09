@@ -32,14 +32,4 @@ $functions = array(
         'capabilities' => 'moodle/course:managegroups',
         'ajax' => true,
     )
-);/*
-$services = array(
-    'create_output' => array(
-        'functions' => array ('block_groups_create_output'), // Web service functions of this service.
-        'requiredcapability' => 'moodle/course:managegroups',        // If set, the web service user need this capability to access.
-        // Any function of this service. For example: 'some/capability:specified'.
-        'restrictedusers' => 0,    // If enabled, the Moodle administrator must link some user to this service.
-        // into the administration.
-        'enabled' => 1,                     // If enabled, the service can be reachable on a default installation.
-    )
-);*/
+);
