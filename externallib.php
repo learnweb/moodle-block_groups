@@ -43,7 +43,8 @@ class block_groups_visibility_change extends external_api{
             array(
                 'id' => new external_value(PARAM_INT, 'id of group'),
                 'courseid' => new external_value(PARAM_INT, 'id of course'),
-                'newelement' => new external_value(PARAM_TEXT, 'replace html-element')
+                'newelement' => new external_value(PARAM_TEXT, 'replace html-element'),
+                'memberelement' => new external_value(PARAM_TEXT, 'member replace html-element'),
             )
         );
     }
@@ -69,12 +70,15 @@ class block_groups_visibility_change extends external_api{
             '&groupid=' . $params['groups']['id'];
         $countmembers = count(groups_get_members($params['groups']['id']));
         $myvalueobject = groups_get_group($params['groups']['id']);
+        $output = array('groups' => array('id' => $params['groups']['id'], 'courseid' => $params['groups']['courseid']));
         if (empty($groupvisible)) {
-            $params['groups']['newelement'] = $renderer->get_groupsarraynonempty($myvalueobject, $href, $countmembers);
+            $output['groups']['newelement'] = $renderer->get_groupsarraynonempty($myvalueobject, $href, $countmembers);
+            $output['groups']['memberelement'] = $renderer->get_tag_groupname($myvalueobject);
         }
         if (!empty($groupvisible)) {
-            $params['groups']['newelement'] = $renderer->get_groupsarrayempty($myvalueobject, $href, $countmembers);
+            $output['groups']['newelement'] = $renderer->get_groupsarrayempty($myvalueobject, $href, $countmembers);
+            $output['groups']['memberelement'] = $renderer->get_tag_hiddengroups($myvalueobject);
         }
-        return  $params['groups'];
+        return  $output['groups'];
     }
 }

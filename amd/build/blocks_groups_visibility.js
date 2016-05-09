@@ -23,25 +23,7 @@
 /**
  * @module block_overview/helloworld
  */
-var CSS = {
-        ACTIVITYINSTANCE : 'activityinstance',
-        AVAILABILITYINFODIV : 'div.availabilityinfo',
-        DIMCLASS : 'dimmed',
-        DIMMEDTEXT : 'dimmed_text',
-        HIDE : 'hide',
-        SECTIONHIDDENCLASS : 'hidden',
-        SHOW : 'editing_show',
-    },
-// The CSS selectors we use.
-    SELECTOR = {
-        ACTIVITYLI: 'li.activity',
-        ACTIONAREA: '.actions',
-        ACTIVITYICON : 'img.activityicon',
-        CONTENTAFTERLINK : 'div.contentafterlink',
-        HIDE : 'a.editing_hide',
-        SHOW : 'a.'+CSS.SHOW,
-        SHOWHIDE : 'a.editing_showhide'
-    };
+
 define(['jquery','core/ajax'], function($, ajax) {
 
     var changevisibility = function (ev) {
@@ -52,8 +34,10 @@ define(['jquery','core/ajax'], function($, ajax) {
         var action = $(this).data('action');
 
         promises[0].done(function(response) {
-            var newelement = response['newelement'];
+            var newelement = response['newelement'],
+                newelement2 = response['memberelement']
             $('.group-'+response['id']).replaceWith(newelement);
+            $('.membergroup-'+response['id']).replaceWith(newelement2);
             $('.group-'+response['id']+' .block_groups_toggle').on('click', changevisibility);
         });
         return false;

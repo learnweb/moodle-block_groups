@@ -147,9 +147,9 @@ class block_groups extends block_base
             if (($valueall->courseid == $COURSE->id)) {
                 $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
                 if (!empty($counter)) {
-                    $enrolledgroups[] = $valueall->name;
+                    $enrolledgroups[] = $renderer->get_tag_groupname($valueall);
                 } else if ($access === true) {
-                    $enrolledgroups[] = $renderer->get_tag_hiddengroups($valueall->name);
+                    $enrolledgroups[] = $renderer->get_tag_hiddengroups($valueall);
                 }
             }
         }

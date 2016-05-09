@@ -104,8 +104,11 @@ class block_groups_renderer extends plugin_renderer_base {
         $membercontent .= html_writer::alist($enrolledgroups);
         return html_writer::tag('div', $membercontent, array('class' => 'memberlist'));
     }
-    public function get_tag_hiddengroups($name) {
-        return html_writer::tag('div', $name, array('class' => "hiddengroups"));
+    public function get_tag_hiddengroups($group) {
+        $between = html_writer::tag('span', $group->name, array('class' => "hiddengroups"));
+        return html_writer::tag('span', $between, array('class' => 'membergroup-'. $group->id));
     }
-
+    public function get_tag_groupname($group) {
+        return html_writer::tag('span', $group->name, array('class' => 'membergroup-'. $group->id));
+    }
 }
