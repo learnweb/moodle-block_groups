@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *
+ * External blocks_groups API
  *
  * @package block_groups
  * @category
@@ -24,6 +24,15 @@
  */
 require_once("$CFG->libdir/externallib.php");
 
+/**
+ * blocks_groups external functions
+ *
+ * @package    blocks_groups
+ * @category   external
+ * @copyright  2016 N Herrmann
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @since Moodle 2.9
+ */
 class block_groups_visibility_change extends external_api{
 
     public static function create_output_parameters() {
@@ -44,10 +53,16 @@ class block_groups_visibility_change extends external_api{
                 'id' => new external_value(PARAM_INT, 'id of group'),
                 'courseid' => new external_value(PARAM_INT, 'id of course'),
                 'newelement' => new external_value(PARAM_TEXT, 'replace html-element'),
-                'memberelement' => new external_value(PARAM_TEXT, 'member replace html-element'),
+                'visibility' => new external_value(PARAM_INT, 'returns the visibility value')
             )
         );
     }
+    /**
+     *  Changed the Database and returns the updated html content.
+     *
+     * @params $groups
+     * @return string
+     */
     public static function create_output($groups) {
         global $DB, $PAGE, $CFG;
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
@@ -56,6 +71,7 @@ class block_groups_visibility_change extends external_api{
         $groupsuitable = $DB->get_record('groups', array('id' => $params['groups']['id'],
             'courseid' => $params['groups']['courseid']));
         $groupvisible = $DB->get_records('block_groups_hide', array('id' => $params['groups']['id'], ));
+        // Takes changes in the Database.
         if (!empty($groupsuitable)) {
             if (empty($groupvisible)) {
                 $DB->import_record('block_groups_hide', array('id' => $params['groups']['id']));
@@ -71,13 +87,14 @@ class block_groups_visibility_change extends external_api{
         $countmembers = count(groups_get_members($params['groups']['id']));
         $myvalueobject = groups_get_group($params['groups']['id']);
         $output = array('groups' => array('id' => $params['groups']['id'], 'courseid' => $params['groups']['courseid']));
+        // Generates the Output component.
         if (empty($groupvisible)) {
             $output['groups']['newelement'] = $renderer->get_groupsarraynonempty($myvalueobject, $href, $countmembers);
-            $output['groups']['memberelement'] = $renderer->get_tag_groupname($myvalueobject);
+            $output['groups']['visibility'] = 0;
         }
         if (!empty($groupvisible)) {
             $output['groups']['newelement'] = $renderer->get_groupsarrayempty($myvalueobject, $href, $countmembers);
-            $output['groups']['memberelement'] = $renderer->get_tag_hiddengroups($myvalueobject);
+            $output['groups']['visibility'] = 1;
         }
         return  $output['groups'];
     }

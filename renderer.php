@@ -27,7 +27,7 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Lists grouping in html format
      *
-     * @param $groupingarray
+     * @param $groupingsarray
      * @return string
      */
     public function teaching_groupingslist($groupingsarray) {
@@ -42,7 +42,7 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Lists groups in html format
      *
-     * @param $grouparray
+     * @param $groupsarray
      * @return string
      */
     public function teaching_groupslist($groupsarray) {
@@ -69,6 +69,9 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Generates components for groupsarrayitems that are not hidden
      *
+     * @params value
+     * @params href
+     * @params countmembers
      * @return string
      */
     public function get_groupsarrayempty($value, $href, $countmembers) {
@@ -84,6 +87,9 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Generates components for groupsarrayitems that are hidden
      *
+     * @params value
+     * @params href
+     * @params countmembers
      * @return string
      */
     public function get_groupsarraynonempty($value, $href, $countmembers) {
@@ -95,19 +101,42 @@ class block_groups_renderer extends plugin_renderer_base {
                 'data-action' => 'hide'));
             return html_writer::tag('span', $nearly, array('class' => 'group-'. $value->id));
     }
+    /**
+     * Generates components for groupsarrayitems that are hidden
+     *
+     * @params value
+     * @return string
+     */
     public function get_groupingsarray($value) {
         $a = count(groups_get_grouping_members($value->id));
         return $value->name . get_string('brackets', 'block_groups', $a);
     }
+    /**
+     * Returns the frame for the memberlist.
+     *
+     * @params enrolledgroups
+     * @return string
+     */
     public function get_membership_content($enrolledgroups) {
         $membercontent = get_string('introduction', 'block_groups');
         $membercontent .= html_writer::alist($enrolledgroups);
         return html_writer::tag('div', $membercontent, array('class' => 'memberlist'));
     }
+    /**
+     * Returns the html-text for hidden groups.
+     * @params group
+     * @return string
+     */
     public function get_tag_hiddengroups($group) {
         $between = html_writer::tag('span', $group->name, array('class' => "hiddengroups"));
         return html_writer::tag('span', $between, array('class' => 'membergroup-'. $group->id));
     }
+    /**
+     * Returns the html-text for visible groups.
+     *
+     * @params group
+     * @return string
+     */
     public function get_tag_groupname($group) {
         return html_writer::tag('span', $group->name, array('class' => 'membergroup-'. $group->id));
     }

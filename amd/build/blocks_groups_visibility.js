@@ -20,9 +20,6 @@
  * @copyright  2016 Nina Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-/**
- * @module block_overview/helloworld
- */
 
 define(['jquery','core/ajax'], function($, ajax) {
 
@@ -34,23 +31,19 @@ define(['jquery','core/ajax'], function($, ajax) {
         var action = $(this).data('action');
 
         promises[0].done(function(response) {
-            var newelement = response['newelement'],
-                newelement2 = response['memberelement']
+            var newelement = response['newelement'];
             $('.group-'+response['id']).replaceWith(newelement);
-            $('.membergroup-'+response['id']).replaceWith(newelement2);
-            $('.group-'+response['id']+' .block_groups_toggle').on('click', changevisibility);
+            if(response['visibility']===0) {
+                $('.membergroup-' + response['id']).removeClass('hiddengroups');
+            }
+            if(response['visibility']===1) {
+                $('.membergroup-' + response['id']).addClass('hiddengroups');
+            }
+            $('.group-' + response['id'] + ' .block_groups_toggle').on('click', changevisibility);
+
         });
         return false;
     };
-
-    function add_spinner(activity) {
-        var actionarea = activity.one(SELECTOR.ACTIONAREA);
-        if (actionarea) {
-            return M.util.add_spinner(Y, actionarea);
-        }
-        return null;
-    };
-
     return {
         initialise: function(courseid){
             $('.block_groups_toggle').on('click', changevisibility);
