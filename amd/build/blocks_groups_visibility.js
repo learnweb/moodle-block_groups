@@ -31,11 +31,10 @@ define(['jquery','core/ajax'], function($, ajax) {
             { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
                 courseid: $(this).data('courseid')}}}
         ]);
-        var action = $(this).data('action');
 
         promises[0].done(function(response) {
             var newelement = response.newelement;
-            $('.group-' + response['id']).replaceWith(newelement);
+            $('.group-' + response.id).replaceWith(newelement);
             if(response.visibility === 1) {
                 $('.membergroup-' + response.id).removeClass('hiddengroups');
             }
@@ -54,5 +53,5 @@ define(['jquery','core/ajax'], function($, ajax) {
         initialise: function(){
             $('.block_groups_toggle').on('click', changevisibility);
         }
-    }
+    };
 });
