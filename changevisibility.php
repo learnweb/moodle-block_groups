@@ -34,23 +34,20 @@ if (!empty($DB->get_record('course', array('id' => $courseid)))) {
     $PAGE->set_context(context_course::instance($courseid));
     require_capability('moodle/course:managegroups', context_course::instance($courseid));
     $groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
-    $groupvisible = $DB->get_records('block_groups_hide', array('id' => $groupid, ));
     if (!empty($groupsuitable)) {
+        $transaction = $DB->start_delegated_transaction();
+        $groupvisible = $DB->get_records('block_groups_hide', array('id' => $groupid, ));
         if (empty($groupvisible)) {
             $DB->import_record('block_groups_hide', array('id' => $groupid));
-            redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
-            exit();
-        }
-        if (!empty($groupvisible)) {
+        } else if (!empty($groupvisible)) {
             $DB->delete_records('block_groups_hide', array('id' => $groupid));
-            redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
-            exit();
-        } else {
-            notice(get_string('nochangeindatabasepossible', 'block_groups'), $CFG->wwwroot . '/course/view.php?id=' . $courseid);
-            exit();
         }
+        $transaction->allow_commit();
+        redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
+        exit();
     } else {
-        notice(get_string('nochangeindatabasepossible', 'block_groups'), $CFG->wwwroot . '/course/view.php?id=' . $courseid);
+        notice(get_string('nochangeindatabasepossible', 'block_groups'),
+            $CFG->wwwroot . '/course/view.php?id=' . $courseid);
         exit();
     }
 }
