@@ -17,7 +17,10 @@ This plugin should go into `blocks/groups`. Moodle plugin directory link will be
 In initial state value groups and groupings are not listed.</br>
 ![Teachers' View_hidden](https://cloud.githubusercontent.com/assets/18289780/14320600/fa2933aa-fc15-11e5-9e91-5129e7f37f4f.png)</br>
 The block displays all existing groups and groupings as well as all enrolled groups on request.
-The number inside the brackets displays the number of members in a group or grouping. </br>
+The number inside the brackets displays the number of members in a group or grouping.
+Additionally groups can be hidden, illustrated by an eye icon and a change in opacity.
+When the icon is clicked the visibility of groups changes. Javascript files exist to update the block.
+When the block is installed for the first time all groups are hidden</br>
 ![Teachers' View](https://cloud.githubusercontent.com/assets/18289780/14318700/724efc78-fc0e-11e5-9918-74a9e1a71bf7.png)
 
 ### Students' view
