@@ -64,7 +64,7 @@ class block_groups_visibility_change extends external_api{
      * @return string
      */
     public static function create_output($groups) {
-        global $DB, $PAGE, $CFG;
+        global $DB, $PAGE, $CFG, $OUTPUT;
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
         $transaction = $DB->start_delegated_transaction();

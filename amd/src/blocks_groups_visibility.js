@@ -21,8 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery','core/ajax'], function($, ajax) {
-
+define(['jquery','core/ajax','core/url'], function($, ajax, url) {
+    //'core/config'], function(config)
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
@@ -33,6 +33,7 @@ define(['jquery','core/ajax'], function($, ajax) {
         ]);
 
         promises[0].done(function(response) {
+            var url = response.spinnerurl;
             var newelement = response.newelement;
             $('.group-' + response.id).replaceWith(newelement);
             if(response.visibility === 1) {
@@ -42,6 +43,7 @@ define(['jquery','core/ajax'], function($, ajax) {
                 $('.membergroup-' + response.id).addClass('hiddengroups');
             }
             $('.group-' + response.id + ' .block_groups_toggle').on('click', changevisibility);
+            //add_spinner(url, response.id);
 
         });
         return false;
@@ -49,22 +51,19 @@ define(['jquery','core/ajax'], function($, ajax) {
     /**
      * Initialises Spinner.
      */
-    var add_spinner = function () {
-        var WAITICON = {'pix':"i/loading_small",'component':'moodle'};
-        // TODO check which variable the spinner should be stick on.
+    var add_spinner = function (uebergabe1,id) {
+        var imgurl = url.imageUrl("i/loading_small",'moodle');
         // Check if spinner is already there
         if ($('.block_groups_toggle').one('.spinner')) {
             return $('.block_groups_toggle').one('.spinner');
         }
+        var spinner = document.createElement("img");
+        spinner.className = 'spinner';
+        spinner.src = imgurl;
+        spinner.hide();
 
-        var spinner = $('.block_groups_toggle').create('<img />')
-            .setAttribute('src', $('.block_groups_toggle').util.image_url(WAITICON.pix, WAITICON.component))
-            .addClass('spinner')
-            .addClass('iconsmall')
-            .hide();
-
-        $('.block_groups_toggle').append(spinner);
-        return spinner;
+        $('.group-' + id).append(spinner);
+        return false;
     };
     /**
      * Manages the Spinner.
@@ -82,6 +81,7 @@ define(['jquery','core/ajax'], function($, ajax) {
     return {
         initialise: function(){
             $('.block_groups_toggle').on('click', changevisibility);
+
         }
     };
 });
