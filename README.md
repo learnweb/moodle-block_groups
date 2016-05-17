@@ -21,7 +21,7 @@ The number inside the brackets displays the number of members in a group or grou
 Additionally groups can be hidden, illustrated by an eye icon and a change in opacity.
 When the icon is clicked the visibility of groups changes. Javascript files exist to update the block.
 When the block is installed for the first time all groups are hidden</br>
-![Teachers' View](https://cloud.githubusercontent.com/assets/18289780/14318700/724efc78-fc0e-11e5-9918-74a9e1a71bf7.png)
+![Teachers' View](https://cloud.githubusercontent.com/assets/18289780/15298723/0871071c-1ba1-11e6-8fc9-2b0b1d58aaaf.png)
 
 ### Students' view
 In the current state of the block groupings are not displayed to the students.</br>
