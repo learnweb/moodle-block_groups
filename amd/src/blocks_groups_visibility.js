@@ -27,13 +27,12 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
     var changevisibility = function () {
+        show_spinner($(this).data('groupid'));
         var promises = ajax.call([
             { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
                 courseid: $(this).data('courseid')}}}
         ]);
-
         promises[0].done(function(response) {
-            var url = response.spinnerurl;
             var newelement = response.newelement;
             $('.group-' + response.id).replaceWith(newelement);
             if(response.visibility === 1) {
@@ -43,37 +42,40 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
                 $('.membergroup-' + response.id).addClass('hiddengroups');
             }
             $('.group-' + response.id + ' .block_groups_toggle').on('click', changevisibility);
-            //add_spinner(url, response.id);
-
+            hide_spinner(response.id);
         });
         return false;
     };
+
     /**
      * Initialises Spinner.
      */
-    var add_spinner = function (uebergabe1,id) {
+    var add_spinner = function (id) {
         var imgurl = url.imageUrl("i/loading_small",'moodle');
         // Check if spinner is already there
-        if ($('.block_groups_toggle').one('.spinner')) {
-            return $('.block_groups_toggle').one('.spinner');
+        if ($('.group-' + id).children('spinner')) {
+            //return $('.group-' + id).children('spinner');
         }
         var spinner = document.createElement("img");
         spinner.className = 'spinner';
         spinner.src = imgurl;
-        spinner.hide();
+        spinner.hidden = false;
 
         $('.group-' + id).append(spinner);
         return false;
     };
     /**
-     * Manages the Spinner.
+     * Shows the Spinner.
      */
-    var handle_spinner = function () {
-        var url = 0,
-            config = 0;
-        // TODO replace with j query method.
-        var transaction = Y.io._map['io:0'] || new IO();
-        return transaction.send.apply(transaction, [url, config]);
+    var show_spinner = function(id){
+        add_spinner(id);
+    };
+
+    /**
+     * Hides the Spinner.
+     */
+    var hide_spinner = function(id){
+        $('.group-' + id).children('.spinner').hidden = true;
     };
     /**
      * Calls for the main method.
