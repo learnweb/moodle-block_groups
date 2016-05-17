@@ -16,6 +16,8 @@ matrix:
  allow_failures:
 
 env:
+ global:
+  - IGNORE_PATHS=amd/build
  matrix:
   - DB=pgsql MOODLE_BRANCH=MOODLE_29_STABLE
   - DB=pgsql MOODLE_BRANCH=MOODLE_30_STABLE

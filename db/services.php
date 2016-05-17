@@ -13,26 +13,23 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
- * This file contains language strings used in the group block
+ * Services for the groups block.
  *
  * @package block_groups
- * @category   block
+ * @category   services
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-$string['groups:addinstance'] = 'Add a new Group block';
-$string['groups:myaddinstance'] = 'Add a new Group block';
-$string['groups:myaddinstance'] = 'Add a new group block to Dashboard';
-$string['pluginname'] = 'Groups and Groupings';
-$string['pluginname2'] = 'Groups';
-$string['introduction'] = 'You are enrolled in the following groups';
-$string['nogroups'] = '(There are no groups available)';
-$string['groups'] = 'Groups ';
-$string['groupings'] = 'Groupings ';
-$string['brackets'] = '   ({$a})';
-$string['modify'] = 'modify groups';
-$string['hidegroup'] = 'hide group';
-$string['nochangeindatabasepossible'] = 'The required change was not possible';
-$string['nocourse'] = 'Problem to find course, please try again later.';
+$functions = array(
+    'block_groups_create_output' => array(
+        'classname' => 'block_groups_visibility_change',
+        'methodname' => 'create_output', // Implement this function into the above class.
+        'classpath'   => 'blocks/groups/externallib.php',
+        'description' => 'Service to provide group with information',
+        'type' => 'write', // The value is 'write' if your function does any database change, otherwise it is 'read'.
+        'capabilities' => 'moodle/course:managegroups',
+        'ajax' => true,
+    )
+);
