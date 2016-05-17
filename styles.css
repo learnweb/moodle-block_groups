@@ -36,8 +36,3 @@
 .block_groups .normalgroups {
     opacity : 1;
 }
-.block_groups .spinner {
-    align-items:right;
-}
-.block_groups .nospinner {
-}

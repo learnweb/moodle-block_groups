@@ -22,12 +22,11 @@
  */
 
 define(['jquery','core/ajax','core/url'], function($, ajax, url) {
-    //'core/config'], function(config)
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
     var changevisibility = function () {
-        show_spinner($(this).data('groupid'));
+        add_spinner($(this).data('groupid'));
         var promises = ajax.call([
             { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
                 courseid: $(this).data('courseid')}}}
@@ -35,6 +34,7 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
         promises[0].done(function(response) {
             var newelement = response.newelement;
             $('.group-' + response.id).replaceWith(newelement);
+            //Replaces the used element, therefore removes the spinner.
             if(response.visibility === 1) {
                 $('.membergroup-' + response.id).removeClass('hiddengroups');
             }
@@ -42,40 +42,30 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
                 $('.membergroup-' + response.id).addClass('hiddengroups');
             }
             $('.group-' + response.id + ' .block_groups_toggle').on('click', changevisibility);
-            hide_spinner(response.id);
         });
         return false;
     };
 
     /**
      * Initialises Spinner.
+     * @param id int that identifies the group id
      */
     var add_spinner = function (id) {
         var imgurl = url.imageUrl("i/loading_small",'moodle');
-        // Check if spinner is already there
-        if ($('.group-' + id).children('spinner')) {
-            //return $('.group-' + id).children('spinner');
-        }
         var spinner = document.createElement("img");
         spinner.className = 'spinner';
         spinner.src = imgurl;
         spinner.hidden = false;
-
-        $('.group-' + id).append(spinner);
+        $('.imggroup-' + id).before(spinner);
         return false;
-    };
-    /**
-     * Shows the Spinner.
-     */
-    var show_spinner = function(id){
-        add_spinner(id);
     };
 
     /**
      * Hides the Spinner.
+     * Currently not neccessary
      */
     var hide_spinner = function(id){
-        $('.group-' + id).children('.spinner').hidden = true;
+        $('.group-' + id).children('.spinner').addClass('hidespinner');
     };
     /**
      * Calls for the main method.

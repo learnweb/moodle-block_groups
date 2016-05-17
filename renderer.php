@@ -76,7 +76,8 @@ class block_groups_renderer extends plugin_renderer_base {
      */
     public function get_groupsarrayempty($value, $href, $countmembers) {
         global $OUTPUT;
-        $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'));
+        $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'),
+            array('class' => "imggroup-". $value->id));
         $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
         $nearly = html_writer::tag('span', $value->name . get_string('brackets', 'block_groups',
                 $countmembers), array('class' => "hiddengroups")) . html_writer::link($href, $ausrichtungdiv,
@@ -94,7 +95,8 @@ class block_groups_renderer extends plugin_renderer_base {
      */
     public function get_groupsarraynonempty($value, $href, $countmembers) {
         global $OUTPUT;
-        $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'));
+        $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'),
+            array('class' => "imggroup-". $value->id));
         $ausrichtungdiv = html_writer::tag('div', $img, array('class' => "rightalign"));
         $nearly = $value->name . get_string('brackets', 'block_groups', $countmembers) . html_writer::link($href , $ausrichtungdiv,
             array('class' => 'block_groups_toggle', 'data-groupid' => $value->id, 'data-courseid' => $value->courseid,
