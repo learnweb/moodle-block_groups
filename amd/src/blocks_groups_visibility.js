@@ -42,6 +42,8 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
                 $('.membergroup-' + response.id).addClass('hiddengroups');
             }
             $('.group-' + response.id + ' .block_groups_toggle').on('click', changevisibility);
+            // In the unlikely case that javascript works very slow
+            remove_spinner(response.id);
         });
         return false;
     };
@@ -53,7 +55,7 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
     var add_spinner = function (id) {
         var imgurl = url.imageUrl("i/loading_small",'moodle');
         var spinner = document.createElement("img");
-        spinner.className = 'spinner';
+        spinner.className = 'spinner'+id;
         spinner.src = imgurl;
         spinner.hidden = false;
         $('.imggroup-' + id).before(spinner);
@@ -61,11 +63,13 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
     };
 
     /**
-     * Hides the Spinner.
-     * Currently not neccessary
+     * Removes the Spinner Class
+     * @param id int that identifies to which group the spinner belongs to.
      */
-    var hide_spinner = function(id){
-        $('.group-' + id).children('.spinner').addClass('hidespinner');
+    var remove_spinner = function (id) {
+        if($('.spinner'+ id ).length > 0){
+            $('.imggroup-' + id + 'img:first-child').remove();
+        }
     };
     /**
      * Calls for the main method.
