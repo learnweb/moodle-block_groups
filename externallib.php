@@ -66,6 +66,7 @@ class block_groups_visibility_change extends external_api{
     public static function create_output($groups) {
         global $DB, $PAGE, $CFG;
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
+        require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
         $transaction = $DB->start_delegated_transaction();
         // If an exception is thrown in the below code, all DB queries in this code will be rollback.
         $groupsuitable = $DB->get_record('groups', array('id' => $params['groups']['id'],
