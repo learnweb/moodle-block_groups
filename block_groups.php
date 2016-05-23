@@ -105,6 +105,14 @@ class block_groups extends block_base
                 }
             }
         }
+        $temporarygroupingsinformation = array();
+        foreach ($allgroupings as $g => $value) {
+            $params = array ('groupingid' => $value->id);
+            $myvalue = $value->id;
+            $temporarygroupingsinformation[$value->id] = $DB->get_records_sql("SELECT groupid
+                                                                                FROM {groupings_groups} gg
+                                                                                WHERE gg.groupingid = $myvalue", $params);
+        }
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $groupingsarray[$g] = $renderer->get_groupingsarray($value);
