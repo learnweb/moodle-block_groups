@@ -110,7 +110,6 @@ class block_groups_renderer extends plugin_renderer_base {
      * @return string
      */
     public function get_groupingsarray($value, $counter) {
-//        TODO :Member doppelt wenn sie in mehreren gruppen sind.
         return $value->name . get_string('brackets', 'block_groups', $counter);
     }
     /**

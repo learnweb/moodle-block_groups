@@ -106,22 +106,7 @@ class block_groups extends block_base
             }
         }
         // Necessary DB query to prohibit multiple ids of grouping members.
-        $temporarygroupingsinformation = $DB->get_records_sql("SELECT gm.id, gm.groupid, gm.userid, gg.groupingid
-                                                               FROM {groupings_groups} gg
-                                                               JOIN {groups_members} gm
-                                                               ON gg.groupid = gm.groupid", array());
-        foreach ($allgroupings as $g => $value) {
-            if (is_object($value) && property_exists($value, 'name')) {
-                $members = array();
-                foreach ($temporarygroupingsinformation as $tempvalue) {
-                    if ($tempvalue->groupingid === $value->id) {
-                        $members[$tempvalue->userid] = $tempvalue->userid;
-                    }
-                }
-                $tempcounter = count($members);
-                $groupingsarray[$g] = $renderer->get_groupingsarray($value, $tempcounter);
-            }
-        }
+        $groupingsarray = $this->build_grouping_array($allgroupings);
         // Groups and Grouping Names are saved in arrays.
         // Empty block or block with checkboxes.
         if (count($groupsarray) == 0) {
@@ -180,5 +165,26 @@ class block_groups extends block_base
      */
     public function applicable_formats() {
         return array('course-view' => true, 'mod' => false, 'tag' => false);
+    }
+    public function build_grouping_array ($allgroupings) {
+        global $DB, $PAGE;
+        $renderer = $PAGE->get_renderer('block_groups');
+        $groupingdbquery = $DB->get_records_sql("SELECT gm.id, gm.groupid, gm.userid, gg.groupingid
+                                                               FROM {groupings_groups} gg
+                                                               JOIN {groups_members} gm
+                                                               ON gg.groupid = gm.groupid", array());
+        foreach ($allgroupings as $g => $value) {
+            if (is_object($value) && property_exists($value, 'name')) {
+                $members = array();
+                foreach ($groupingdbquery as $tempvalue) {
+                    if ($tempvalue->groupingid === $value->id) {
+                        $members[$tempvalue->userid] = $tempvalue->userid;
+                    }
+                }
+                $tempcounter = count($members);
+                $groupingsarray[$g] = $renderer->get_groupingsarray($value, $tempcounter);
+            }
+        }
+        return $groupingsarray;
     }
 }
