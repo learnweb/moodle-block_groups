@@ -116,7 +116,7 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Returns the frame for the memberlist.
      *
-     * @params enrolledgroups 
+     * @params enrolledgroups
      * @return string
      */
     public function get_membership_content($enrolledgroups) {

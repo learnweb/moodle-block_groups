@@ -94,7 +94,7 @@ class block_groups extends block_base
         $PAGE->requires->js_call_amd('block_groups/blocks_groups_visibility', 'initialise', array($COURSE->id));
         // Initializing the grouparray.
         $groupsarray = array();
-        foreach ($allgroups as $g => $value) {
+        foreach ($allgroups as $value) {
             // Checks availability of group and requests the content.
             if (is_object($value) && property_exists($value, 'name')) {
                 $countmembers = count(groups_get_members($value->id));
