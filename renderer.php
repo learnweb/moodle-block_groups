@@ -106,7 +106,8 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Generates components for groupsarrayitems that are hidden
      *
-     * @params value
+     * @params name name of the grouping
+     * @params counter number of members of the grouping
      * @return string
      */
     public function get_groupingsarray($name, $counter) {
@@ -115,7 +116,7 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Returns the frame for the memberlist.
      *
-     * @params enrolledgroups
+     * @params enrolledgroups 
      * @return string
      */
     public function get_membership_content($enrolledgroups) {

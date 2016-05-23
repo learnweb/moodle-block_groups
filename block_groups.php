@@ -92,9 +92,10 @@ class block_groups extends block_base
         $renderer = $PAGE->get_renderer('block_groups');
         // Calls Javascript if availeable.
         $PAGE->requires->js_call_amd('block_groups/blocks_groups_visibility', 'initialise', array($COURSE->id));
-        // Groups and Grouping Names are saved in arrays.
+        // Initializing the grouparray.
         $groupsarray = array();
         foreach ($allgroups as $g => $value) {
+            // Checks availability of group and requests the content.
             if (is_object($value) && property_exists($value, 'name')) {
                 $countmembers = count(groups_get_members($value->id));
                 $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $COURSE->id . '&groupid=' . $value->id;
@@ -105,9 +106,7 @@ class block_groups extends block_base
                 }
             }
         }
-        // Necessary DB query to prohibit multiple ids of grouping members.
         $groupingsarray = $this->build_grouping_array($allgroupings);
-        // Groups and Grouping Names are saved in arrays.
         // Empty block or block with checkboxes.
         if (count($groupsarray) == 0) {
             $groupstext .= $renderer->get_link();
@@ -166,11 +165,19 @@ class block_groups extends block_base
     public function applicable_formats() {
         return array('course-view' => true, 'mod' => false, 'tag' => false);
     }
+    /**
+     * Generates an array of groupingnames and their members.
+     *
+     * @params array of groupings
+     */
     public function build_grouping_array ($allgroupings) {
         global $DB, $PAGE;
+        /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
+        $groupingsarray = array();
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
+                // Necessary DB query to prohibit multiple ids of grouping members.
                 $countgroupingmem = $DB->count_records_sql("SELECT Count(DISTINCT gm.userid)
                                                             FROM {groupings_groups} gg
                                                             INNER JOIN {groups_members} gm
