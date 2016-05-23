@@ -105,7 +105,7 @@ class block_groups extends block_base
                 }
             }
         }
-//      TODO:zeigt konstant alle nutzer als member an, warum?
+        // Necessary DB query to prohibit multiple ids of grouping members.
         $temporarygroupingsinformation = $DB->get_records_sql("SELECT gm.id, gm.groupid, gm.userid, gg.groupingid
                                                                FROM {groupings_groups} gg
                                                                JOIN {groups_members} gm
