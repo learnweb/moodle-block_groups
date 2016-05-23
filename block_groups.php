@@ -172,11 +172,11 @@ class block_groups extends block_base
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 $countgroupingmem = $DB->count_records_sql("SELECT Count(DISTINCT gm.userid)
-                                                               FROM {groupings_groups} gg
-                                                               INNER JOIN {groups_members} gm
-                                                               ON gg.groupid = gm.groupid
-                                                               WHERE gg.groupingid = $value->id", array());
-                $groupingsarray[$g] = $renderer->get_groupingsarray($value, $countgroupingmem);
+                                                            FROM {groupings_groups} gg
+                                                            INNER JOIN {groups_members} gm
+                                                            ON gg.groupid = gm.groupid
+                                                            WHERE gg.groupingid = :groupingid", array('groupingid' => $value->id));
+                $groupingsarray[$g] = $renderer->get_groupingsarray($value->name, $countgroupingmem);
             }
         }
         return $groupingsarray;

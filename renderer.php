@@ -109,8 +109,8 @@ class block_groups_renderer extends plugin_renderer_base {
      * @params value
      * @return string
      */
-    public function get_groupingsarray($value, $counter) {
-        return $value->name . get_string('brackets', 'block_groups', $counter);
+    public function get_groupingsarray($name, $counter) {
+        return $name . get_string('brackets', 'block_groups', $counter);
     }
     /**
      * Returns the frame for the memberlist.
