@@ -169,20 +169,14 @@ class block_groups extends block_base
     public function build_grouping_array ($allgroupings) {
         global $DB, $PAGE;
         $renderer = $PAGE->get_renderer('block_groups');
-        $groupingdbquery = $DB->get_records_sql("SELECT gm.id, gm.groupid, gm.userid, gg.groupingid
-                                                               FROM {groupings_groups} gg
-                                                               JOIN {groups_members} gm
-                                                               ON gg.groupid = gm.groupid", array());
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
-                $members = array();
-                foreach ($groupingdbquery as $tempvalue) {
-                    if ($tempvalue->groupingid === $value->id) {
-                        $members[$tempvalue->userid] = $tempvalue->userid;
-                    }
-                }
-                $tempcounter = count($members);
-                $groupingsarray[$g] = $renderer->get_groupingsarray($value, $tempcounter);
+                $countgroupingmem = $DB->count_records_sql("SELECT Count(DISTINCT gm.userid)
+                                                               FROM {groupings_groups} gg
+                                                               INNER JOIN {groups_members} gm
+                                                               ON gg.groupid = gm.groupid
+                                                               WHERE gg.groupingid = $value->id", array());
+                $groupingsarray[$g] = $renderer->get_groupingsarray($value, $countgroupingmem);
             }
         }
         return $groupingsarray;
