@@ -105,17 +105,20 @@ class block_groups extends block_base
                 }
             }
         }
-        $temporarygroupingsinformation = array();
-        foreach ($allgroupings as $g => $value) {
-            $params = array ('groupingid' => $value->id);
-            $myvalue = $value->id;
-            $temporarygroupingsinformation[$value->id] = $DB->get_records_sql("SELECT groupid
-                                                                                FROM {groupings_groups} gg
-                                                                                WHERE gg.groupingid = $myvalue", $params);
-        }
+        $temporarygroupingsinformation = $DB->get_records_sql("SELECT gm.id ,gm.groupid, gm.userid, gg.groupingid
+                                                               FROM {groupings_groups} gg
+                                                               JOIN {groups_members} gm
+                                                               ON gg.groupid = gm.groupid", array());
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
-                $groupingsarray[$g] = $renderer->get_groupingsarray($value);
+                $members = array();
+                foreach ($temporarygroupingsinformation as $tempvalue) {
+                    if ($tempvalue->groupingid = $value->id) {
+                        $members[$tempvalue->userid] = $tempvalue->userid;
+                    }
+                }
+                $tempcounter = count($members);
+                $groupingsarray[$g] = $renderer->get_groupingsarray($value, $tempcounter);
             }
         }
         // Groups and Grouping Names are saved in arrays.

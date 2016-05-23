@@ -109,17 +109,9 @@ class block_groups_renderer extends plugin_renderer_base {
      * @params value
      * @return string
      */
-    public function get_groupingsarray($value) {
+    public function get_groupingsarray($value, $counter) {
 //        TODO :Member doppelt wenn sie in mehreren gruppen sind.
-        $counter = 0;
-        $member = groups_get_grouping_members($value->id);
-        /*foreach ($member as $membervalue) {
-            $counter = $counter + 1;
-        }
-        echo '<pre>';
-        echo  print_r($member);
-        echo'</pre>';*/
-        return $value->name;// . get_string('brackets', 'block_groups', $counter);
+        return $value->name . get_string('brackets', 'block_groups', $counter);
     }
     /**
      * Returns the frame for the memberlist.
