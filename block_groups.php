@@ -105,11 +105,14 @@ class block_groups extends block_base
                 }
             }
         }
+//        TODO:zeigt konstant alle nutzer als member an, warum?
         $temporarygroupingsinformation = $DB->get_records_sql("SELECT gm.id ,gm.groupid, gm.userid, gg.groupingid
                                                                FROM {groupings_groups} gg
                                                                JOIN {groups_members} gm
                                                                ON gg.groupid = gm.groupid", array());
         foreach ($allgroupings as $g => $value) {
+            unset($members);
+            $tempcounter = 0;
             if (is_object($value) && property_exists($value, 'name')) {
                 $members = array();
                 foreach ($temporarygroupingsinformation as $tempvalue) {
