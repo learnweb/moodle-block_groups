@@ -55,12 +55,9 @@ class block_groups_renderer extends plugin_renderer_base {
      *
      * @return string
      */
-    public function get_link_modify_groups() {
-        // TODO Parameter übergeben Course
-        global $CFG, $COURSE;
-        // Integer to identify the current course.
-        $courseshown = $COURSE->id;
-        return '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseshown . '">'.
+    public function get_link_modify_groups($courseid) {
+        global $CFG;
+        return '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseid . '">'.
             get_string('modify', 'block_groups'). '</a></br>';
     }
     /**
@@ -75,7 +72,6 @@ class block_groups_renderer extends plugin_renderer_base {
         global $OUTPUT;
         $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'),
             array('class' => "imggroup-". $value->id));
-//        TODO right align prüfen
         $ausrichtungdiv = html_writer::div( $img, 'rightalign');
         $line = html_writer::span($value->name . get_string('brackets', 'block_groups', $countmembers), "hiddengroups") .
             html_writer::link($href, $ausrichtungdiv, array('class' => 'block_groups_toggle', 'data-groupid' => $value->id,

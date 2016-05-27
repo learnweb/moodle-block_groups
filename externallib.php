@@ -23,7 +23,6 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("$CFG->libdir/externallib.php");
-require_once 'locallib.php';
 
 /**
  * blocks_groups external functions
@@ -65,10 +64,12 @@ class block_groups_visibility_change extends external_api{
      * @return array
      */
     public static function create_output($groups) {
-        global $DB, $PAGE, $CFG;
+        global $PAGE, $CFG;
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
-        db_transaction_changegroups($params['groups']['id'], $params['groups']['courseid']);
+        require_once($CFG->wwwroot . '/blocks/groups/locallib.php');
+        $groupmanager = new block_groups_locallib();
+        $groupmanager->db_transaction_changegroups($params['groups']['id'], $params['groups']['courseid']);
         $renderer = $PAGE->get_renderer('block_groups');
         $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $params['groups']['courseid'] .
             '&groupid=' . $params['groups']['id'];

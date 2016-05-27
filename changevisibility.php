@@ -23,7 +23,6 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once('../../config.php');
-require_once 'locallib.php';
 require_login();
 
 $courseid         = required_param('courseid', PARAM_INT);
@@ -31,19 +30,21 @@ $groupid          = required_param('groupid', PARAM_INT);
 
 $PAGE->set_url('/blocks/groups/changevisibility.php');
 // In Case the given id of the course is not available in the database exit message is shown.
-//TODO siehe unten get_record
+// TODO siehe unten get_record
 if (empty($DB->get_record('course', array('id' => $courseid)))) {
     exit(get_string('nocourse', 'block_groups'));
 }
 $PAGE->set_context(context_course::instance($courseid));
 require_capability('moodle/course:managegroups', context_course::instance($courseid));
-//    TODO schönere methode als get_record
+// TODO schönere methode als get_record
 $groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
 if (empty($groupsuitable)) {
     notice(get_string('nochangeindatabasepossible', 'block_groups'),
         $CFG->wwwroot . '/course/view.php?id=' . $courseid);
     exit();
 }
-db_transaction_changegroups($groupid, $courseid);
+require_once($CFG->wwwroot . '/blocks/groups/locallib.php');
+$groupmanager = new block_groups_locallib();
+$groupmanager->db_transaction_changegroups($groupid, $courseid);
 redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
 exit();

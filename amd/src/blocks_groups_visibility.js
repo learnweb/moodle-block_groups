@@ -51,11 +51,12 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
         add_spinner($(this).data('groupid'));
         var promises = ajax.call([
             { methodname: 'block_groups_create_output', args: {
-                groups: {
-                    id: $(this).data('groupid'),
-                    courseid: event.data.courseid
+                    groups: {
+                        id: $(this).data('groupid'),
+                        courseid: event.data.courseid
+                    }
                 }
-            }}
+            }
         ]);
         promises[0].done(function(response) {
             $('.group-' + response.id).replaceWith(response.newelement);

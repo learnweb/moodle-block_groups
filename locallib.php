@@ -29,7 +29,7 @@ class block_groups_locallib {
         $groupvisible = $DB->get_records('block_groups_hide', array('id' => $groupid));
         if (!empty($groupsuitable)) {
             if (empty($groupvisible)) {
-                $DB->insert_record('block_groups_hide', array('id' => $groupid));
+                $DB->import_record('block_groups_hide', array('id' => $groupid));
             }
             if (!empty($groupvisible)) {
                 $DB->delete_records('block_groups_hide', array('id' => $groupid));

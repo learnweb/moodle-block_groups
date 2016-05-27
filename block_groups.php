@@ -108,7 +108,7 @@ class block_groups extends block_base
         }
         // Empty block or block with checkboxes.
         if (count($groupsarray) == 0) {
-            $content .= $renderer->get_link_modify_groups();
+            $content .= $renderer->get_link_modify_groups($COURSE->id);
             $content .= get_string('nogroups', 'block_groups');
         } else {
             $groupingsarray = $this->build_grouping_array($allgroupings);
@@ -116,7 +116,7 @@ class block_groups extends block_base
                 $content .= $renderer->teaching_groupingslist($groupingsarray);
             }
             $content .= $renderer->teaching_groupslist($groupsarray);
-            $content .= $renderer->get_link_modify_groups();
+            $content .= $renderer->get_link_modify_groups($COURSE->id);
         }
         return $content;
     }
