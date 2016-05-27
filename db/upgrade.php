@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Created by IntelliJ IDEA.
- * User: nina
- * Date: 09.05.16
- * Time: 13:01
+ * Upgrade for the groups block.
+ *
+ * @package block_groups
+ * @copyright 2016 N Herrmann
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 function xmldb_block_groups_upgrade() {
     return true;

@@ -25,10 +25,10 @@
 $functions = array(
     'block_groups_create_output' => array(
         'classname' => 'block_groups_visibility_change',
-        'methodname' => 'create_output', // Implement this function into the above class.
+        'methodname' => 'create_output',
         'classpath'   => 'blocks/groups/externallib.php',
         'description' => 'Service to provide group with information',
-        'type' => 'write', // The value is 'write' if your function does any database change, otherwise it is 'read'.
+        'type' => 'write',
         'capabilities' => 'moodle/course:managegroups',
         'ajax' => true,
     )

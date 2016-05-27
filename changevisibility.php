@@ -30,25 +30,29 @@ $groupid          = required_param('groupid', PARAM_INT);
 
 $PAGE->set_url('/blocks/groups/changevisibility.php');
 // In Case the given id of the course is not available in the database exit message is shown.
-if (!empty($DB->get_record('course', array('id' => $courseid)))) {
-    $PAGE->set_context(context_course::instance($courseid));
-    require_capability('moodle/course:managegroups', context_course::instance($courseid));
-    $groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
-    if (!empty($groupsuitable)) {
-        $transaction = $DB->start_delegated_transaction();
-        $groupvisible = $DB->get_records('block_groups_hide', array('id' => $groupid, ));
-        if (empty($groupvisible)) {
-            $DB->import_record('block_groups_hide', array('id' => $groupid));
-        } else if (!empty($groupvisible)) {
-            $DB->delete_records('block_groups_hide', array('id' => $groupid));
-        }
-        $transaction->allow_commit();
-        redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
-        exit();
-    } else {
-        notice(get_string('nochangeindatabasepossible', 'block_groups'),
-            $CFG->wwwroot . '/course/view.php?id=' . $courseid);
-        exit();
-    }
+//TODO siehe unten get_record
+if (empty($DB->get_record('course', array('id' => $courseid)))) {
+    exit(get_string('nocourse', 'block_groups'));
 }
-exit(get_string('nocourse', 'block_groups'));
+$PAGE->set_context(context_course::instance($courseid));
+require_capability('moodle/course:managegroups', context_course::instance($courseid));
+//    TODO schönere methode als get_record
+$groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
+if (empty($groupsuitable)) {
+    notice(get_string('nochangeindatabasepossible', 'block_groups'),
+        $CFG->wwwroot . '/course/view.php?id=' . $courseid);
+    exit();
+}
+//TODO locallib
+$transaction = $DB->start_delegated_transaction();
+$groupvisible = $DB->get_records('block_groups_hide', array('id' => $groupid, ));
+if (empty($groupvisible)) {
+//           TODO insert_record
+    $DB->import_record('block_groups_hide', array('id' => $groupid));
+} else if (!empty($groupvisible)) {
+    $DB->delete_records('block_groups_hide', array('id' => $groupid));
+}
+$transaction->allow_commit();
+
+redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
+exit();

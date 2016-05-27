@@ -33,7 +33,6 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
         spinner.src = imgurl;
         spinner.hidden = false;
         $('.imggroup-' + id).before(spinner);
-        return false;
     };
 
     /**
@@ -48,15 +47,18 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
-    var changevisibility = function () {
+    var changevisibility = function (event) {
         add_spinner($(this).data('groupid'));
         var promises = ajax.call([
-            { methodname: 'block_groups_create_output', args: {groups:{id: $(this).data('groupid'),
-                courseid: $(this).data('courseid')}}}
+            { methodname: 'block_groups_create_output', args: {
+                groups: {
+                    id: $(this).data('groupid'),
+                    courseid: event.data.courseid
+                }
+            }}
         ]);
         promises[0].done(function(response) {
-            var newelement = response.newelement;
-            $('.group-' + response.id).replaceWith(newelement);
+            $('.group-' + response.id).replaceWith(response.newelement);
             // Replaces the used element, therefore removes the spinner.
             if(response.visibility === 1) {
                 $('.membergroup-' + response.id).removeClass('hiddengroups');
@@ -64,8 +66,7 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
             if(response.visibility === 0) {
                 $('.membergroup-' + response.id).addClass('hiddengroups');
             }
-            $('.group-' + response.id + ' .block_groups_toggle').on('click', changevisibility);
-            // In the unlikely case that javascript works very slow
+            $('.group-' + response.id + ' .block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
             remove_spinner(response.id);
         });
         return false;
@@ -75,8 +76,8 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
      * Calls for the main method.
      */
     return {
-        initialise: function(){
-            $('.block_groups_toggle').on('click', changevisibility);
+        initialise: function(courseid){
+            $('.block_groups_toggle').on('click', {courseid: courseid}, changevisibility);
 
         }
     };

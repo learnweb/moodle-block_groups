@@ -26,17 +26,6 @@
  defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-
-    'block/groups:myaddinstance' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'user' => CAP_ALLOW
-        ),
-
-        'clonepermissionsfrom' => 'moodle/my:manageblocks'
-    ),
-
     'block/groups:addinstance' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,

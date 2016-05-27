@@ -86,7 +86,7 @@ class block_groups extends block_base
         // Array to save all groupings.
         $allgroupings = groups_get_all_groupings($COURSE->id);
         // String initialises an empty string.
-        $groupstext = '';
+        $content = '';
         // Calls the renderer
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
@@ -100,26 +100,27 @@ class block_groups extends block_base
                 $countmembers = count(groups_get_members($value->id));
                 $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $COURSE->id . '&groupid=' . $value->id;
                 if (empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
+                    //TODO sinngemäße bezeichnung
                     $groupsarray[] = $renderer->get_groupsarrayempty($value, $href, $countmembers);
                 } else {
+                    // todo siehe oben
                     $groupsarray[] = $renderer->get_groupsarraynonempty($value, $href, $countmembers);
                 }
             }
         }
-        $groupingsarray = $this->build_grouping_array($allgroupings);
         // Empty block or block with checkboxes.
         if (count($groupsarray) == 0) {
-            $groupstext .= $renderer->get_link();
-            $groupstext .= get_string('nogroups', 'block_groups');
-            return $groupstext;
+            $content .= $renderer->get_link_modify_groups();
+            $content .= get_string('nogroups', 'block_groups');
         } else {
-            if (!(empty($groupingsarray))) {
-                $groupstext .= $renderer->teaching_groupingslist($groupingsarray);
+            $groupingsarray = $this->build_grouping_array($allgroupings);
+            if (!empty($groupingsarray)) {
+                $content .= $renderer->teaching_groupingslist($groupingsarray);
             }
-            $groupstext .= $renderer->teaching_groupslist($groupsarray);
-            $groupstext .= $renderer->get_link();
-            return $groupstext;
+            $content .= $renderer->teaching_groupslist($groupsarray);
+            $content .= $renderer->get_link_modify_groups();
         }
+        return $content;
     }
 
     /**
@@ -135,27 +136,27 @@ class block_groups extends block_base
         $enrolledgroups = array();
         // List renders all enrolled groups.
         $allgroups = groups_get_my_groups();
-        // Records the capability to manage courses.
+        // Necessary to show hidden groups to Course Managers.
         $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
-        foreach ($allgroups as $valueall) {
-            if (($valueall->courseid == $COURSE->id)) {
-                $counter = $DB->get_records('block_groups_hide', array('id' => $valueall->id));
+        foreach ($allgroups as $group) {
+            if (($group->courseid == $COURSE->id)) {
+                $counter = $DB->get_records('block_groups_hide', array('id' => $group->id));
                 if (!empty($counter)) {
-                    $enrolledgroups[] = $renderer->get_tag_groupname($valueall);
+                    $enrolledgroups[] = $renderer->get_tag_visiblegroup($group);
                 } else if ($access === true) {
-                    $enrolledgroups[] = $renderer->get_tag_hiddengroups($valueall);
+                    $enrolledgroups[] = $renderer->get_tag_hiddengroup($group);
                 }
             }
         }
-        // Returns an empty block.
+        // Returns an empty list of groups.
         if (empty($enrolledgroups)) {
-            $groupstext = '';
-            return $groupstext;
+            $content = '';
+            return $content;
         }
-        $groupstext = $renderer->get_membership_content($enrolledgroups);
-        return $groupstext;
+        $content = $renderer->get_membership_content($enrolledgroups);
+        return $content;
     }
     /**
      * The Block is only availeable at course-view pages
@@ -163,12 +164,13 @@ class block_groups extends block_base
      * @return array
      */
     public function applicable_formats() {
-        return array('course-view' => true, 'mod' => false, 'tag' => false);
+        return array('course-view' => true, 'mod' => false, 'my' => false);
     }
     /**
      * Generates an array of groupingnames and their members.
      *
-     * @params array of groupings
+     * @param $allgroupings array of groupings
+     * @return array of Groupings
      */
     public function build_grouping_array ($allgroupings) {
         global $DB, $PAGE;
@@ -183,7 +185,8 @@ class block_groups extends block_base
                                                             INNER JOIN {groups_members} gm
                                                             ON gg.groupid = gm.groupid
                                                             WHERE gg.groupingid = :groupingid", array('groupingid' => $value->id));
-                $groupingsarray[$g] = $renderer->get_groupingsarray($value->name, $countgroupingmem);
+                //TODO : umbenennen nicht array als rückgabe
+                $groupingsarray[$g] = $renderer->get_grouping($value->name, $countgroupingmem);
             }
         }
         return $groupingsarray;

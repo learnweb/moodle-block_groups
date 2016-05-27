@@ -61,12 +61,13 @@ class block_groups_visibility_change extends external_api{
      *  Changed the Database and returns the updated html content.
      *
      * @params $groups
-     * @return string
+     * @return array
      */
     public static function create_output($groups) {
         global $DB, $PAGE, $CFG;
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
+//        TODO auslagern in locallib
         $transaction = $DB->start_delegated_transaction();
         // If an exception is thrown in the below code, all DB queries in this code will be rollback.
         $groupsuitable = $DB->get_record('groups', array('id' => $params['groups']['id'],
@@ -75,6 +76,7 @@ class block_groups_visibility_change extends external_api{
         // Takes changes in the Database.
         if (!empty($groupsuitable)) {
             if (empty($groupvisible)) {
+//                TODO methoden angleichen best of breed
                 $DB->import_record('block_groups_hide', array('id' => $params['groups']['id']));
             }
             if (!empty($groupvisible)) {
@@ -82,21 +84,22 @@ class block_groups_visibility_change extends external_api{
             }
         }
         $transaction->allow_commit();
+
         $renderer = $PAGE->get_renderer('block_groups');
         $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $params['groups']['courseid'] .
             '&groupid=' . $params['groups']['id'];
         $countmembers = count(groups_get_members($params['groups']['id']));
-        $myvalueobject = groups_get_group($params['groups']['id']);
-        $output = array('groups' => array('id' => $params['groups']['id'], 'courseid' => $params['groups']['courseid']));
+        $group = groups_get_group($params['groups']['id']);
+        $output = array('id' => $params['groups']['id'], 'courseid' => $params['groups']['courseid']);
         // Generates the Output component.
         if (empty($groupvisible)) {
-            $output['groups']['newelement'] = $renderer->get_groupsarraynonempty($myvalueobject, $href, $countmembers);
-            $output['groups']['visibility'] = 1;
+            $output['newelement'] = $renderer->get_groupsarraynonempty($group, $href, $countmembers);
+            $output['visibility'] = 1;
         }
         if (!empty($groupvisible)) {
-            $output['groups']['newelement'] = $renderer->get_groupsarrayempty($myvalueobject, $href, $countmembers);
-            $output['groups']['visibility'] = 0;
+            $output['newelement'] = $renderer->get_groupsarrayempty($group, $href, $countmembers);
+            $output['visibility'] = 0;
         }
-        return  $output['groups'];
+        return  $output;
     }
 }

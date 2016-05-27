@@ -1,38 +1,35 @@
 .block_groups div.memberlist {
     list-style: url('[[pix:i/navigationitem]]');
 }
-.block_groups .blockgroupsandgroupingcheckbox ~ ul {
-    display:none;
-}
+
 .block_groups input.blockgroupsandgroupingcheckbox {
-    visibility: hidden;
+    display: none;
     cursor: pointer;
-    position:absolute;
     text-align: left;
 }
-.block_groups input.blockgroupsandgroupingcheckbox  ~label::before {
-    content:url('[[pix:t/collapsed]]');
+
+.block_groups input.blockgroupsandgroupingcheckbox ~ label::before {
+    content: url('[[pix:t/collapsed]]');
 }
+
 .block_groups input.blockgroupsandgroupingcheckbox:checked ~ label::before {
-    content:url('[[pix:t/expanded]]');
+    content: url('[[pix:t/expanded]]');
 }
-.block_groups input.blockgroupsandgroupingcheckbox:checked ~ ul{
-    display : block;
+
+.block_groups input.blockgroupsandgroupingcheckbox ~ ul {
+    display: none;
+}
+
+.block_groups input.blockgroupsandgroupingcheckbox:checked ~ ul {
+    display: block;
     list-style: url('[[pix:i/navigationitem]]');
-    padding-left : 11px;
+    padding-left: 16px;
 }
-.block_groups input.blockgroupsandgroupingcheckbox:checked ~ label ::before{
-    content:url('[[pix:t/expanded]]');
-}
-.block_groups a{
-    margin-left: 0;
-}
+
 .block_groups .rightalign {
     float: right;
 }
+
 .block_groups .hiddengroups {
-    opacity : 0.5;
-}
-.block_groups .normalgroups {
-    opacity : 1;
+    opacity: 0.5;
 }
