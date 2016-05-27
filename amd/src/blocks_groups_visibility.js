@@ -23,6 +23,29 @@
 
 define(['jquery','core/ajax','core/url'], function($, ajax, url) {
     /**
+     * Initialises Spinner.
+     * @param id int that identifies the group id
+     */
+    var add_spinner = function (id) {
+        var imgurl = url.imageUrl("i/loading_small",'moodle');
+        var spinner = document.createElement("img");
+        spinner.className = 'spinner' + id;
+        spinner.src = imgurl;
+        spinner.hidden = false;
+        $('.imggroup-' + id).before(spinner);
+        return false;
+    };
+
+    /**
+     * Removes the Spinner Class
+     * @param id int that identifies to which group the spinner belongs to.
+     */
+    var remove_spinner = function (id) {
+        if($('.spinner' + id ).length > 0){
+            $('.imggroup-' + id + 'img:first-child').remove();
+        }
+    };
+    /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
     var changevisibility = function () {
@@ -48,29 +71,6 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
         return false;
     };
 
-    /**
-     * Initialises Spinner.
-     * @param id int that identifies the group id
-     */
-    var add_spinner = function (id) {
-        var imgurl = url.imageUrl("i/loading_small",'moodle');
-        var spinner = document.createElement("img");
-        spinner.className = 'spinner' + id;
-        spinner.src = imgurl;
-        spinner.hidden = false;
-        $('.imggroup-' + id).before(spinner);
-        return false;
-    };
-
-    /**
-     * Removes the Spinner Class
-     * @param id int that identifies to which group the spinner belongs to.
-     */
-    var remove_spinner = function (id) {
-        if($('.spinner' + id ).length > 0){
-            $('.imggroup-' + id + 'img:first-child').remove();
-        }
-    };
     /**
      * Calls for the main method.
      */
