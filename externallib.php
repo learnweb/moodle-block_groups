@@ -23,6 +23,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("$CFG->libdir/externallib.php");
+require_once 'locallib.php';
 
 /**
  * blocks_groups external functions
@@ -67,24 +68,7 @@ class block_groups_visibility_change extends external_api{
         global $DB, $PAGE, $CFG;
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
-//        TODO auslagern in locallib
-        $transaction = $DB->start_delegated_transaction();
-        // If an exception is thrown in the below code, all DB queries in this code will be rollback.
-        $groupsuitable = $DB->get_record('groups', array('id' => $params['groups']['id'],
-            'courseid' => $params['groups']['courseid']));
-        $groupvisible = $DB->get_records('block_groups_hide', array('id' => $params['groups']['id'], ));
-        // Takes changes in the Database.
-        if (!empty($groupsuitable)) {
-            if (empty($groupvisible)) {
-//                TODO methoden angleichen best of breed
-                $DB->import_record('block_groups_hide', array('id' => $params['groups']['id']));
-            }
-            if (!empty($groupvisible)) {
-                $DB->delete_records('block_groups_hide', array('id' => $params['groups']['id']));
-            }
-        }
-        $transaction->allow_commit();
-
+        db_transaction_changegroups($params['groups']['id'], $params['groups']['courseid']);
         $renderer = $PAGE->get_renderer('block_groups');
         $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $params['groups']['courseid'] .
             '&groupid=' . $params['groups']['id'];
@@ -93,11 +77,11 @@ class block_groups_visibility_change extends external_api{
         $output = array('id' => $params['groups']['id'], 'courseid' => $params['groups']['courseid']);
         // Generates the Output component.
         if (empty($groupvisible)) {
-            $output['newelement'] = $renderer->get_groupsarraynonempty($group, $href, $countmembers);
+            $output['newelement'] = $renderer->get_string_hiddengroup($group, $href, $countmembers);
             $output['visibility'] = 1;
         }
         if (!empty($groupvisible)) {
-            $output['newelement'] = $renderer->get_groupsarrayempty($group, $href, $countmembers);
+            $output['newelement'] = $renderer->get_string_visiblegroup($group, $href, $countmembers);
             $output['visibility'] = 0;
         }
         return  $output;

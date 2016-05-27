@@ -100,11 +100,9 @@ class block_groups extends block_base
                 $countmembers = count(groups_get_members($value->id));
                 $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $COURSE->id . '&groupid=' . $value->id;
                 if (empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
-                    //TODO sinngemäße bezeichnung
-                    $groupsarray[] = $renderer->get_groupsarrayempty($value, $href, $countmembers);
+                    $groupsarray[] = $renderer->get_string_visiblegroup($value, $href, $countmembers);
                 } else {
-                    // todo siehe oben
-                    $groupsarray[] = $renderer->get_groupsarraynonempty($value, $href, $countmembers);
+                    $groupsarray[] = $renderer->get_string_hiddengroup($value, $href, $countmembers);
                 }
             }
         }
@@ -130,11 +128,8 @@ class block_groups extends block_base
      */
 
     private function block_groups_get_content_groupmembers() {
-        // Records the current course.
         global $COURSE, $DB, $PAGE;
-        // Initialises an array to save the enrolled groups.
         $enrolledgroups = array();
-        // List renders all enrolled groups.
         $allgroups = groups_get_my_groups();
         // Necessary to show hidden groups to Course Managers.
         $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
@@ -185,7 +180,6 @@ class block_groups extends block_base
                                                             INNER JOIN {groups_members} gm
                                                             ON gg.groupid = gm.groupid
                                                             WHERE gg.groupingid = :groupingid", array('groupingid' => $value->id));
-                //TODO : umbenennen nicht array als rückgabe
                 $groupingsarray[$g] = $renderer->get_grouping($value->name, $countgroupingmem);
             }
         }

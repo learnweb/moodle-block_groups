@@ -23,6 +23,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once('../../config.php');
+require_once 'locallib.php';
 require_login();
 
 $courseid         = required_param('courseid', PARAM_INT);
@@ -43,16 +44,6 @@ if (empty($groupsuitable)) {
         $CFG->wwwroot . '/course/view.php?id=' . $courseid);
     exit();
 }
-//TODO locallib
-$transaction = $DB->start_delegated_transaction();
-$groupvisible = $DB->get_records('block_groups_hide', array('id' => $groupid, ));
-if (empty($groupvisible)) {
-//           TODO insert_record
-    $DB->import_record('block_groups_hide', array('id' => $groupid));
-} else if (!empty($groupvisible)) {
-    $DB->delete_records('block_groups_hide', array('id' => $groupid));
-}
-$transaction->allow_commit();
-
+db_transaction_changegroups($groupid, $courseid);
 redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
 exit();

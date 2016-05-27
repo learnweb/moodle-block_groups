@@ -21,3 +21,20 @@
  * @copyright  2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class block_groups_locallib {
+    public function db_transaction_changegroups($groupid, $courseid) {
+        global $DB;
+        $transaction = $DB->start_delegated_transaction();
+        $groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
+        $groupvisible = $DB->get_records('block_groups_hide', array('id' => $groupid));
+        if (!empty($groupsuitable)) {
+            if (empty($groupvisible)) {
+                $DB->insert_record('block_groups_hide', array('id' => $groupid));
+            }
+            if (!empty($groupvisible)) {
+                $DB->delete_records('block_groups_hide', array('id' => $groupid));
+            }
+        }
+        $transaction->allow_commit();
+    }
+}

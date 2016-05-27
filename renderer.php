@@ -71,7 +71,7 @@ class block_groups_renderer extends plugin_renderer_base {
      * @params countmembers
      * @return string
      */
-    public function get_groupsarrayempty($value, $href, $countmembers) {
+    public function get_string_visiblegroup($value, $href, $countmembers) {
         global $OUTPUT;
         $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'),
             array('class' => "imggroup-". $value->id));
@@ -90,7 +90,7 @@ class block_groups_renderer extends plugin_renderer_base {
      * @params countmembers
      * @return string
      */
-    public function get_groupsarraynonempty($value, $href, $countmembers) {
+    public function get_string_hiddengroup($value, $href, $countmembers) {
         global $OUTPUT;
         $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'),
             array('class' => "imggroup-". $value->id));
