@@ -34,7 +34,7 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
         promises[0].done(function(response) {
             var newelement = response.newelement;
             $('.group-' + response.id).replaceWith(newelement);
-            //Replaces the used element, therefore removes the spinner.
+            // Replaces the used element, therefore removes the spinner.
             if(response.visibility === 1) {
                 $('.membergroup-' + response.id).removeClass('hiddengroups');
             }
@@ -55,7 +55,7 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
     var add_spinner = function (id) {
         var imgurl = url.imageUrl("i/loading_small",'moodle');
         var spinner = document.createElement("img");
-        spinner.className = 'spinner'+id;
+        spinner.className = 'spinner' + id;
         spinner.src = imgurl;
         spinner.hidden = false;
         $('.imggroup-' + id).before(spinner);
@@ -67,7 +67,7 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
      * @param id int that identifies to which group the spinner belongs to.
      */
     var remove_spinner = function (id) {
-        if($('.spinner'+ id ).length > 0){
+        if($('.spinner' + id ).length > 0){
             $('.imggroup-' + id + 'img:first-child').remove();
         }
     };
