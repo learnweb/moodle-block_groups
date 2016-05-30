@@ -67,7 +67,7 @@ class block_groups_visibility_change extends external_api{
         global $PAGE, $CFG;
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
-        require_once($CFG->wwwroot . '/blocks/groups/locallib.php');
+        require_once($CFG->dirroot.'/blocks/groups/locallib.php');
         $groupmanager = new block_groups_locallib();
         $groupmanager->db_transaction_changegroups($params['groups']['id'], $params['groups']['courseid']);
         $renderer = $PAGE->get_renderer('block_groups');
