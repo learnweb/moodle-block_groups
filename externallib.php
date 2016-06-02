@@ -64,7 +64,7 @@ class block_groups_visibility_change extends external_api{
      * @return array
      */
     public static function create_output($groups) {
-        global $PAGE, $CFG;
+        global $PAGE, $CFG, $DB;
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
         require_once($CFG->dirroot.'/blocks/groups/locallib.php');
@@ -77,12 +77,13 @@ class block_groups_visibility_change extends external_api{
         $group = groups_get_group($params['groups']['id']);
         $output = array('id' => $params['groups']['id'], 'courseid' => $params['groups']['courseid']);
         // Generates the Output component.
+        $groupvisible = $DB->get_records('block_groups_hide', array('id' => $params['groups']['id']));
         if (empty($groupvisible)) {
-            $output['newelement'] = $renderer->get_string_hiddengroup($group, $href, $countmembers);
+            $output['newelement'] = $renderer->get_string_visiblegroup($group, $href, $countmembers);
             $output['visibility'] = 1;
         }
         if (!empty($groupvisible)) {
-            $output['newelement'] = $renderer->get_string_visiblegroup($group, $href, $countmembers);
+            $output['newelement'] = $renderer->get_string_hiddengroup($group, $href, $countmembers);
             $output['visibility'] = 0;
         }
         return  $output;
