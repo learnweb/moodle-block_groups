@@ -61,10 +61,10 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
         promises[0].done(function(response) {
             $('.group-' + response.id).replaceWith(response.newelement);
             // Replaces the used element, therefore removes the spinner.
-            if(response.visibility === 1) {
+            if(response.visibility === 0) {
                 $('.membergroup-' + response.id).removeClass('hiddengroups');
             }
-            if(response.visibility === 0) {
+            if(response.visibility === 1) {
                 $('.membergroup-' + response.id).addClass('hiddengroups');
             }
             $('.group-' + response.id + ' .block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);

@@ -22,7 +22,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_groups_locallib {
-    public function db_transaction_changegroups($groupid, $courseid) {
+    public function block_groups_db_transaction_changegroups($groupid, $courseid) {
         global $DB;
         $transaction = $DB->start_delegated_transaction();
         $groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));

@@ -1,14 +1,14 @@
-.block_groups div.memberlist {
+.path-block-groups .block_groups div.memberlist {
     list-style: url('[[pix:i/navigationitem]]');
 }
 
-.block_groups input.blockgroupsandgroupingcheckbox {
+.path-block-groups .block_groups input.blockgroupsandgroupingcheckbox {
     display: none;
     cursor: pointer;
     text-align: left;
 }
 
-.block_groups input.blockgroupsandgroupingcheckbox ~ label::before {
+.path-block-groups .block_groups input.blockgroupsandgroupingcheckbox ~ label::before {
     content: url('[[pix:t/collapsed]]');
 }
 

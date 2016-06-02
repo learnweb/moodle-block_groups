@@ -72,9 +72,9 @@ class block_groups_renderer extends plugin_renderer_base {
         global $OUTPUT;
         $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'),
             array('class' => "imggroup-". $value->id));
-        $ausrichtungdiv = html_writer::div( $img, 'rightalign');
+        $rightaligndiv = html_writer::div( $img, 'rightalign');
         $line = html_writer::span($value->name . get_string('brackets', 'block_groups', $countmembers), "hiddengroups") .
-            html_writer::link($href, $ausrichtungdiv, array('class' => 'block_groups_toggle', 'data-groupid' => $value->id,
+            html_writer::link($href, $rightaligndiv, array('class' => 'block_groups_toggle', 'data-groupid' => $value->id,
                 'data-action' => 'show'));
         return html_writer::span($line, 'group-'. $value->id);
     }
@@ -90,8 +90,8 @@ class block_groups_renderer extends plugin_renderer_base {
         global $OUTPUT;
         $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'),
             array('class' => "imggroup-". $value->id));
-        $ausrichtungdiv = html_writer::div($img, 'rightalign');
-        $line = $value->name . get_string('brackets', 'block_groups', $countmembers) . html_writer::link($href , $ausrichtungdiv,
+        $rightaligndiv = html_writer::div($img, 'rightalign');
+        $line = $value->name . get_string('brackets', 'block_groups', $countmembers) . html_writer::link($href , $rightaligndiv,
             array('class' => 'block_groups_toggle', 'data-groupid' => $value->id, 'data-action' => 'hide'));
         return html_writer::span($line, 'group-'. $value->id);
     }

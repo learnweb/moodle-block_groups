@@ -85,14 +85,11 @@ class block_groups extends block_base
         $allgroups = groups_get_all_groups($COURSE->id);
         // Array to save all groupings.
         $allgroupings = groups_get_all_groupings($COURSE->id);
-        // String initialises an empty string.
         $content = '';
-        // Calls the renderer
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
-        // Calls Javascript if availeable.
+        // Calls Javascript if available.
         $PAGE->requires->js_call_amd('block_groups/blocks_groups_visibility', 'initialise', array($COURSE->id));
-        // Initializing the grouparray.
         $groupsarray = array();
         foreach ($allgroups as $value) {
             // Checks availability of group and requests the content.
@@ -111,7 +108,7 @@ class block_groups extends block_base
             $content .= $renderer->get_link_modify_groups($COURSE->id);
             $content .= get_string('nogroups', 'block_groups');
         } else {
-            $groupingsarray = $this->build_grouping_array($allgroupings);
+            $groupingsarray = $this->block_groups_build_grouping_array($allgroupings);
             if (!empty($groupingsarray)) {
                 $content .= $renderer->teaching_groupingslist($groupingsarray);
             }
@@ -167,7 +164,7 @@ class block_groups extends block_base
      * @param $allgroupings array of groupings
      * @return array of Groupings
      */
-    public function build_grouping_array ($allgroupings) {
+    public function block_groups_build_grouping_array ($allgroupings) {
         global $DB, $PAGE;
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
@@ -175,12 +172,12 @@ class block_groups extends block_base
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 // Necessary DB query to prohibit multiple ids of grouping members.
-                $countgroupingmem = $DB->count_records_sql("SELECT Count(DISTINCT gm.userid)
+                $countgroupingmember = $DB->count_records_sql("SELECT Count(DISTINCT gm.userid)
                                                             FROM {groupings_groups} gg
                                                             INNER JOIN {groups_members} gm
                                                             ON gg.groupid = gm.groupid
                                                             WHERE gg.groupingid = :groupingid", array('groupingid' => $value->id));
-                $groupingsarray[$g] = $renderer->get_grouping($value->name, $countgroupingmem);
+                $groupingsarray[$g] = $renderer->get_grouping($value->name, $countgroupingmember);
             }
         }
         return $groupingsarray;
