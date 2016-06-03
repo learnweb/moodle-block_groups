@@ -63,13 +63,13 @@ class block_groups extends block_base
         $this->content->text = '';
 
         if ($access === true) {
-            $this->content->text .= $this->block_groups_get_content_teaching();
+            $this->content->text .= $this->get_content_teaching();
         }
 
         if ($access === false) {
             $this->title = get_string('pluginname2', 'block_groups');
         }
-        $this->content->text .= $this->block_groups_get_content_groupmembers();
+        $this->content->text .= $this->get_content_groupmembers();
         return $this->content;
     }
 
@@ -79,7 +79,7 @@ class block_groups extends block_base
      *
      * @return string
      */
-    private function block_groups_get_content_teaching() {
+    private function get_content_teaching() {
         global  $COURSE, $PAGE, $DB, $CFG;
         // Array to save all groups.
         $allgroups = groups_get_all_groups($COURSE->id);
@@ -108,7 +108,7 @@ class block_groups extends block_base
             $content .= $renderer->get_link_modify_groups($COURSE->id);
             $content .= get_string('nogroups', 'block_groups');
         } else {
-            $groupingsarray = $this->block_groups_build_grouping_array($allgroupings);
+            $groupingsarray = $this->build_grouping_array($allgroupings);
             if (!empty($groupingsarray)) {
                 $content .= $renderer->teaching_groupingslist($groupingsarray);
             }
@@ -124,7 +124,7 @@ class block_groups extends block_base
      * @return string
      */
 
-    private function block_groups_get_content_groupmembers() {
+    private function get_content_groupmembers() {
         global $COURSE, $DB, $PAGE;
         $enrolledgroups = array();
         $allgroups = groups_get_my_groups();
@@ -164,7 +164,7 @@ class block_groups extends block_base
      * @param $allgroupings array of groupings
      * @return array of Groupings
      */
-    public function block_groups_build_grouping_array ($allgroupings) {
+    public function build_grouping_array ($allgroupings) {
         global $DB, $PAGE;
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');

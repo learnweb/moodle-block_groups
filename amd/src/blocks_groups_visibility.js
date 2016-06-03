@@ -1,3 +1,8 @@
+
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -40,35 +45,60 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
      * @param id int that identifies to which group the spinner belongs to.
      */
     var remove_spinner = function (id) {
-        if($('.spinner' + id ).length > 0){
-            $('.imggroup-' + id + 'img:first-child').remove();
-        }
+        $('.block_groups').find('.spinner' + id).remove();
     };
+    var add_warning = function (id){
+        var imgurl = url.imageUrl("i/warning",'moodle');
+        var warning = document.createElement("img");
+        warning.className = 'warning' + id;
+        warning.src = imgurl;
+        $('.imggroup-' + id).before(warning);
+    }
+    var add_warning_empty = function (){
+        console.log('warning');
+    }
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
     var changevisibility = function (event) {
+        // TODO Füge kreuz bzw. fehlermeldung hinzu?
+        var groupid = $(this).data('groupid');
+        if($('.block_groups').find('.spinner' + $(this).data('groupid')).length > 0){
+            return false;
+        }
         add_spinner($(this).data('groupid'));
+        $.ajax({
+            timeout:3000
+        });
         var promises = ajax.call([
             { methodname: 'block_groups_create_output', args: {
                 groups: {
                     id: $(this).data('groupid'),
                     courseid: event.data.courseid
                 }
-                }
+            }
             }
         ]);
+
         promises[0].done(function(response) {
-            $('.group-' + response.id).replaceWith(response.newelement);
+            if(response === null){
+                add_warning_empty();
+            }
+            if(response.error == true){
+                add_warning_empty();
+            }
+            $('.block_groups').find('.group-' + response.id).replaceWith(response.newelement);
             // Replaces the used element, therefore removes the spinner.
             if(response.visibility === 0) {
-                $('.membergroup-' + response.id).removeClass('hiddengroups');
+                $('.block_groups').find('.membergroup-' + response.id).removeClass('hiddengroups');
             }
             if(response.visibility === 1) {
-                $('.membergroup-' + response.id).addClass('hiddengroups');
+                $('.block_groups').find('.membergroup-' + response.id).addClass('hiddengroups');
             }
-            $('.group-' + response.id + ' .block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
+            $('.block_groups').find('.group-' + response.id + ' .block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
             remove_spinner(response.id);
+        }).fail(function () {
+            add_warning_empty();
         });
         return false;
     };
@@ -79,7 +109,6 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
     return {
         initialise: function(courseid){
             $('.block_groups_toggle').on('click', {courseid: courseid}, changevisibility);
-
         }
     };
 });

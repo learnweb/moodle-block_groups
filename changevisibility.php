@@ -43,7 +43,6 @@ if (empty($groupsuitable)) {
     exit();
 }
 require_once($CFG->dirroot.'/blocks/groups/locallib.php');
-$groupmanager = new block_groups_locallib();
-$groupmanager->block_groups_db_transaction_changegroups($groupid, $courseid);
+block_groups_db_transaction_changegroups($groupid, $courseid);
 redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
 exit();
