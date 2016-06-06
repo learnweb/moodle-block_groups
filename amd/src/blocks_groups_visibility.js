@@ -1,4 +1,3 @@
-
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -26,7 +25,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery','core/ajax','core/url'], function($, ajax, url) {
+define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, url, notification) {
     /**
      * Initialises Spinner.
      * @param id int that identifies the group id
@@ -68,7 +67,8 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
      * Creates a warning message.
      */
     var create_warning_message = function (){
-        alert('The requested change was not possible');
+        //title, message, yesLabel
+        notification.alert('Error','The requested change was not possible','OK');
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
@@ -89,7 +89,7 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
                     id: $(this).data('groupid'),
                     courseid: event.data.courseid
                 }
-            }
+                }
             }
         ]);
         $(document).ajaxError(function() {
