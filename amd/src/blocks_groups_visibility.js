@@ -47,21 +47,34 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
     var remove_spinner = function (id) {
         $('.block_groups').find('.spinner' + id).remove();
     };
-    var add_warning = function (id){
+    /**
+     * Adds a warning in case the response is empty or the response throws an error.
+     * @param groupid int that identifies to which group the spinner belongs to.
+     */
+    var add_warning = function (groupid){
+        if($('.block_groups').find('.warning' + groupid).length > 0){
+            remove_spinner(groupid);
+            create_warning_message();
+            return false;
+        }
         var imgurl = url.imageUrl("i/warning",'moodle');
         var warning = document.createElement("img");
-        warning.className = 'warning' + id;
+        warning.className = 'warning' + groupid;
         warning.src = imgurl;
-        $('.imggroup-' + id).before(warning);
-    }
-    var add_warning_empty = function (){
-        console.log('warning');
-    }
+        remove_spinner(groupid);
+        ($('.imggroup-' + groupid).before(warning)).on('click', create_warning_message());
+    };
+    /**
+     * Creates a warning message.
+     */
+    var create_warning_message = function (){
+        alert('The requested change was not possible');
+    };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
     var changevisibility = function (event) {
-        // TODO Füge kreuz bzw. fehlermeldung hinzu?
+        // TODO Füge kreuz bzw. fehlermeldung hinzu für nginx antwortet nicht
         var groupid = $(this).data('groupid');
         if($('.block_groups').find('.spinner' + $(this).data('groupid')).length > 0){
             return false;
@@ -79,13 +92,20 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
             }
             }
         ]);
+        $(document).ajaxError(function() {
+            add_warning(groupid);
+            return false;
+        });
 
+        // Springt von promise done zu fail zu done ohne in eine der funktionen reinzugehen
         promises[0].done(function(response) {
             if(response === null){
-                add_warning_empty();
+                add_warning(groupid);
+                return false;
             }
-            if(response.error == true){
-                add_warning_empty();
+            if(response.error === true){
+                add_warning(groupid);
+                return false;
             }
             $('.block_groups').find('.group-' + response.id).replaceWith(response.newelement);
             // Replaces the used element, therefore removes the spinner.
@@ -95,10 +115,12 @@ define(['jquery','core/ajax','core/url'], function($, ajax, url) {
             if(response.visibility === 1) {
                 $('.block_groups').find('.membergroup-' + response.id).addClass('hiddengroups');
             }
-            $('.block_groups').find('.group-' + response.id + ' .block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
+            $('.block_groups').find('.group-' + response.id + ' .block_groups_toggle').on('click', {courseid: event.data.courseid},
+                changevisibility);
             remove_spinner(response.id);
         }).fail(function () {
-            add_warning_empty();
+            add_warning(groupid);
+            return false;
         });
         return false;
     };
