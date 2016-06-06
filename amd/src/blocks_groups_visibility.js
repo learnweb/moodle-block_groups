@@ -47,6 +47,12 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         $('.block_groups').find('.spinner' + id).remove();
     };
     /**
+     * Creates a warning message.
+     */
+    var create_warning_message = function (){
+        notification.alert('Error','The requested change was not possible','OK');
+    };
+    /**
      * Adds a warning in case the response is empty or the response throws an error.
      * @param groupid int that identifies to which group the spinner belongs to.
      */
@@ -62,13 +68,6 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         warning.src = imgurl;
         remove_spinner(groupid);
         ($('.imggroup-' + groupid).before(warning)).on('click', create_warning_message());
-    };
-    /**
-     * Creates a warning message.
-     */
-    var create_warning_message = function (){
-        //title, message, yesLabel
-        notification.alert('Error','The requested change was not possible','OK');
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
