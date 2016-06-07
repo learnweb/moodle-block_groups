@@ -36,3 +36,5 @@ $string['modify'] = 'modify groups';
 $string['hidegroup'] = 'hide group';
 $string['nochangeindatabasepossible'] = 'The required change was not possible';
 $string['nocourse'] = 'Problem to find course, please try again later.';
+$string['errortitle'] = 'Error';
+$string['errorbutton'] = 'OK';

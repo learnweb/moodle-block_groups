@@ -31,6 +31,9 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
      * @param id int that identifies the group id
      */
     var add_spinner = function (id) {
+        if($('.block_groups').find('.warning' + id).length > 0){
+            remove_warning(id);
+        }
         var imgurl = url.imageUrl("i/loading_small",'moodle');
         var spinner = document.createElement("img");
         spinner.className = 'spinner' + id;
@@ -46,11 +49,16 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
     var remove_spinner = function (id) {
         $('.block_groups').find('.spinner' + id).remove();
     };
+    var remove_warning = function(groupid){
+        $('.block_groups').find('.warning' + groupid).remove();
+    };
     /**
      * Creates a warning message.
      */
     var create_warning_message = function (){
-        notification.alert('Error','The requested change was not possible','OK');
+        notification.alert(M.util.get_string('errortitle', 'block_groups'),
+            M.util.get_string('nochangeindatabasepossible', 'block_groups'),
+            M.util.get_string('errorbutton', 'block_groups'));
     };
     /**
      * Adds a warning in case the response is empty or the response throws an error.
@@ -73,7 +81,6 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
     var changevisibility = function (event) {
-        // TODO Füge kreuz bzw. fehlermeldung hinzu für nginx antwortet nicht
         var groupid = $(this).data('groupid');
         if($('.block_groups').find('.spinner' + $(this).data('groupid')).length > 0){
             return false;
@@ -95,8 +102,6 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
             add_warning(groupid);
             return false;
         });
-
-        // Springt von promise done zu fail zu done ohne in eine der funktionen reinzugehen
         promises[0].done(function(response) {
             if(response === null){
                 add_warning(groupid);
