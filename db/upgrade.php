@@ -20,6 +20,6 @@
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-function xmldb_block_groups_upgrade($oldversion) {
+function xmldb_block_groups_upgrade() {
     return true;
 }
