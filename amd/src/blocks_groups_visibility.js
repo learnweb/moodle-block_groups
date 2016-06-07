@@ -27,6 +27,28 @@
 
 define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, url, notification) {
     /**
+     * Methode to remove warnings
+     * @param id int that identifies the group id
+     */
+    var remove_warning = function(groupid){
+        $('.block_groups').find('.warning' + groupid).remove();
+    };
+    /**
+     * Removes the Spinner Class
+     * @param id int that identifies to which group the spinner belongs to.
+     */
+    var remove_spinner = function (id) {
+        $('.block_groups').find('.spinner' + id).remove();
+    };
+    /**
+     * Creates a warning message.
+     */
+    var create_warning_message = function (){
+        notification.alert(M.util.get_string('errortitle', 'block_groups'),
+            M.util.get_string('nochangeindatabasepossible', 'block_groups'),
+            M.util.get_string('errorbutton', 'block_groups'));
+    };
+    /**
      * Initialises Spinner.
      * @param id int that identifies the group id
      */
@@ -40,25 +62,6 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         spinner.src = imgurl;
         spinner.hidden = false;
         $('.imggroup-' + id).before(spinner);
-    };
-
-    /**
-     * Removes the Spinner Class
-     * @param id int that identifies to which group the spinner belongs to.
-     */
-    var remove_spinner = function (id) {
-        $('.block_groups').find('.spinner' + id).remove();
-    };
-    var remove_warning = function(groupid){
-        $('.block_groups').find('.warning' + groupid).remove();
-    };
-    /**
-     * Creates a warning message.
-     */
-    var create_warning_message = function (){
-        notification.alert(M.util.get_string('errortitle', 'block_groups'),
-            M.util.get_string('nochangeindatabasepossible', 'block_groups'),
-            M.util.get_string('errorbutton', 'block_groups'));
     };
     /**
      * Adds a warning in case the response is empty or the response throws an error.
