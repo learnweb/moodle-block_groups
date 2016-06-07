@@ -28,7 +28,7 @@
 define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, url, notification) {
     /**
      * Methode to remove warnings
-     * @param id int that identifies the group id
+     * @param groupid int that identifies the group id
      */
     var remove_warning = function(groupid){
         $('.block_groups').find('.warning' + groupid).remove();
@@ -37,8 +37,8 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
      * Removes the Spinner Class
      * @param id int that identifies to which group the spinner belongs to.
      */
-    var remove_spinner = function (id) {
-        $('.block_groups').find('.spinner' + id).remove();
+    var remove_spinner = function (groupid) {
+        $('.block_groups').find('.spinner' + groupid).remove();
     };
     /**
      * Creates a warning message.
@@ -52,23 +52,23 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
      * Initialises Spinner.
      * @param id int that identifies the group id
      */
-    var add_spinner = function (id) {
-        if($('.block_groups').find('.warning' + id).length > 0){
-            remove_warning(id);
+    var add_spinner = function (groupid) {
+        if($('.block_groups').find('.warning' + groupid).length > 0){
+            remove_warning(groupid);
         }
         var imgurl = url.imageUrl("i/loading_small",'moodle');
         var spinner = document.createElement("img");
-        spinner.className = 'spinner' + id;
+        spinner.className = 'spinner' + groupid;
         spinner.src = imgurl;
         spinner.hidden = false;
-        $('.imggroup-' + id).before(spinner);
+        $('.imggroup-' + groupid).before(spinner);
     };
     /**
-     * Adds a warning in case the response is empty or the response throws an error.
+     * Adds a warning(traingle with exclamation mark) in case the response is empty or the response throws an error.
      * @param groupid int that identifies to which group the spinner belongs to.
      */
     var add_warning = function (groupid){
-        if($('.block_groups').find('.warning' + groupid).length > 0){
+        if($('.block_groups').find('.warnigle with exng' + groupid).length > 0){
             remove_spinner(groupid);
             create_warning_message();
             return false;

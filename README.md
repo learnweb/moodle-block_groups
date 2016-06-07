@@ -22,6 +22,8 @@ Additionally groups can be hidden, illustrated by an eye icon and a change in op
 When the icon is clicked the visibility of groups changes. Javascript files exist to update the block.
 When the block is installed for the first time all groups are hidden</br>
 ![Teachers' View](https://cloud.githubusercontent.com/assets/18289780/15298723/0871071c-1ba1-11e6-8fc9-2b0b1d58aaaf.png)
+In case the required change is not possible a warning message and a warning triangle are displayed to the user.
+![Teachers' View](https://cloud.githubusercontent.com/assets/18289780/15849889/21be9d4c-2c95-11e6-967b-8daac7140892.png)
 
 ### Students' view
 In the current state of the block groupings are not displayed to the students.</br>
