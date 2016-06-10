@@ -34,6 +34,7 @@ function block_groups_db_transaction_change_visibility($groupid, $courseid) {
     $groupvisible = $DB->get_records('block_groups_hide', array('id' => $groupid));
     if (!empty($groupsuitable)) {
         if (empty($groupvisible)) {
+            // Methode neccessary since id is the only column.
             $DB->insert_record_raw('block_groups_hide', array('id' => $groupid), true, false, true);
         }
         if (!empty($groupvisible)) {

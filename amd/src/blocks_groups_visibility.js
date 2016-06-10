@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
 /**
  * Javascript module for block_groups
  *
@@ -28,14 +29,14 @@
 define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, url, notification) {
     /**
      * Methode to remove warnings
-     * @param groupid int that identifies the group id
+     * @param int $groupid
      */
     var remove_warning = function(groupid){
         $('.block_groups').find('.warning' + groupid).remove();
     };
     /**
      * Removes the Spinner Class
-     * @param id int that identifies to which group the spinner belongs to.
+     * @param int $id that identifies to which group the spinner belongs to.
      */
     var remove_spinner = function (groupid) {
         $('.block_groups').find('.spinner' + groupid).remove();
@@ -50,7 +51,7 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
     };
     /**
      * Initialises Spinner.
-     * @param groupid int that identifies the group id
+     * @param int $groupid
      */
     var add_spinner = function (groupid) {
         if($('.block_groups').find('.warning' + groupid).length > 0){
@@ -64,8 +65,8 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         $('.block_groups').find('.imggroup-' + groupid).before(spinner);
     };
     /**
-     * Adds a warning(traingle with exclamation mark) in case the response is empty or the response throws an error.
-     * @param groupid int that identifies to which group the spinner belongs to.
+     * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
+     * @param int $groupid
      */
     var add_warning = function (groupid){
         if($('.block_groups').find('.warning' + groupid).length > 0){

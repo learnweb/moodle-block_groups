@@ -27,8 +27,8 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Lists grouping in html format
      *
-     * @param $elementarray
-     * @param $group
+     * @param array $elementarray
+     * @param bool $group true is for groups false for groupings
      * @return string
      */
     public function teaching_groups_or_groupings_list($elementarray, $group) {
@@ -46,19 +46,19 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Generates a link to refer to the groupsmodify page.
      *
-     * @param $href
+     * @param string $href
      * @return string
      */
     public function get_link_modify_groups($href) {
         return html_writer::link($href , get_string('modify', 'block_groups'));
     }
     /**
-     * Generates components for groupsarrayitem
+     * Generates components for a groupsarrayentry
      *
-     * @params value
-     * @params href
-     * @params countmembers
-     * @params visibility boolean TODO
+     * @params object $value
+     * @params string $href
+     * @params int $countmembers
+     * @params bool $visibility false for hidden groups
      * @return string
      */
     public function get_string_group($value, $href, $countmembers, $visibility) {
@@ -79,10 +79,10 @@ class block_groups_renderer extends plugin_renderer_base {
         return html_writer::span($line, 'group-'. $value->id);
     }
     /**
-     * Generates components for groupsarrayitems that are hidden
+     * Generates string for a grouping list item
      *
-     * @params name name of the grouping
-     * @params counter number of members of the grouping
+     * @params string $name name of the grouping
+     * @params int $counter number of members of the grouping
      * @return string
      */
     public function get_grouping($name, $counter) {
@@ -91,7 +91,7 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Returns the frame for the memberlist.
      *
-     * @params enrolledgroups
+     * @params array $enrolledgroups
      * @return string
      */
     public function get_membership_content($enrolledgroups) {
@@ -100,15 +100,16 @@ class block_groups_renderer extends plugin_renderer_base {
         return html_writer::div($membercontent, 'memberlist');
     }
     /**
-     * Returns the html-span for groups.
+     * Returns the html-span for a single group.
      *
-     * @params group
+     * @params array $group
+     * @params bool $visibility false vor hidden groups
      * @return string
      */
     public function get_tag_group($group, $visibility) {
         $spanclasses = "membergroup-" . $group->id;
         if ($visibility === false) {
-            $spanclasses .= "hiddengroups";
+            $spanclasses .= ' hiddengroups';
         }
         return html_writer::span($group->name, $spanclasses);
     }

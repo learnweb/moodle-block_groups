@@ -38,7 +38,6 @@ class block_groups extends block_base
     public function init() {
         $this->title = get_string('pluginname', 'block_groups');
     }
-
     /**
      * Returns the content object
      *
@@ -72,8 +71,14 @@ class block_groups extends block_base
         $this->content->text .= $this->get_content_groupmembers();
         return $this->content;
     }
-
-
+    /**
+     * The Block is only availeable at course-view pages
+     *
+     * @return array
+     */
+    public function applicable_formats() {
+        return array('course-view' => true, 'mod' => false, 'my' => false);
+    }
     /**
      * Returns a List of all existing groups and groupings
      *
@@ -122,10 +127,8 @@ class block_groups extends block_base
 
     /**
      * Returns all registered groups.
-     *
      * @return string
      */
-
     private function get_content_groupmembers() {
         global $COURSE, $DB, $PAGE;
         $enrolledgroups = array();
@@ -153,18 +156,10 @@ class block_groups extends block_base
         return $content;
     }
     /**
-     * The Block is only availeable at course-view pages
-     *
-     * @return array
-     */
-    public function applicable_formats() {
-        return array('course-view' => true, 'mod' => false, 'my' => false);
-    }
-    /**
      * Generates an array of groupingnames and their members.
      *
-     * @param $allgroupings array of groupings
-     * @return array of Groupings
+     * @param array $allgroupings
+     * @return array
      */
     public function build_grouping_array($allgroupings) {
         global $DB, $PAGE;

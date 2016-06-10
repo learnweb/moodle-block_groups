@@ -34,7 +34,7 @@ if (empty($DB->get_record('course', array('id' => $courseid)))) {
     exit(get_string('nocourse', 'block_groups'));
 }
 $PAGE->set_context(context_course::instance($courseid));
-// Capabilitycheck beforehand not possible since a context is needed.
+// Check for capability beforehand not possible since a context is needed.
 require_capability('moodle/course:managegroups', context_course::instance($courseid));
 $groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
 
