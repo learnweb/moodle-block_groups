@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The file contains a class to build a Group Block
+ * File which changes the visibility of groups.
  *
  * @package block_groups
  * @category   upgrade
@@ -37,12 +37,13 @@ $PAGE->set_context(context_course::instance($courseid));
 // Capabilitycheck beforehand not possible since a context is needed.
 require_capability('moodle/course:managegroups', context_course::instance($courseid));
 $groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
+
 if (empty($groupsuitable)) {
     notice(get_string('nochangeindatabasepossible', 'block_groups'),
         $CFG->wwwroot . '/course/view.php?id=' . $courseid);
     exit();
 }
 require_once($CFG->dirroot.'/blocks/groups/locallib.php');
-block_groups_db_transaction_changegroups($groupid, $courseid);
+block_groups_db_transaction_change_visibility($groupid, $courseid);
 redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
 exit();

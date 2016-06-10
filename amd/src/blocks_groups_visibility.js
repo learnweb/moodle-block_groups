@@ -50,7 +50,7 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
     };
     /**
      * Initialises Spinner.
-     * @param id int that identifies the group id
+     * @param groupid int that identifies the group id
      */
     var add_spinner = function (groupid) {
         if($('.block_groups').find('.warning' + groupid).length > 0){
@@ -61,14 +61,14 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         spinner.className = 'spinner' + groupid;
         spinner.src = imgurl;
         spinner.hidden = false;
-        $('.imggroup-' + groupid).before(spinner);
+        $('.block_groups').find('.imggroup-' + groupid).before(spinner);
     };
     /**
      * Adds a warning(traingle with exclamation mark) in case the response is empty or the response throws an error.
      * @param groupid int that identifies to which group the spinner belongs to.
      */
     var add_warning = function (groupid){
-        if($('.block_groups').find('.warnigle with exng' + groupid).length > 0){
+        if($('.block_groups').find('.warning' + groupid).length > 0){
             remove_spinner(groupid);
             create_warning_message();
             return false;
@@ -78,7 +78,7 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         warning.className = 'warning' + groupid;
         warning.src = imgurl;
         remove_spinner(groupid);
-        ($('.imggroup-' + groupid).before(warning)).on('click', create_warning_message());
+        ($('.block_groups').find('.imggroup-' + groupid).before(warning)).on('click', create_warning_message());
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.

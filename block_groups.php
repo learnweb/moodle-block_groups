@@ -98,23 +98,24 @@ class block_groups extends block_base
                 $countmembers = count(groups_get_members($value->id));
                 $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $COURSE->id . '&groupid=' . $value->id;
                 if (empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
-                    $groupsarray[] = $renderer->get_string_visiblegroup($value, $href, $countmembers);
+                    $groupsarray[] = $renderer->get_string_group($value, $href, $countmembers, true);
                 } else {
-                    $groupsarray[] = $renderer->get_string_hiddengroup($value, $href, $countmembers);
+                    $groupsarray[] = $renderer->get_string_group($value, $href, $countmembers, false);
                 }
             }
         }
         // Empty block or block with checkboxes.
+        $href = $CFG->wwwroot . '/group/index.php?id=' . $COURSE->id;
         if (count($groupsarray) == 0) {
-            $content .= $renderer->get_link_modify_groups($COURSE->id);
+            $content .= $renderer->get_link_modify_groups($href);
             $content .= get_string('nogroups', 'block_groups');
         } else {
             $groupingsarray = $this->build_grouping_array($allgroupings);
             if (!empty($groupingsarray)) {
-                $content .= $renderer->teaching_groupingslist($groupingsarray);
+                $content .= $renderer->teaching_groups_or_groupings_list($groupingsarray, false);
             }
-            $content .= $renderer->teaching_groupslist($groupsarray);
-            $content .= $renderer->get_link_modify_groups($COURSE->id);
+            $content .= $renderer->teaching_groups_or_groupings_list($groupsarray, true);
+            $content .= $renderer->get_link_modify_groups($href);
         }
         return $content;
     }
@@ -137,9 +138,9 @@ class block_groups extends block_base
             if (($group->courseid == $COURSE->id)) {
                 $counter = $DB->get_records('block_groups_hide', array('id' => $group->id));
                 if (!empty($counter)) {
-                    $enrolledgroups[] = $renderer->get_tag_visiblegroup($group);
+                    $enrolledgroups[] = $renderer->get_tag_group($group, true);
                 } else if ($access === true) {
-                    $enrolledgroups[] = $renderer->get_tag_hiddengroup($group);
+                    $enrolledgroups[] = $renderer->get_tag_group($group, false);
                 }
             }
         }
@@ -165,7 +166,7 @@ class block_groups extends block_base
      * @param $allgroupings array of groupings
      * @return array of Groupings
      */
-    public function build_grouping_array ($allgroupings) {
+    public function build_grouping_array($allgroupings) {
         global $DB, $PAGE;
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
@@ -173,11 +174,11 @@ class block_groups extends block_base
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 // Necessary DB query to prohibit multiple ids of grouping members.
-                $countgroupingmember = $DB->count_records_sql("SELECT Count(DISTINCT gm.userid)
+                $countgroupingmember = $DB->count_records_sql('SELECT Count(DISTINCT gm.userid)
                                                             FROM {groupings_groups} gg
                                                             INNER JOIN {groups_members} gm
                                                             ON gg.groupid = gm.groupid
-                                                            WHERE gg.groupingid = :groupingid", array('groupingid' => $value->id));
+                                                            WHERE gg.groupingid = :groupingid', array('groupingid' => $value->id));
                 $groupingsarray[$g] = $renderer->get_grouping($value->name, $countgroupingmember);
             }
         }

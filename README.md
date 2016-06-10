@@ -1,4 +1,4 @@
-# moodle-block_groups *(beta)*
+# moodle-block_groups *(release_candidate)* 
 [![Build Status](https://travis-ci.org/learnweb/moodle-block_groups.svg?branch=master)]
 (https://travis-ci.org/learnweb/moodle-block_groups)</br>
 A Moodle block to display groups and groupings to users. The plugin differentiates between the capability rights of users

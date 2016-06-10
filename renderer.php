@@ -27,72 +27,55 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Lists grouping in html format
      *
-     * @param $groupingsarray
+     * @param $elementarray
+     * @param $group
      * @return string
      */
-    public function teaching_groupingslist($groupingsarray) {
-        $contentgrouping = html_writer::tag('input', '', array('type' => "checkbox",
-            'value' => "1", 'class' => "blockgroupsandgroupingcheckbox", 'id' => 'checkboxgrouping')) .
-            html_writer::tag('label', get_string('groupings', 'block_groups'), array('for' => "checkboxgrouping"));
-        $contentgrouping .= html_writer::alist($groupingsarray);
-        return html_writer::tag('div', $contentgrouping, array('class' => "wrapperblockgroupsandgroupingcheckbox"));
-    }
-    /**
-     * Lists groups in html format
-     *
-     * @param $groupsarray
-     * @return string
-     */
-    public function teaching_groupslist($groupsarray) {
+    public function teaching_groups_or_groupings_list($elementarray, $group) {
+        if ($group === true) {
+            $type = 'group';
+        } else {
+            $type = 'grouping';
+        }
         $contentgroups = html_writer::tag('input', '', array('type' => "checkbox", 'value' => "1",
-            'class' => "blockgroupsandgroupingcheckbox", 'id' => 'checkboxgroup')) .
-            html_writer::tag('label', get_string('groups', 'block_groups'), array('for' => "checkboxgroup"));
-        $contentgroups .= html_writer::alist($groupsarray);
+                'class' => "blockgroupsandgroupingcheckbox", 'id' => 'checkbox' . $type)) .
+            html_writer::tag('label', get_string($type, 'block_groups'), array('for' => "checkbox" . $type));
+        $contentgroups .= html_writer::alist($elementarray);
         return html_writer::tag('div', $contentgroups, array('class' => 'wrapperblockgroupsandgroupingcheckbox'));
     }
     /**
      * Generates a link to refer to the groupsmodify page.
      *
+     * @param $href
      * @return string
      */
-    public function get_link_modify_groups($courseid) {
-        global $CFG;
-        return '<a href="' . $CFG->wwwroot . '/group/index.php?id=' . $courseid . '">'.
-            get_string('modify', 'block_groups'). '</a></br>';
+    public function get_link_modify_groups($href) {
+        return html_writer::link($href , get_string('modify', 'block_groups'));
     }
     /**
-     * Generates components for groupsarrayitems that are not hidden
+     * Generates components for groupsarrayitem
      *
      * @params value
      * @params href
      * @params countmembers
+     * @params visibility boolean TODO
      * @return string
      */
-    public function get_string_visiblegroup($value, $href, $countmembers) {
+    public function get_string_group($value, $href, $countmembers, $visibility) {
         global $OUTPUT;
-        $img = html_writer::img($OUTPUT->pix_url('t/show'), get_string('hidegroup', 'block_groups'),
-            array('class' => "imggroup-". $value->id));
-        $rightaligndiv = html_writer::div( $img, 'rightalign');
-        $line = html_writer::span($value->name . get_string('brackets', 'block_groups', $countmembers), "hiddengroups") .
-            html_writer::link($href, $rightaligndiv, array('class' => 'block_groups_toggle', 'data-groupid' => $value->id,
-                'data-action' => 'show'));
-        return html_writer::span($line, 'group-'. $value->id);
-    }
-    /**
-     * Generates components for groupsarrayitems that are hidden
-     *
-     * @params value
-     * @params href
-     * @params countmembers
-     * @return string
-     */
-    public function get_string_hiddengroup($value, $href, $countmembers) {
-        global $OUTPUT;
-        $img = html_writer::img($OUTPUT->pix_url('t/hide'), get_string('hidegroup', 'block_groups'),
+        if ($visibility === false) {
+            $action = 'hide';
+            $spanstring = '';
+        } else {
+            $action = 'show';
+            $spanstring = 'hiddengroups';
+        }
+        $img = html_writer::img($OUTPUT->pix_url('t/' . $action), get_string('hidegroup', 'block_groups'),
             array('class' => "imggroup-". $value->id));
         $rightaligndiv = html_writer::div($img, 'rightalign');
-        $line = $value->name . get_string('brackets', 'block_groups', $countmembers) . html_writer::link($href , $rightaligndiv,
-            array('class' => 'block_groups_toggle', 'data-groupid' => $value->id, 'data-action' => 'hide'));
+        $line = html_writer::span($value->name . get_string('brackets', 'block_groups', $countmembers), $spanstring) .
+            html_writer::link($href, $rightaligndiv, array('class' => 'block_groups_toggle', 'data-groupid' => $value->id,
+                'data-action' => $action));
         return html_writer::span($line, 'group-'. $value->id);
     }
     /**
@@ -117,20 +100,16 @@ class block_groups_renderer extends plugin_renderer_base {
         return html_writer::div($membercontent, 'memberlist');
     }
     /**
-     * Returns the html-text for hidden groups.
-     * @params group
-     * @return string
-     */
-    public function get_tag_hiddengroup($group) {
-        return html_writer::span($group->name, "hiddengroups" . " membergroup-" . $group->id);
-    }
-    /**
-     * Returns the html-text for visible groups.
+     * Returns the html-span for groups.
      *
      * @params group
      * @return string
      */
-    public function get_tag_visiblegroup($group) {
-        return html_writer::span($group->name, "membergroup-" . $group->id);
+    public function get_tag_group($group, $visibility) {
+        $spanclasses = "membergroup-" . $group->id;
+        if ($visibility === false) {
+            $spanclasses .= "hiddengroups";
+        }
+        return html_writer::span($group->name, $spanclasses);
     }
 }

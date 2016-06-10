@@ -35,6 +35,9 @@ require_once("$CFG->libdir/externallib.php");
  */
 class block_groups_visibility_change extends external_api{
 
+    /**
+     * Specifys the input parameters.
+     */
     public static function create_output_parameters() {
         return new external_function_parameters(
             array(
@@ -47,6 +50,10 @@ class block_groups_visibility_change extends external_api{
                 )
         );
     }
+
+    /**
+     * Specifys the output parameters.
+     */
     public static function create_output_returns() {
         return new external_single_structure(
             array(
@@ -68,7 +75,7 @@ class block_groups_visibility_change extends external_api{
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
         require_once($CFG->dirroot.'/blocks/groups/locallib.php');
-        block_groups_db_transaction_changegroups($params['groups']['id'], $params['groups']['courseid']);
+        block_groups_db_transaction_change_visibility($params['groups']['id'], $params['groups']['courseid']);
         $renderer = $PAGE->get_renderer('block_groups');
         $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $params['groups']['courseid'] .
             '&groupid=' . $params['groups']['id'];
@@ -78,11 +85,11 @@ class block_groups_visibility_change extends external_api{
         // Generates the Output component.
         $groupvisible = $DB->get_records('block_groups_hide', array('id' => $params['groups']['id']));
         if (empty($groupvisible)) {
-            $output['newelement'] = $renderer->get_string_visiblegroup($group, $href, $countmembers);
+            $output['newelement'] = $renderer->get_string_group($group, $href, $countmembers, true);
             $output['visibility'] = 1;
         }
         if (!empty($groupvisible)) {
-            $output['newelement'] = $renderer->get_string_hiddengroup($group, $href, $countmembers);
+            $output['newelement'] = $renderer->get_string_group($group, $href, $countmembers, false);
             $output['visibility'] = 0;
         }
         return  $output;
