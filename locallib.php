@@ -43,4 +43,17 @@ function block_groups_db_transaction_change_visibility($groupid, $courseid) {
     }
     $transaction->allow_commit();
 }
+/**
+ * Counts grouping members.
+ *
+ * @params id
+ */
+function count_grouping_members ($id) {
+    global $DB;
+    return  $DB->count_records_sql('SELECT Count(DISTINCT gm.userid)
+                                                 FROM {groupings_groups} gg
+                                                 INNER JOIN {groups_members} gm
+                                                 ON gg.groupid = gm.groupid
+                                                 WHERE gg.groupingid = :groupingid', array('groupingid' => $id));
+}
 

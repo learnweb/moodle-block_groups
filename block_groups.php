@@ -32,6 +32,8 @@
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+
 class block_groups extends block_base
 {
     /**Initialises the block*/
@@ -139,6 +141,7 @@ class block_groups extends block_base
         $renderer = $PAGE->get_renderer('block_groups');
         foreach ($allgroups as $group) {
             if (($group->courseid == $COURSE->id)) {
+            // TODO rename
                 $counter = $DB->get_records('block_groups_hide', array('id' => $group->id));
                 if (!empty($counter)) {
                     $enrolledgroups[] = $renderer->get_tag_group($group, true);
@@ -169,11 +172,7 @@ class block_groups extends block_base
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 // Necessary DB query to prohibit multiple ids of grouping members.
-                $countgroupingmember = $DB->count_records_sql('SELECT Count(DISTINCT gm.userid)
-                                                            FROM {groupings_groups} gg
-                                                            INNER JOIN {groups_members} gm
-                                                            ON gg.groupid = gm.groupid
-                                                            WHERE gg.groupingid = :groupingid', array('groupingid' => $value->id));
+                $countgroupingmember = count_grouping_members ($value->id);
                 $groupingsarray[$g] = $renderer->get_grouping($value->name, $countgroupingmember);
             }
         }

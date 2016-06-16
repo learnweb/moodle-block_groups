@@ -21,13 +21,14 @@
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+
 class blocks_groups_testcase extends advanced_testcase {
 
     public function test_adding() {
 
         // Recommended in Moodle docs to always include CFG.
-        global $CFG, $DB;
-        require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+        global $CFG;
 
         $this->test_deleting();
         // Example data to try first test.
@@ -50,8 +51,7 @@ class blocks_groups_testcase extends advanced_testcase {
      * @package block_groups
      */
     public function test_locallib() {
-        global $CFG, $DB;
-        require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+        global $DB;
 
         $this->test_deleting();
 
