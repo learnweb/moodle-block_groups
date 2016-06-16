@@ -31,20 +31,6 @@ class blocks_groups_testcase extends advanced_testcase {
         global $CFG;
 
         $this->test_deleting();
-        // Example data to try first test.
-        $generator = advanced_testcase::getDataGenerator();
-        $course = $this->getDataGenerator()->create_course(array('name' => 'Some course'));
-        // Creates groups.
-        $group1 = $generator->create_group(array('courseid' => $course->id));
-        $group2 = $generator->create_group(array('courseid' => $course->id));
-        $group3 = $generator->create_group(array('courseid' => $course->id));
-        // Create 3 groupings in course 1.
-        $grouping1 = $generator->create_grouping(array('courseid' => $course->id));
-        $grouping2 = $generator->create_grouping(array('courseid' => $course->id));
-        $grouping3 = $generator->create_grouping(array('courseid' => $course->id));
-        // Add Grouping to groups.
-        $generator->create_grouping_group(array('groupingid' => $grouping1->id, 'groupid' => $group1->id));
-        $generator->create_grouping_group(array('groupingid' => $grouping2->id, 'groupid' => $group2->id));
     }
     /**
      * Function to test the locallib functions.
@@ -70,21 +56,10 @@ class blocks_groups_testcase extends advanced_testcase {
         $generator->create_grouping_group(array('groupingid' => $grouping2->id, 'groupid' => $group2->id));
         $generator->create_grouping_group(array('groupingid' => $grouping2->id, 'groupid' => $group21->id));
 
-        // Test the function that changes the database.
-        block_groups_db_transaction_change_visibility($group1->id, $course2->id);
-        $functionresult = $groupvisible = $DB->get_records('block_groups_hide', array('id' => $group1->id));
-        $functionarray = empty($functionresult);
-        $course1ctx = context_course::instance($course2->id);
-        $this->assertEquals(false, $functionarray);
-        block_groups_db_transaction_change_visibility($group1->id, $course2->id);
-        $functionresult = $groupvisible = $DB->get_records('block_groups_hide', array('id' => $group1->id));
-        $functionarray2 = empty($functionresult);
-        $this->assertEquals(true, $functionarray2);
-
         // Test the function that counts the grouping members.
         // Initiates the groupings and grouping members.
         // Creates 3 Users, enroles them in course2.
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 1; $i <= 9; $i++) {
             $user = $generator->create_user();
             $generator->enrol_user($user->id, $course2->id);
             $data['user' . $i] = $user;
@@ -92,10 +67,34 @@ class blocks_groups_testcase extends advanced_testcase {
         $generator->create_group_member(array('groupid' => $group1->id, 'userid' => $data['user1']->id));
         $generator->create_group_member(array('groupid' => $group1->id, 'userid' => $data['user2']->id));
         $generator->create_group_member(array('groupid' => $group2->id, 'userid' => $data['user3']->id));
+        $generator->create_group_member(array('groupid' => $group21->id, 'userid' => $data['user4']->id));
+        $generator->create_group_member(array('groupid' => $group21->id, 'userid' => $data['user3']->id));
+        $generator->create_group_member(array('groupid' => $group2->id, 'userid' => $data['user4']->id));
+        $generator->create_group_member(array('groupid' => $group21->id, 'userid' => $data['user2']->id));
+
+        $course1ctx = context_course::instance($course2->id);
+        // Test the function that changes the database.
+        block_groups_db_transaction_change_visibility($group1->id, $course2->id);
+        block_groups_db_transaction_change_visibility($group2->id, $course2->id);
+        block_groups_db_transaction_change_visibility($group2->id, $course2->id);
+        $functionresultshow = $groupvisible = $DB->get_records('block_groups_hide', array('id' => $group1->id));
+        $functionresulthide = $groupvisible = $DB->get_records('block_groups_hide', array('id' => $group2->id));
+        $booleanvisible = !empty($functionresultshow);
+        $booleandeleted = empty($functionresulthide);
+
+        $this->assertEquals(true, $booleanvisible);
+        $this->assertEquals(true, $booleandeleted);
 
         // Executed locallib function to count members.
         $functioncount = count_grouping_members ($grouping1->id);
+        $functioncount2 = count_grouping_members($grouping2->id);
+        $functioncount3 = count_grouping_members($grouping3->id);
+
         $this->assertEquals(2, $functioncount);
+        // Members are not counted multiple.
+        $this->assertEquals(3, $functioncount2);
+        // Test empty grouping.
+        $this->assertEquals(0, $functioncount3);
     }
     /**
      * Methodes recommended by moodle to assure database and dataroot is reset.
@@ -105,10 +104,13 @@ class blocks_groups_testcase extends advanced_testcase {
         global $DB;
         $this->resetAfterTest(true);
         $DB->delete_records('user');
+        $DB->delete_records('block_groups_hide');
         $this->assertEmpty($DB->get_records('user'));
+        $this->assertEmpty($DB->get_records('block_groups_hide'));
     }
     public function test_user_table_was_reset() {
         global $DB;
         $this->assertEquals(2, $DB->count_records('user', array()));
+        $this->assertEquals(0, $DB->count_records('block_groups_hide', array()));
     }
 }
