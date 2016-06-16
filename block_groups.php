@@ -141,9 +141,8 @@ class block_groups extends block_base
         $renderer = $PAGE->get_renderer('block_groups');
         foreach ($allgroups as $group) {
             if (($group->courseid == $COURSE->id)) {
-            // TODO rename
-                $counter = $DB->get_records('block_groups_hide', array('id' => $group->id));
-                if (!empty($counter)) {
+                $groupdbentry = $DB->get_records('block_groups_hide', array('id' => $group->id));
+                if (!empty($groupdbentry)) {
                     $enrolledgroups[] = $renderer->get_tag_group($group, true);
                 } else if ($access === true) {
                     $enrolledgroups[] = $renderer->get_tag_group($group, false);
