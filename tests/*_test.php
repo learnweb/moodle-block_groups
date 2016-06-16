@@ -15,36 +15,72 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The file contains a test script for the moodle block groups
+ * The class contains a test script for the moodle block groups
  *
  * @package block_groups
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class blocks_groups_testcase extends advanced_testcase {
-    public function test_adding() {
-        // Recommended in Moodle docs to always include CFG
-        global $CFG;
-        $this->setAdminUser();
-        $course2 = $this->getDataGenerator()->create_course(array('name'=>'Some course'));
-//        shortcut $this->setGuestUser(), $this->setAdminUser()
-//        sonst: $user = $this->getDataGenerator()->create_user(array(properties))
-//        $course2 = $this->getDataGenerator()->create_course(array('name'=>'Some course', 'category'=>$category->id));
-//        $this->getDataGenerator()->enrol_user($userid, $courseid);
-//        $this->getDataGenerator()->create_group(array('courseid' => $courseid));
-//        $this->getDataGenerator()->create_group_member(array('userid' => $userid, 'groupid' => $groupid));
-//        $this->getDataGenerator()->create_grouping_group(array('groupingid' => $groupingid, 'groupid' => $groupid));
-//        $this->getDataGenerator()->create_grouping(array('courseid' => $courseid));
-//        $mygenerator = $this->getDataGenerator()->get_plugin_generator($frankenstylecomponentname);
-    }
 
+    public function test_adding() {
+
+        // Recommended in Moodle docs to always include CFG.
+        global $CFG, $DB;
+        require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+
+        $this->test_deleting();
+        // Example data to try first test.
+        $generator = advanced_testcase::getDataGenerator();
+        $course = $this->getDataGenerator()->create_course(array('name' => 'Some course'));
+        // Creates groups.
+        $group1 = $generator->create_group(array('courseid' => $course->id));
+        $group2 = $generator->create_group(array('courseid' => $course->id));
+        $group3 = $generator->create_group(array('courseid' => $course->id));
+        // Create 3 groupings in course 1.
+        $grouping1 = $generator->create_grouping(array('courseid' => $course->id));
+        $grouping2 = $generator->create_grouping(array('courseid' => $course->id));
+        $grouping3 = $generator->create_grouping(array('courseid' => $course->id));
+        // Add Grouping to groups.
+        $generator->create_grouping_group(array('groupingid' => $grouping1->id, 'groupid' => $group1->id));
+        $generator->create_grouping_group(array('groupingid' => $grouping2->id, 'groupid' => $group2->id));
+    }
+    /**
+     * Function to test the locallib functions.
+     * @package block_groups
+     */
+    public function test_locallib() {
+        global $CFG, $DB;
+        require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+
+        $this->test_deleting();
+
+        $generator = advanced_testcase::getDataGenerator();
+        $course2 = $this->getDataGenerator()->create_course(array('name' => 'Some course'));
+        // Creates groups.
+        $group4 = $generator->create_group(array('courseid' => $course2->id));
+
+        // Executes Function.
+        block_groups_db_transaction_change_visibility($group4->id, $course2->id);
+        $functionresult = $groupvisible = $DB->get_records('block_groups_hide', array('id' => $group4->id));
+        $functioncount = empty($functionresult);
+        $course1ctx = context_course::instance($course2->id);
+        $this->assertEquals(false, $functioncount);
+        block_groups_db_transaction_change_visibility($group4->id, $course2->id);
+        $functionresult = $groupvisible = $DB->get_records('block_groups_hide', array('id' => $group4->id));
+        $functioncount = empty($functionresult);
+        $this->assertEquals(true, $functioncount);
+    }
+    /**
+     * Methodes recommended by moodle to assure database and dataroot is reset.
+     * @package block_groups
+     */
     public function test_deleting() {
         global $DB;
         $this->resetAfterTest(true);
         $DB->delete_records('user');
         $this->assertEmpty($DB->get_records('user'));
     }
-
     public function test_user_table_was_reset() {
         global $DB;
         $this->assertEquals(2, $DB->count_records('user', array()));
