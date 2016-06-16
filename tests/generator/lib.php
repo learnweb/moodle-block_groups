@@ -38,7 +38,7 @@ class block_groups_generator extends testing_block_generator {
         global $DB;
 
         $generator = advanced_testcase::getDataGenerator();
-        // Create 2 courses.
+        $data = array();
         $course2 = $this->getDataGenerator()->create_course(array('name' => 'Some course'));
         $data['course2'] = $course2;
         // Creates groups.
@@ -48,7 +48,7 @@ class block_groups_generator extends testing_block_generator {
         $data['group2'] = $group2;
         $group21 = $generator->create_group(array('courseid' => $course2->id));
         $data['group21'] = $group21;
-        // Create 3 groupings in course 1.
+        // Create 3 groupings in course 2.
         $grouping1 = $generator->create_grouping(array('courseid' => $course2->id));
         $data['grouping1'] = $grouping1;
         $grouping2 = $generator->create_grouping(array('courseid' => $course2->id));

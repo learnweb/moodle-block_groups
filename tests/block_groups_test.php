@@ -26,10 +26,8 @@
 class blocks_groups_testcase extends advanced_testcase {
 
     public function test_adding() {
-
         // Recommended in Moodle docs to always include CFG.
         global $CFG;
-
         $this->test_deleting();
     }
     /**
@@ -40,30 +38,36 @@ class blocks_groups_testcase extends advanced_testcase {
         global $DB, $CFG;
         require_once($CFG->dirroot.'/blocks/groups/locallib.php');
         $this->test_deleting();
-
         $generator = advanced_testcase::getDataGenerator();
+        // TODO Einbindung per lib.
         $course2 = $this->getDataGenerator()->create_course(array('name' => 'Some course'));
+        $data['course2'] = $course2;
         // Creates groups.
         $group1 = $generator->create_group(array('courseid' => $course2->id));
+        $data['group1'] = $group1;
         $group2 = $generator->create_group(array('courseid' => $course2->id));
+        $data['group2'] = $group2;
         $group21 = $generator->create_group(array('courseid' => $course2->id));
-        // Create 3 groupings in course 1.
+        $data['group21'] = $group21;
+        // Create 3 groupings in course 2.
         $grouping1 = $generator->create_grouping(array('courseid' => $course2->id));
+        $data['grouping1'] = $grouping1;
         $grouping2 = $generator->create_grouping(array('courseid' => $course2->id));
+        $data['grouping2'] = $grouping2;
         $grouping3 = $generator->create_grouping(array('courseid' => $course2->id));
-        // Add Grouping to groups.
+        $data['grouping3'] = $grouping3;
+        // Add Groupings to groups.
         $generator->create_grouping_group(array('groupingid' => $grouping1->id, 'groupid' => $group1->id));
         $generator->create_grouping_group(array('groupingid' => $grouping2->id, 'groupid' => $group2->id));
         $generator->create_grouping_group(array('groupingid' => $grouping2->id, 'groupid' => $group21->id));
 
-        // Test the function that counts the grouping members.
-        // Initiates the groupings and grouping members.
-        // Creates 3 Users, enroles them in course2.
+        // Creates 9 Users, enroles them in course2.
         for ($i = 1; $i <= 9; $i++) {
             $user = $generator->create_user();
             $generator->enrol_user($user->id, $course2->id);
             $data['user' . $i] = $user;
         }
+        // Initiates the groupings and grouping members.
         $generator->create_group_member(array('groupid' => $group1->id, 'userid' => $data['user1']->id));
         $generator->create_group_member(array('groupid' => $group1->id, 'userid' => $data['user2']->id));
         $generator->create_group_member(array('groupid' => $group2->id, 'userid' => $data['user3']->id));
@@ -72,23 +76,22 @@ class blocks_groups_testcase extends advanced_testcase {
         $generator->create_group_member(array('groupid' => $group2->id, 'userid' => $data['user4']->id));
         $generator->create_group_member(array('groupid' => $group21->id, 'userid' => $data['user2']->id));
 
-        $course1ctx = context_course::instance($course2->id);
         // Test the function that changes the database.
-        block_groups_db_transaction_change_visibility($group1->id, $course2->id);
-        block_groups_db_transaction_change_visibility($group2->id, $course2->id);
-        block_groups_db_transaction_change_visibility($group2->id, $course2->id);
-        $functionresultshow = $groupvisible = $DB->get_records('block_groups_hide', array('id' => $group1->id));
-        $functionresulthide = $groupvisible = $DB->get_records('block_groups_hide', array('id' => $group2->id));
-        $booleanvisible = !empty($functionresultshow);
+        block_groups_db_transaction_change_visibility($data['group1']->id, $data['course2']->id);
+        block_groups_db_transaction_change_visibility($data['group2']->id, $data['course2']->id);
+        block_groups_db_transaction_change_visibility($data['group2']->id, $data['course2']->id);
+        $functionresultshow = $DB->get_records('block_groups_hide', array('id' => $data['group1']->id));
+        $functionresulthide = $DB->get_records('block_groups_hide', array('id' => $data['group2']->id));
+        $booleanvisible = empty($functionresultshow);
         $booleandeleted = empty($functionresulthide);
 
-        $this->assertEquals(true, $booleanvisible);
+        $this->assertEquals(false, $booleanvisible);
         $this->assertEquals(true, $booleandeleted);
 
-        // Executed locallib function to count members.
-        $functioncount = count_grouping_members ($grouping1->id);
-        $functioncount2 = count_grouping_members($grouping2->id);
-        $functioncount3 = count_grouping_members($grouping3->id);
+        // Test the function that counts the grouping members.
+        $functioncount = count_grouping_members ($data['grouping1']->id);
+        $functioncount2 = count_grouping_members($data['grouping2']->id);
+        $functioncount3 = count_grouping_members($data['grouping3']->id);
 
         $this->assertEquals(2, $functioncount);
         // Members are not counted multiple.
