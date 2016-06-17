@@ -3,6 +3,7 @@ Feature: Hide a group in a group block
   In order to hide groups for students
   As a user
   In need to hide groups
+
   Background:
     Given the following "courses" exist:
       | fullname | shortname | category |

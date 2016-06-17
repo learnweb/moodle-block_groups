@@ -1,4 +1,4 @@
-@block @block_groups
+@block @block_groups @groups_show @javascript
 Feature: Make a group visible in a group block
   In order to let students see a group
   As a user
@@ -47,7 +47,7 @@ Feature: Make a group visible in a group block
       | student4 | G2 |
       | student5 | G3 |
       | student6 | G3 |
-      | editingteacher  | G1 |
+      | teacher1  | G1 |
     And the following "grouping groups" exist:
       | grouping | group |
       | GG1      | G1    |
@@ -55,30 +55,13 @@ Feature: Make a group visible in a group block
       | GG2      | G2    |
       | GG3      | G3    |
     And I log in as "teacher1"
+    And I follow "Course 1"
     And I turn editing mode on
     And I add the "groups" block
     And I log out
 
-  Scenario: All groups are hidden
-    Given I log in as "student1"
-    And I follow "Course 1"
-    Then  I should not see the "group" "block"
-
-  Scenario: Some groups are made visible
-    Given I log in as "teacher"
-#   nicht sicher ob der Link gefunden wird
-    And I click on "show" "link" in the "#imggroup-" "css_element"
-    And I log out
-    And I log in as "student1"
-    And I follow "Course 1"
-    Then I should see "Group1" in the "group" "block"
-    Then I should not see "Group2" in the "group" "block"
-  Scenario: Some groups are made visible
-    Given I log in as "teacher"
-#   nicht sicher ob der Link gefunden wird
-    And I click on "show" "link" in the "#imggroup-" "css_element"
-    And I log out
-    And I log in as "student1"
-    And I follow "Course 1"
-    Then I should see "Group1" in the "group" "block"
-    Then I should not see "Group2" in the "group" "block"
+  Scenario: Teacher View
+      Given I log in as "teacher1"
+      And I follow "Course 1"
+      Then I should see "Group 2" in the "block_groups" "block"
+      Then I should see "Group 1" in the "block_groups" "block"
