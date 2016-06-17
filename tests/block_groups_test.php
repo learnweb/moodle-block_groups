@@ -24,10 +24,10 @@
 
 class blocks_groups_testcase extends advanced_testcase {
 
-    public function test_adding() {
+    protected function set_up() {
         // Recommended in Moodle docs to always include CFG.
         global $CFG;
-        $this->test_deleting();
+        $this->resetAfterTest(true);
     }
     /**
      * Function to test the locallib functions.
@@ -39,7 +39,6 @@ class blocks_groups_testcase extends advanced_testcase {
         $generator = $this->getDataGenerator()->get_plugin_generator('block_groups');
         $data = $generator->test_create_preparation();
         $this->test_deleting();
-
         // Test the function that changes the database.
         block_groups_db_transaction_change_visibility($data['group1']->id, $data['course2']->id);
         block_groups_db_transaction_change_visibility($data['group2']->id, $data['course2']->id);

@@ -46,6 +46,6 @@ class block_groups_generator_testcase extends advanced_testcase {
         $this->assertEquals('groups', $generator->get_blockname());
 
         $generator->create_instance();
-        $this->assertEquals($beforeblocks + 3, $DB->count_records('block_instances'));
+        $this->assertEquals($beforeblocks + 1, $DB->count_records('block_instances'));
     }
 }
