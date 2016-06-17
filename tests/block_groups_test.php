@@ -38,7 +38,6 @@ class blocks_groups_testcase extends advanced_testcase {
     public function test_locallib() {
         global $DB, $CFG;
         require_once($CFG->dirroot.'/blocks/groups/locallib.php');
-        $this->test_deleting();
         $data = $this->set_up();
         // Test the function that changes the database.
         block_groups_db_transaction_change_visibility($data['group1']->id, $data['course2']->id);
