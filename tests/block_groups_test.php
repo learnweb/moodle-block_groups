@@ -27,18 +27,19 @@ class blocks_groups_testcase extends advanced_testcase {
     protected function set_up() {
         // Recommended in Moodle docs to always include CFG.
         global $CFG;
+        $generator2 = $this->getDataGenerator()->get_plugin_generator('block_groups');
+        $data = $generator2->test_create_preparation();
         $this->resetAfterTest(true);
+        return $data;
     }
     /**
      * Function to test the locallib functions.
-     * @package block_groups
      */
     public function test_locallib() {
         global $DB, $CFG;
         require_once($CFG->dirroot.'/blocks/groups/locallib.php');
-        $generator = $this->getDataGenerator()->get_plugin_generator('block_groups');
-        $data = $generator->test_create_preparation();
         $this->test_deleting();
+        $data = $this->set_up();
         // Test the function that changes the database.
         block_groups_db_transaction_change_visibility($data['group1']->id, $data['course2']->id);
         block_groups_db_transaction_change_visibility($data['group2']->id, $data['course2']->id);
@@ -64,7 +65,6 @@ class blocks_groups_testcase extends advanced_testcase {
     }
     /**
      * Methodes recommended by moodle to assure database and dataroot is reset.
-     * @package block_groups
      */
     public function test_deleting() {
         global $DB;
@@ -76,7 +76,6 @@ class blocks_groups_testcase extends advanced_testcase {
     }
     /**
      * Methodes recommended by moodle to assure database is reset.
-     * @package block_groups
      */
     public function test_user_table_was_reset() {
         global $DB;
