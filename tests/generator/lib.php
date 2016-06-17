@@ -34,12 +34,13 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_groups_generator extends testing_block_generator {
-    public function create_block_groups () {
-        global $DB;
-
+    /**
+     * Creates Course, course members, groups and groupings to test the block.
+     */
+    public function test_create_preparation () {
         $generator = advanced_testcase::getDataGenerator();
         $data = array();
-        $course2 = $this->getDataGenerator()->create_course(array('name' => 'Some course'));
+        $course2 = $generator->create_course(array('name' => 'Some course'));
         $data['course2'] = $course2;
         // Creates groups.
         $group1 = $generator->create_group(array('courseid' => $course2->id));
@@ -60,10 +61,9 @@ class block_groups_generator extends testing_block_generator {
         $generator->create_grouping_group(array('groupingid' => $grouping2->id, 'groupid' => $group2->id));
         $generator->create_grouping_group(array('groupingid' => $grouping2->id, 'groupid' => $group21->id));
 
-        // Test the function that counts the grouping members.
         // Initiates the groupings and grouping members.
-        // Creates 3 Users, enroles them in course2.
-        for ($i = 1; $i <= 9; $i++) {
+        // Creates 4 Users, enroles them in course2.
+        for ($i = 1; $i <= 4; $i++) {
             $user = $generator->create_user();
             $generator->enrol_user($user->id, $course2->id);
             $data['user' . $i] = $user;

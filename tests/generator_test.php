@@ -36,7 +36,6 @@ defined('MOODLE_INTERNAL') || die();
 class block_groups_generator_testcase extends advanced_testcase {
     public function test_generator() {
         global $DB;
-
         $this->resetAfterTest(true);
 
         $beforeblocks = $DB->count_records('block_instances');

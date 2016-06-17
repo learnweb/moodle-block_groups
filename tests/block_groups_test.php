@@ -21,7 +21,6 @@
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-//require_once($CFG->dirroot.'/blocks/groups/locallib.php');
 
 class blocks_groups_testcase extends advanced_testcase {
 
@@ -37,44 +36,9 @@ class blocks_groups_testcase extends advanced_testcase {
     public function test_locallib() {
         global $DB, $CFG;
         require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+        $generator = $this->getDataGenerator()->get_plugin_generator('block_groups');
+        $data = $generator->test_create_preparation();
         $this->test_deleting();
-        $generator = advanced_testcase::getDataGenerator();
-        // TODO Einbindung per lib.
-        $course2 = $this->getDataGenerator()->create_course(array('name' => 'Some course'));
-        $data['course2'] = $course2;
-        // Creates groups.
-        $group1 = $generator->create_group(array('courseid' => $course2->id));
-        $data['group1'] = $group1;
-        $group2 = $generator->create_group(array('courseid' => $course2->id));
-        $data['group2'] = $group2;
-        $group21 = $generator->create_group(array('courseid' => $course2->id));
-        $data['group21'] = $group21;
-        // Create 3 groupings in course 2.
-        $grouping1 = $generator->create_grouping(array('courseid' => $course2->id));
-        $data['grouping1'] = $grouping1;
-        $grouping2 = $generator->create_grouping(array('courseid' => $course2->id));
-        $data['grouping2'] = $grouping2;
-        $grouping3 = $generator->create_grouping(array('courseid' => $course2->id));
-        $data['grouping3'] = $grouping3;
-        // Add Groupings to groups.
-        $generator->create_grouping_group(array('groupingid' => $grouping1->id, 'groupid' => $group1->id));
-        $generator->create_grouping_group(array('groupingid' => $grouping2->id, 'groupid' => $group2->id));
-        $generator->create_grouping_group(array('groupingid' => $grouping2->id, 'groupid' => $group21->id));
-
-        // Creates 9 Users, enroles them in course2.
-        for ($i = 1; $i <= 9; $i++) {
-            $user = $generator->create_user();
-            $generator->enrol_user($user->id, $course2->id);
-            $data['user' . $i] = $user;
-        }
-        // Initiates the groupings and grouping members.
-        $generator->create_group_member(array('groupid' => $group1->id, 'userid' => $data['user1']->id));
-        $generator->create_group_member(array('groupid' => $group1->id, 'userid' => $data['user2']->id));
-        $generator->create_group_member(array('groupid' => $group2->id, 'userid' => $data['user3']->id));
-        $generator->create_group_member(array('groupid' => $group21->id, 'userid' => $data['user4']->id));
-        $generator->create_group_member(array('groupid' => $group21->id, 'userid' => $data['user3']->id));
-        $generator->create_group_member(array('groupid' => $group2->id, 'userid' => $data['user4']->id));
-        $generator->create_group_member(array('groupid' => $group21->id, 'userid' => $data['user2']->id));
 
         // Test the function that changes the database.
         block_groups_db_transaction_change_visibility($data['group1']->id, $data['course2']->id);
@@ -111,6 +75,10 @@ class blocks_groups_testcase extends advanced_testcase {
         $this->assertEmpty($DB->get_records('user'));
         $this->assertEmpty($DB->get_records('block_groups_hide'));
     }
+    /**
+     * Methodes recommended by moodle to assure database is reset.
+     * @package block_groups
+     */
     public function test_user_table_was_reset() {
         global $DB;
         $this->assertEquals(2, $DB->count_records('user', array()));
