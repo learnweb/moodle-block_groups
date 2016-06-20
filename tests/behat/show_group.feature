@@ -63,5 +63,12 @@ Feature: Make a group visible in a group block
   Scenario: Teacher View
       Given I log in as "teacher1"
       And I follow "Course 1"
+      And I click on "#checkboxgroup" "css_element" in the "Groups and Groupings" "block"
       Then I should see "Group 2" in the "block_groups" "block"
       Then I should see "Group 1" in the "block_groups" "block"
+
+  Scenario: Modify
+    Given I log in as "teacher1"
+    And I follow "Course 1"
+    When I click on "modify groups" "link" in the "Groups and Groupings" "block"
+    Then I should see "Group 2" in the "#groupeditform" "css_element"

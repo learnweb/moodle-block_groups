@@ -1,4 +1,4 @@
-@block @block_groups
+@block @block_groups @groups_hide
 Feature: Hide a group in a group block
   In order to hide groups for students
   As a user
