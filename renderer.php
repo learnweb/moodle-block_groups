@@ -81,7 +81,7 @@ class block_groups_renderer extends plugin_renderer_base {
         $img = html_writer::img($OUTPUT->pix_url('t/' . $action), get_string('hidegroup', 'block_groups'),
             array('class' => "imggroup-". $value->id));
         $rightaligndiv = html_writer::div($img, 'rightalign');
-        $line = html_writer::span($value->name . get_string('brackets', 'block_groups', $countmembers), $spanstring) .
+        $line = html_writer::span($value->name . '   ' .get_string('brackets', 'block_groups', $countmembers), $spanstring) .
             html_writer::link($href, $rightaligndiv, array('class' => 'block_groups_toggle', 'data-groupid' => $value->id,
                 'data-action' => $action));
         return html_writer::span($line, 'group-'. $value->id);
@@ -94,7 +94,7 @@ class block_groups_renderer extends plugin_renderer_base {
      * @return string
      */
     public function get_grouping($name, $counter) {
-        return $name . get_string('brackets', 'block_groups', $counter);
+        return $name . '   ' . get_string('brackets', 'block_groups', $counter);
     }
     /**
      * Returns the frame for the memberlist.

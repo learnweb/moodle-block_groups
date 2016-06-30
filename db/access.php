@@ -35,12 +35,12 @@ $capabilities = array(
 
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
-    'block/groups:myaddinstance' => array(
+    /*'block/groups:myaddinstance' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => array(
             'user' => CAP_PREVENT
         ),
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
-    ),
+    ),*/
 );

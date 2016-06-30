@@ -33,3 +33,8 @@
 .block_groups .hiddengroups {
     opacity: 0.5;
 }
+.block_groups img {
+    margin-top: 3px;
+    margin-right: 5px;
+    vertical-align: top;
+}
