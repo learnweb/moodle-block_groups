@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * External blocks_groups API
+ * External block_groups API
  *
  * @package block_groups
  * @category
@@ -25,10 +25,10 @@
 require_once("$CFG->libdir/externallib.php");
 
 /**
- * blocks_groups external functions
+ * block_groups external functions
  *
- * @package    blocks_groups
- * @category   external
+ * @category  External functions API
+ * TODO right name?
  * @copyright  2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since Moodle 2.9
@@ -65,11 +65,12 @@ class block_groups_visibility_change extends external_api{
         );
     }
     /**
-     *  Changed the Database and returns the updated html content.
+     * Changed the Database and returns the updated html content.
      *
-     * @params $groups
+     * @param $groups
      * @return array
      */
+//    TODO: Ask params
     public static function create_output($groups) {
         global $PAGE, $CFG, $DB;
         $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));

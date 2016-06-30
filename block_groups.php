@@ -18,7 +18,6 @@
  * The file contains a class to build a Group Block
  *
  * @package block_groups
- * @category   block
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,7 +27,6 @@
  * Displays a group and grouping block.
  *
  * @package block_groups
- * @category   block
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -36,12 +34,14 @@ require_once($CFG->dirroot.'/blocks/groups/locallib.php');
 
 class block_groups extends block_base
 {
-    /**Initialises the block*/
+    /**
+     * Initializes the block.
+     */
     public function init() {
         $this->title = get_string('pluginname', 'block_groups');
     }
     /**
-     * Returns the content object
+     * Returns the content object.
      *
      * @return object $this->content
      */
@@ -168,6 +168,10 @@ class block_groups extends block_base
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
         $groupingsarray = array();
+        $printexample = count_grouping_members2 ();
+        echo '<p>';
+        echo print_r($printexample);
+        echo '</p>';
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 // Necessary DB query to prohibit multiple ids of grouping members.

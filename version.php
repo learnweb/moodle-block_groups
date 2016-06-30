@@ -17,7 +17,6 @@
 /**
  * Version details
  * @package block_groups
- * @category   block
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

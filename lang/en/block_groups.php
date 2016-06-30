@@ -17,14 +17,12 @@
  * This file contains language strings used in the group block
  *
  * @package block_groups
- * @category   block
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $string['groups:addinstance'] = 'Add a new Group block';
-$string['groups:myaddinstance'] = 'Add a new Group block';
-$string['groups:myaddinstance'] = 'Add a new group block to Dashboard';
+$string['groups:myaddinstance'] = 'Add a new Group block to Dashboard';
 $string['pluginname'] = 'Groups and Groupings';
 $string['pluginname2'] = 'Groups';
 $string['introduction'] = 'You are enrolled in the following groups';

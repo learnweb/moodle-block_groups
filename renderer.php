@@ -23,6 +23,13 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Class of the block_groups renderer.
+ *
+ * @package    block_groups
+ * @copyright  2016 Nina Herrmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class block_groups_renderer extends plugin_renderer_base {
     /**
      * Lists grouping in html format
@@ -46,19 +53,20 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Generates a link to refer to the groupsmodify page.
      *
-     * @param string $href
+     * @param $href
      * @return string
      */
     public function get_link_modify_groups($href) {
         return html_writer::link($href , get_string('modify', 'block_groups'));
     }
     /**
-     * Generates components for a groupsarrayentry
+     * Generates components for a groupsarrayentry.
+     * (false for hidden groups)
      *
-     * @params object $value
-     * @params string $href
-     * @params int $countmembers
-     * @params bool $visibility false for hidden groups
+     * @param $value
+     * @param $href
+     * @param $countmembers
+     * @param $visibility
      * @return string
      */
     public function get_string_group($value, $href, $countmembers, $visibility) {
@@ -81,8 +89,8 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Generates string for a grouping list item
      *
-     * @params string $name name of the grouping
-     * @params int $counter number of members of the grouping
+     * @param $name
+     * @param $counter
      * @return string
      */
     public function get_grouping($name, $counter) {
@@ -91,7 +99,7 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Returns the frame for the memberlist.
      *
-     * @params array $enrolledgroups
+     * @param $enrolledgroups
      * @return string
      */
     public function get_membership_content($enrolledgroups) {
@@ -101,9 +109,10 @@ class block_groups_renderer extends plugin_renderer_base {
     }
     /**
      * Returns the html-span for a single group.
+     * (false vor hidden groups)
      *
-     * @params array $group
-     * @params bool $visibility false vor hidden groups
+     * @param $group
+     * @param $visibility
      * @return string
      */
     public function get_tag_group($group, $visibility) {

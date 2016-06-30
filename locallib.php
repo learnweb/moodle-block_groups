@@ -17,15 +17,15 @@
 /**
  * blocks_groups internal functions
  *
- * @package    blocks_groups
+ * @package    block_groups
  * @copyright  2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 /**
  * Executes a change in the block_groups_hide database
  *
- * @params groupid
- * @params courseid
+ * @param groupid
+ * @param courseid
  */
 function block_groups_db_transaction_change_visibility($groupid, $courseid) {
     global $DB;
@@ -46,7 +46,7 @@ function block_groups_db_transaction_change_visibility($groupid, $courseid) {
 /**
  * Counts grouping members.
  *
- * @params id
+ * @param id
  */
 function count_grouping_members ($id) {
     global $DB;
@@ -55,5 +55,18 @@ function count_grouping_members ($id) {
                                                  INNER JOIN {groups_members} gm
                                                  ON gg.groupid = gm.groupid
                                                  WHERE gg.groupingid = :groupingid', array('groupingid' => $id));
+}
+
+/**
+ * Counts grouping members.
+ *
+ * @params id
+ */
+function count_grouping_members2 () {
+    global $DB;
+    return  $DB->count_records_sql('SELECT Count(DISTINCT gm.userid)
+                                                 FROM {groupings_groups} gg
+                                                 INNER JOIN {groups_members} gm
+                                                 ON gg.groupid = gm.groupid');
 }
 
