@@ -63,3 +63,8 @@ Feature: Hide a group in a group block
     And I follow "Course 1"
     When I click on "modify groups" "link" in the "Groups and Groupings" "block"
     Then I should see "Group 2" in the "#groupeditform" "css_element"
+    Then I should see "Group 1" in the "#groupeditform" "css_element"
+    Then I should see "Group 1.0" in the "#groupeditform" "css_element"
+    Then I should see "Group 3" in the "#groupeditform" "css_element"
+    Then I should see "Group 4" in the "#groupeditform" "css_element"
+    Then I should see "Group 5" in the "#groupeditform" "css_element"
