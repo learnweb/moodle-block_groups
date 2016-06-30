@@ -164,18 +164,15 @@ class block_groups extends block_base
      * @return array
      */
     public function build_grouping_array($allgroupings) {
-        global $DB, $PAGE;
+        global $PAGE;
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
         $groupingsarray = array();
-        $printexample = count_grouping_members2 ();
-        echo '<p>';
-        echo print_r($printexample);
-        echo '</p>';
+        $arrayofmembers = count_grouping_members();
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 // Necessary DB query to prohibit multiple ids of grouping members.
-                $countgroupingmember = count_grouping_members ($value->id);
+                $countgroupingmember = $arrayofmembers[$value->id]->count;
                 $groupingsarray[$g] = $renderer->get_grouping($value->name, $countgroupingmember);
             }
         }

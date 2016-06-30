@@ -24,8 +24,8 @@
 /**
  * Executes a change in the block_groups_hide database
  *
- * @param groupid
- * @param courseid
+ * @param $groupid
+ * @param $courseid
  */
 function block_groups_db_transaction_change_visibility($groupid, $courseid) {
     global $DB;
@@ -45,28 +45,17 @@ function block_groups_db_transaction_change_visibility($groupid, $courseid) {
 }
 /**
  * Counts grouping members.
- *
- * @param id
+ * @return array
  */
-function count_grouping_members ($id) {
+function count_grouping_members () {
     global $DB;
-    return  $DB->count_records_sql('SELECT Count(DISTINCT gm.userid)
-                                                 FROM {groupings_groups} gg
-                                                 INNER JOIN {groups_members} gm
+    return  $DB->get_records_sql('SELECT g.id, Count(DISTINCT gm.userid)
+                                                 FROM {groups_members} gm
+                                                 RIGHT JOIN {groupings_groups} gg
                                                  ON gg.groupid = gm.groupid
-                                                 WHERE gg.groupingid = :groupingid', array('groupingid' => $id));
-}
-
-/**
- * Counts grouping members.
- *
- * @params id
- */
-function count_grouping_members2 () {
-    global $DB;
-    return  $DB->count_records_sql('SELECT Count(DISTINCT gm.userid)
-                                                 FROM {groupings_groups} gg
-                                                 INNER JOIN {groups_members} gm
-                                                 ON gg.groupid = gm.groupid');
+                                                 RIGHT JOIN {groupings} g
+                                                 ON g.id = gg.groupingid
+                                                 GROUP BY g.id, gg.groupingid
+                                                 ORDER BY gg.groupingid DESC');
 }
 
