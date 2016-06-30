@@ -45,7 +45,7 @@ function block_groups_db_transaction_change_visibility($groupid, $courseid) {
 }
 /**
  * Counts grouping members.
- * @return array
+ * @return integer
  */
 function count_grouping_members () {
     global $DB;
