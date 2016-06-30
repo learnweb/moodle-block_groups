@@ -9,7 +9,7 @@ This plugin is written by [Jan Dageförde](https://github.com/Dagefoerde), [Tobi
 
 
 ## Installation
-This plugin should go into `blocks/groups`. Moodle plugin directory link will be published as soon as it is available.
+This plugin should go into `blocks/groups`. Moodle plugin directory link is https://moodle.org/plugins/block_groups.
 
 ## Screenshots
 
