@@ -32,7 +32,6 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         ),
-
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
     // Capability is only listed since travis demands for it, not necessary for the code.

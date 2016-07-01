@@ -1,4 +1,4 @@
-@block @block_groups @groups_hide
+@block @block_groups @groups_hide @javascript
 Feature: Hide a group in a group block
   In order to hide groups for students
   As a user
@@ -54,6 +54,7 @@ Feature: Hide a group in a group block
       | GG2      | G2    |
       | GG3      | G3    |
     And I log in as "teacher1"
+    And I follow "Course 1"
     And I turn editing mode on
     And I add the "groups" block
     And I log out
@@ -68,3 +69,5 @@ Feature: Hide a group in a group block
     Then I should see "Group 3" in the "#groupeditform" "css_element"
     Then I should see "Group 4" in the "#groupeditform" "css_element"
     Then I should see "Group 5" in the "#groupeditform" "css_element"
+
+

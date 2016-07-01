@@ -1,4 +1,4 @@
-@block @block_groups @groups_show @javascript
+@block @block_groups @groups_show
 Feature: Make a group visible in a group block
   In order to let students see a group
   As a user
@@ -59,11 +59,19 @@ Feature: Make a group visible in a group block
     And I turn editing mode on
     And I add the "groups" block
     And I log out
+#works outcommented to speed up behat testing for test development
+ # @javascript
+  #  Scenario: Students does not see block in groups when he is not member of a visible group
+   #   Given I log in as "student1"
+    #  And I follow "Course 1"
+     # Then "block_groups" "block" should not exist
 
+  @javascript
   Scenario: Teacher View
       Given I log in as "teacher1"
       And I follow "Course 1"
-      And I click on "Groups " "css_element" in the "Groups and Groupings" "block"
+    #does not work - checkboxgroup is not visible therefore behat claims to be not able to click on it.
+      When I click on the "group" block groups label
       Then I should see "Group 2" in the "block_groups" "block"
       Then I should see "Group 1" in the "block_groups" "block"
 
