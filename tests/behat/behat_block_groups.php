@@ -24,12 +24,10 @@
 
 // NOTE: no MOODLE_INTERNAL test here, this file may be required by behat before including /config.php.
 
-require_once(__DIR__ . '/../../../lib/behat/behat_base.php');
-require_once(__DIR__ . '/../../../lib/behat/behat_field_manager.php');
 
-use Behat\Behat\Context\Step\Given as Given,
-    Behat\Gherkin\Node\TableNode as TableNode,
-    Behat\Mink\Exception\ElementNotFoundException as ElementNotFoundException;
+require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
+//behat_block_groups' not found in /home/nina/Entwicklung/moodle/vendor/moodlehq/behat-extension/src/Moodle/BehatExtension/Context/MoodleContext.php
+use Behat\Mink\Exception\ElementNotFoundException as ElementNotFoundException;
 
 /**
  * Block Groups functionalities for behat-testing.
@@ -39,16 +37,15 @@ use Behat\Behat\Context\Step\Given as Given,
  * @copyright  2016 N.Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class behat_admin extends behat_base
-{
+class behat_block_groups extends behat_base {
     /**
      * Enlarge hidden checkboxes
      *
-     * @When /^I click on the (?P<type_string>-?\d+) block groups label$/
+     * @When /^I click on the "(?P<type_string>(?:[^"]|\\")*)" block groups label$/
      *
-     * @param integer $type string identifier of the checkbox
+     * @param string $type string identifier of the checkbox
      */
-    public function i_click_on_the_block_groups_label($type) {
+    public function i_Click_On_The_Block_Groups_Label($type) {
         $checkbox = $this->find_field("checkbox" . $type);
         $checkbox->check();
     }

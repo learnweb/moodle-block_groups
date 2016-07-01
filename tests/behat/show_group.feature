@@ -70,9 +70,16 @@ Feature: Make a group visible in a group block
   Scenario: Teacher View
       Given I log in as "teacher1"
       And I follow "Course 1"
-    #does not work - checkboxgroup is not visible therefore behat claims to be not able to click on it.
       When I click on the "group" block groups label
+      And I click on the "grouping" block groups label
       Then I should see "Group 2" in the "block_groups" "block"
       Then I should see "Group 1" in the "block_groups" "block"
+      Then I should see "Grouping 2" in the "block_groups" "block"
+      Then I should see "Grouping 1" in the "block_groups" "block"
+      Then I should see "Grouping 3" in the "block_groups" "block"
+
+
+
+
 
 
