@@ -26,7 +26,6 @@
 
 
 require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
-//behat_block_groups' not found in /home/nina/Entwicklung/moodle/vendor/moodlehq/behat-extension/src/Moodle/BehatExtension/Context/MoodleContext.php
 use Behat\Mink\Exception\ElementNotFoundException as ElementNotFoundException;
 
 /**
