@@ -43,9 +43,9 @@ class behat_block_groups extends behat_base {
      *
      * @When /^I click on the "(?P<type_string>(?:[^"]|\\")*)" block groups label$/
      *
-     * @param string $type string identifier of the checkbox
+     * @param string $type identifier of the checkbox
      */
-    public function i_Click_On_The_Block_Groups_Label($type) {
+    public function i_click_on_the_block_groups_label($type) {
         $checkbox = $this->find_field("checkbox" . $type);
         $checkbox->check();
     }
