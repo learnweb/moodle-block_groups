@@ -34,13 +34,4 @@ $capabilities = array(
         ),
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
-    // Capability is only listed since travis demands for it, not necessary for the code.
-    'block/groups:myaddinstance' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'user' => CAP_PREVENT
-        ),
-        'clonepermissionsfrom' => 'moodle/site:manageblocks'
-    ),
 );
