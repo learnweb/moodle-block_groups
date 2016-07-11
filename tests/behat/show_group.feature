@@ -55,7 +55,7 @@ Feature: Make a group visible in a group block
       Then I should see "Grouping 2" in the "block_groups" "block"
       Then I should see "Grouping 1" in the "block_groups" "block"
 
-  Scenario: Click on eye icon
+  Scenario: Click on eye icon, only enrolled students are able to see the block
       Given I log in as "teacher1"
       And I follow "Course 1"
       When I click on the "group" block groups label
@@ -64,6 +64,7 @@ Feature: Make a group visible in a group block
       And I log in as "student1"
       And I follow "Course 1"
       Then I should see "Group 1" in the "block_groups" "block"
+      Then I should not see "Group 2" in the "block_groups" "block"
       And I log out
       And I log in as "student3"
       And I follow "Course 1"

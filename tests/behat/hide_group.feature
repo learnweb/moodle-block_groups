@@ -33,7 +33,7 @@ Feature: Hide a group in a group block
       | user     | group   |
       | student1 | G1 |
       | student2 | G1 |
-      | student3 | G2 |
+      | student2 | G2 |
     And the following "grouping groups" exist:
       | grouping | group |
       | GG1      | G1    |
@@ -71,10 +71,16 @@ Feature: Hide a group in a group block
     And I follow "Course 1"
     When I click on the "group" block groups label
     And I click on ".rightalign" "css_element" in the "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/li[contains(.,'Group 1')]" "xpath_element"
+    And I click on ".rightalign" "css_element" in the "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/li[contains(.,'Group 2')]" "xpath_element"
     And I log out
     And I log in as "student1"
     And I follow "Course 1"
     Then "block_groups" "block" should not exist
+    And I log out
+    And I log in as "student2"
+    And I follow "Course 1"
+    Then I should not see "Group 1" in the "block_groups" "block"
+    Then I should see "Group 2" in the "block_groups" "block"
     And I log out
 
 
