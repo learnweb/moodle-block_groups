@@ -62,7 +62,8 @@ Feature: Hide a group in a group block
     And I follow "Course 1"
     When I click on the "group" block groups label
     And I click on ".rightalign" "css_element" in the "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/li[contains(.,'Group 1')]" "xpath_element"
-    And I log out
+    Then I should see "Group 1" in the "block_groups" "block"
+    When I log out
     And I log in as "student1"
     And I follow "Course 1"
     Then I should see "Group 1" in the "block_groups" "block"
@@ -72,6 +73,7 @@ Feature: Hide a group in a group block
     When I click on the "group" block groups label
     And I click on ".rightalign" "css_element" in the "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/li[contains(.,'Group 1')]" "xpath_element"
     And I click on ".rightalign" "css_element" in the "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/li[contains(.,'Group 2')]" "xpath_element"
+    Then I should see "Group 1" in the "block_groups" "block"
     And I log out
     And I log in as "student1"
     And I follow "Course 1"
