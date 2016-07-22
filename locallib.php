@@ -49,7 +49,7 @@ function block_groups_db_transaction_change_visibility($groupid, $courseid) {
  */
 function count_grouping_members () {
     global $DB;
-    return  $DB->get_records_sql('SELECT g.id, Count(DISTINCT gm.userid)
+    return  $DB->get_records_sql('SELECT g.id, Count(DISTINCT gm.userid) AS number
                                                  FROM {groups_members} gm
                                                  RIGHT JOIN {groupings_groups} gg
                                                  ON gg.groupid = gm.groupid

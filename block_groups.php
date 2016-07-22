@@ -172,7 +172,7 @@ class block_groups extends block_base
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 // Necessary DB query to prohibit multiple ids of grouping members.
-                $countgroupingmember = $arrayofmembers[$value->id]->count;
+                $countgroupingmember = $arrayofmembers[$value->id]->number;
                 $groupingsarray[$g] = $renderer->get_grouping($value->name, $countgroupingmember);
             }
         }

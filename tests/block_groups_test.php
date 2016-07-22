@@ -52,7 +52,7 @@ class block_groups_testcase extends advanced_testcase {
         $this->assertEquals(true, $booleandeleted);
 
         // Test the function that counts the grouping members.
-        $functioncount = count_grouping_members ($data['grouping1']->id);
+        $functioncount = count_grouping_members($data['grouping1']->id);
         $functioncount2 = count_grouping_members($data['grouping2']->id);
         $functioncount3 = count_grouping_members($data['grouping3']->id);
 
