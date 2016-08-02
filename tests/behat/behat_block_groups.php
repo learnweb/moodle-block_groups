@@ -40,26 +40,26 @@ class behat_block_groups extends behat_base {
     /**
      * Enlarge hidden checkboxes
      *
-     * @When /^I click on the "(?P<type_string>(?:[^"]|\\")*)" block groups label$/
+     * @When /^I click on the "(?P<labelname_string>(?:[^"]|\\")*)" block groups label$/
      *
-     * @param string $type identifier of the checkbox
+     * @param string $labelname identifier of the checkbox
      */
-    public function i_click_on_the_block_groups_label($type) {
-        $checkbox = $this->find('xpath' , "//div[@class='wrapperblockgroupsandgroupingcheckbox']['checkboxgroup']//
-                                following-sibling::label[contains(.,'" .$type. "')]");
-        $checkbox->press();
+    public function i_click_on_the_block_groups_label($labelname) {
+        $label = $this->find('xpath' , "//div[@class='wrapperblockgroupsandgroupingcheckbox']['checkboxgroup']//
+                                following-sibling::label[contains(.,'" .$labelname. "')]");
+        $label->press();
     }
 
     /**
      * Clicks on eye icon
      *
-     * @When /^I click on the eye icon of group name "(?P<type_string>(?:[^"]|\\")*)"$/
+     * @When /^I click on the eye icon of group name "(?P<groupname_string>(?:[^"]|\\")*)"$/
      *
-     * @param string $type identifier of the Group
+     * @param string $groupname identifier of the Group
      */
-    public function i_click_on_the_eye_icon_of_group_name($type) {
-        $checkbox = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/
-                                li[contains(.,'". $type . "')]//child::div[@class='rightalign']");
-        $checkbox->press();
+    public function i_click_on_the_eye_icon_of_group_name($groupname) {
+        $eyeicon = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/
+                                li[contains(.,'". $groupname . "')]//child::div[@class='rightalign']");
+        $eyeicon->press();
     }
 }

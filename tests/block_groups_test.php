@@ -52,16 +52,12 @@ class block_groups_testcase extends advanced_testcase {
         $this->assertEquals(true, $booleandeleted);
 
         // Test the function that counts the grouping members.
-        $functioncount = count_grouping_members($data['grouping2']->id);
-        $functioncount2 = count_grouping_members($data['grouping2']->id);
-        $functioncount3 = count_grouping_members($data['grouping3']->id);
-
-
-        $this->assertEquals(2, $functioncount->id);
+        $functioncount = count_grouping_members();
+        $this->assertEquals(2, $functioncount[$data['grouping1']->id]->number);
         // Members are not counted multiple.
-        $this->assertEquals(3, $functioncount2->id);
+        $this->assertEquals(3, $functioncount[$data['grouping2']->id]->number);
         // Test empty grouping.
-        $this->assertEquals(0, $functioncount3->id);
+        $this->assertEquals(0, $functioncount[$data['grouping3']->id]->number);
     }
     /**
      * Methodes recommended by moodle to assure database and dataroot is reset.
