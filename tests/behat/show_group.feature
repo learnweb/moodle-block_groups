@@ -49,7 +49,7 @@ Feature: Make a group visible in a group block
       Given I log in as "teacher1"
       And I follow "Course 1"
       When I click on "//div[@class='wrapperblockgroupsandgroupingcheckbox']['checkboxgroup']//following-sibling::label[contains(.,'Groups')]" "xpath_element"
-      And I click on the "grouping" block groups label
+      And I click on "//div[@class='wrapperblockgroupsandgroupingcheckbox']['checkboxgroup']//following-sibling::label[contains(.,'Grouping')]" "xpath_element"
       Then I should see "Group 2" in the "block_groups" "block"
       Then I should see "Group 1" in the "block_groups" "block"
       Then I should see "Grouping 2" in the "block_groups" "block"
