@@ -171,9 +171,6 @@ class block_groups extends block_base
         $arrayofmembers = count_grouping_members();
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
-                echo '<p>';
-                echo print_r($arrayofmembers[$value->id]);
-                echo '</p>';
                 // Necessary DB query to prohibit multiple ids of grouping members.
                 $countgroupingmember = $arrayofmembers[$value->id]->number;
                 $groupingsarray[$g] = $renderer->get_grouping($value->name, $countgroupingmember);
