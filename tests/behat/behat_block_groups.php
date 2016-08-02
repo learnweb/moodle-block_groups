@@ -47,7 +47,7 @@ class behat_block_groups extends behat_base {
     public function i_click_on_the_block_groups_label($labelname) {
         $label = $this->find('xpath' , "//div[@class='wrapperblockgroupsandgroupingcheckbox']['checkboxgroup']//
                                 following-sibling::label[contains(.,'" .$labelname. "')]");
-        $label->press();
+        $label->click();
     }
 
     /**
@@ -60,6 +60,6 @@ class behat_block_groups extends behat_base {
     public function i_click_on_the_eye_icon_of_group_name($groupname) {
         $eyeicon = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/
                                 li[contains(.,'". $groupname . "')]//child::div[@class='rightalign']");
-        $eyeicon->press();
+        $eyeicon->click();
     }
 }
