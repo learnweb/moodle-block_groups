@@ -3,8 +3,8 @@
 }
 
 .block_groups input.blockgroupsandgroupingcheckbox {
-    display: none;
     cursor: pointer;
+    display: none;
     text-align: left;
 }
 
@@ -34,7 +34,7 @@
     opacity: 0.5;
 }
 .block_groups img {
-    margin-top: 3px;
     margin-right: 5px;
+    margin-top: 3px;
     vertical-align: top;
 }
