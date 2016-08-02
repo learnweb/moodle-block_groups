@@ -60,6 +60,7 @@ Feature: Make a group visible in a group block
       And I follow "Course 1"
       When I click on "//div[@class='wrapperblockgroupsandgroupingcheckbox']['checkboxgroup']//following-sibling::label[contains(.,'Groups')]" "xpath_element"
       And I click on ".rightalign" "css_element" in the "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/li[contains(.,'Group 1')]" "xpath_element"
+      Given I am on homepage
       And I log out
       And I log in as "student1"
       And I follow "Course 1"
