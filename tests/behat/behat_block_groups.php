@@ -45,8 +45,21 @@ class behat_block_groups extends behat_base {
      * @param string $type identifier of the checkbox
      */
     public function i_click_on_the_block_groups_label($type) {
-        $checkbox = $this->find_field("checkbox" . $type);
-        $checkbox->check();
+        $checkbox = $this->find('xpath' , "//div[@class='wrapperblockgroupsandgroupingcheckbox']['checkboxgroup']//
+                                following-sibling::label[contains(.,'" .$type. "')]");
+        $checkbox->press();
     }
 
+    /**
+     * Clicks on eye icon
+     *
+     * @When /^I click on the eye icon of group name "(?P<type_string>(?:[^"]|\\")*)"$/
+     *
+     * @param string $type identifier of the Group
+     */
+    public function i_click_on_the_eye_icon_of_group_name($type) {
+        $checkbox = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/
+                                li[contains(.,'". $type . "')]//child::div[@class='rightalign']");
+        $checkbox->press();
+    }
 }
