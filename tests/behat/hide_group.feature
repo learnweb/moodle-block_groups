@@ -60,7 +60,7 @@ Feature: Hide a group in a group block
   Scenario: Students do not see group when it is hidden again
     Given I log in as "teacher1"
     And I follow "Course 1"
-    When I click on the "group" block groups label
+    When I click on the "//div[@class='wrapperblockgroupsandgroupingcheckbox']['checkboxgroup']//following-sibling::label='Groups'" "xpath_element"
     And I click on ".rightalign" "css_element" in the "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/li[contains(.,'Group 1')]" "xpath_element"
     Then I should see "Group 1" in the "block_groups" "block"
     When I log out
