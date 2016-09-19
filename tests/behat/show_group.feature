@@ -64,6 +64,7 @@ Feature: Make a group visible in a group block
       And I log out
       And I log in as "student1"
       And I follow "Course 1"
+    Then "Groups and Groupings" "block" should exist
       Then I should see "Group 1" in the "Groups and Groupings" "block"
       Then I should not see "Group 2" in the "Groups and Groupings" "block"
       And I log out

@@ -62,6 +62,7 @@ Feature: Hide a group in a group block
     And I follow "Course 1"
     When I click on the "Groups" block groups label
     And I click on the eye icon of group name "Group 1"
+    Then "Groups and Groupings" "block" should exist
     Then I should see "Group 1" in the "Groups and Groupings" "block"
     Given I am on homepage
     When I log out
