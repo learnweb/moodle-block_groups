@@ -58,7 +58,7 @@ class behat_block_groups extends behat_base {
      * @param string $groupname identifier of the Group
      */
     public function i_click_on_the_eye_icon_of_group_name($groupname) {
-        $eyeicon = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/
+        $eyeicon = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]//
                                 li[contains(.,'". $groupname . "')]//child::div[@class='rightalign']");
         $eyeicon->click();
     }

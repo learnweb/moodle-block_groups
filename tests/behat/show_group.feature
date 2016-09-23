@@ -60,7 +60,6 @@ Feature: Make a group visible in a group block
       And I follow "Course 1"
       When I click on the "Groups" block groups label
       And I click on the eye icon of group name "Group 1"
-      Then "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/li[contains(.,'Group 1')]//child::div[@class='rightalign']" "xpath_element" should be visible
       Given I am on homepage
       And I log out
       And I log in as "student1"
