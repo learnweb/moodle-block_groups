@@ -90,9 +90,6 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
             return false;
         }
         add_spinner($(this).data('groupid'));
-        $.ajax({
-            timeout:3000
-        });
         var promises = ajax.call([
             { methodname: 'block_groups_create_output', args: {
                 groups: {
