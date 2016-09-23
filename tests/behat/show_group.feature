@@ -61,6 +61,7 @@ Feature: Make a group visible in a group block
       And I follow "Course 1"
       When I click on the "Groups" block groups label
       And I click on the eye icon of group name "Group 1"
+      Then I wait "3" seconds
       Given I am on homepage
       And I log out
       And I log in as "student1"

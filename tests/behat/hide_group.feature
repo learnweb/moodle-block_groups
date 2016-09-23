@@ -64,9 +64,9 @@ Feature: Hide a group in a group block
     And I follow "Course 1"
     When I click on the "Groups" block groups label
     And I click on the eye icon of group name "Group 1"
+    Then I wait "3" seconds
     Then "Groups and Groupings" "block" should exist
     Then I should see "Group 1" in the "Groups and Groupings" "block"
-    Then "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]/ul/li[contains(.,'Group 1')]//child::div[@class='rightalign']" "xpath_element" should be visible
     Given I am on homepage
     When I log out
     And I log in as "student1"
@@ -78,7 +78,9 @@ Feature: Hide a group in a group block
     And I follow "Course 1"
     When I click on the "Groups" block groups label
     And I click on the eye icon of group name "Group 1"
+    Then I wait "3" seconds
     And I click on the eye icon of group name "Group 2"
+    Then I wait "3" seconds
     Then I should see "Group 1" in the "Groups and Groupings" "block"
     Given I am on homepage
     And I log out
