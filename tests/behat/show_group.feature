@@ -1,4 +1,4 @@
-@block @block_groups @groups_show @javascript
+@block @block_groups @groups_show
 Feature: Make a group visible in a group block
   In order to let students see a group
   As a user
@@ -44,7 +44,7 @@ Feature: Make a group visible in a group block
     And I add the "groups" block
     And I log out
 
-
+  @javascript
   Scenario: Teacher sees a list of all groups and groupings when they click on the label
       Given I log in as "teacher1"
       And I follow "Course 1"
@@ -55,6 +55,7 @@ Feature: Make a group visible in a group block
       Then I should see "Grouping 2" in the "Groups and Groupings" "block"
       Then I should see "Grouping 1" in the "Groups and Groupings" "block"
 
+  @javascript
   Scenario: Click on eye icon, only enrolled students are able to see the block
       Given I log in as "teacher1"
       And I follow "Course 1"
