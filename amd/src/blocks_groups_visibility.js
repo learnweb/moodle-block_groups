@@ -79,7 +79,7 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         warning.className = 'warning' + groupid;
         warning.src = imgurl;
         remove_spinner(groupid);
-        ($('.block_groups').find('.imggroup-' + groupid).before(warning)).on('click', create_warning_message());
+        ($('.block_groups').find('.imggroup-' + groupid).before(warning)).on('click', create_warning_message);
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
