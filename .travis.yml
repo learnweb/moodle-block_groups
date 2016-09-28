@@ -7,10 +7,8 @@ cache:
     - $HOME/.composer/cache
 
 php:
+ - 5.6
  - 7.0
-
-matrix:
- allow_failures:
 
 env:
  global:
@@ -19,18 +17,14 @@ env:
   - DB=pgsql MOODLE_BRANCH=MOODLE_30_STABLE
   - DB=pgsql MOODLE_BRANCH=MOODLE_31_STABLE
   - DB=pgsql MOODLE_BRANCH=master
-
- allow_failures:
-    - env: DB=pgsql MOODLE_BRANCH=master
-    - env: DB=mysqli MOODLE_BRANCH=master
-
-env:
-  - DB=pgsql MOODLE_BRANCH=MOODLE_30_STABLE
-  - DB=pgsql MOODLE_BRANCH=MOODLE_31_STABLE
-  - DB=pgsql MOODLE_BRANCH=master
   - DB=mysqli MOODLE_BRANCH=MOODLE_30_STABLE
   - DB=mysqli MOODLE_BRANCH=MOODLE_31_STABLE
   - DB=mysqli MOODLE_BRANCH=master
+
+allow_failures:
+  - env: DB=pgsql MOODLE_BRANCH=master
+  - env: DB=mysqli MOODLE_BRANCH=master
+  - php: 5.6
 
 before_install:
   - phpenv config-rm xdebug.ini
