@@ -23,6 +23,7 @@
 /**
  * Function to upgrade for the groups block.
  */
+defined('MOODLE_INTERNAL') || die();
 function xmldb_block_groups_upgrade($oldversion) {
     return true;
 }

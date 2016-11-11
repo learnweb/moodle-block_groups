@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * blocks_groups internal functions
  *
@@ -21,12 +20,14 @@
  * @copyright  2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die();
 /**
  * Executes a change in the block_groups_hide database
  *
  * @param $groupid
  * @param $courseid
  */
+
 function block_groups_db_transaction_change_visibility($groupid, $courseid) {
     global $DB;
     $transaction = $DB->start_delegated_transaction();
