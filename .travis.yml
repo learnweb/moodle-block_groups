@@ -14,6 +14,10 @@ php:
 matrix:
   allow_failures:
     - php: 5.6
+    - env: DB=pgsql MOODLE_BRANCH=MOODLE_32_STABLE
+    - env: DB=pgsql MOODLE_BRANCH=master
+    - env: DB=mysqli MOODLE_BRANCH=MOODLE_32_STABLE
+    - env: DB=mysqli MOODLE_BRANCH=master
 
 env:
  global:
