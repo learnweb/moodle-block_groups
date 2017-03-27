@@ -1,0 +1,4 @@
+fixes:
+	- "moodle/blocks/groups/::"
+ignore:
+	- "tests"
