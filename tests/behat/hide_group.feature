@@ -41,7 +41,7 @@ Feature: Hide a group in a group block
     And I log in as "teacher1"
     And I follow "Course 1"
     And I turn editing mode on
-    And I add the "groups" block
+    And I add the "Groups and Groupings" block
     And I log out
 
   Scenario: The modify link leads to the modify group page
