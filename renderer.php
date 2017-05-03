@@ -78,9 +78,9 @@ class block_groups_renderer extends plugin_renderer_base {
             $action = 'show';
             $spanstring = 'hiddengroups';
         }
-        $img = html_writer::img($OUTPUT->pix_url('t/' . $action), get_string('hidegroup', 'block_groups'),
+        $icon = $OUTPUT->pix_icon('t/' . $action, get_string('hidegroup', 'block_groups'), 'moodle',
             array('class' => "imggroup-". $value->id));
-        $rightaligndiv = html_writer::div($img, 'rightalign');
+        $rightaligndiv = html_writer::div($icon, 'rightalign');
         $line = html_writer::span($value->name . '   ' .get_string('brackets', 'block_groups', $countmembers), $spanstring) .
             html_writer::link($href, $rightaligndiv, array('class' => 'block_groups_toggle', 'data-groupid' => $value->id,
                 'data-action' => $action));
