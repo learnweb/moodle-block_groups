@@ -12,6 +12,9 @@ php:
  - 7.0
  - 7.1
 
+addons:
+ postgresql: "9.3"
+
 matrix:
   allow_failures:
     - php: 5.6
