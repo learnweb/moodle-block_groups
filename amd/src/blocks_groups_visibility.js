@@ -86,42 +86,43 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
      */
     var changevisibility = function (event) {
         var groupid = $(this).data('groupid');
-        if($('.block_groups').find('.spinner' + $(this).data('groupid')).length > 0){
+        if ($('.block_groups').find('.spinner' + $(this).data('groupid')).length > 0) {
             return false;
         }
         add_spinner($(this).data('groupid'));
         var promises = ajax.call([
-            { methodname: 'block_groups_create_output', args: {
-                groups: {
-                    id: $(this).data('groupid'),
-                    courseid: event.data.courseid
-                }
+            {
+                methodname: 'block_groups_create_output', args: {
+                    groups: {
+                        id: $(this).data('groupid'),
+                        courseid: event.data.courseid
+                    }
                 }
             }
         ]);
-        $(document).ajaxError(function() {
+        $(document).ajaxError(function () {
             add_warning(groupid);
             return false;
         });
-        promises[0].done(function(response) {
-            if(response === null){
+        promises[0].done(function (response) {
+            if (response === null) {
                 add_warning(groupid);
                 return false;
             }
-            if(response.error === true){
+            if (response.error === true) {
                 add_warning(groupid);
                 return false;
             }
             $('.block_groups').find('.group-' + response.id).replaceWith(response.newelement);
             // Replaces the used element, therefore removes the spinner.
-            if(response.visibility === 0) {
+            if (response.visibility === 0) {
                 $('.block_groups').find('.membergroup-' + response.id).removeClass('hiddengroups');
             }
-            if(response.visibility === 1) {
+            if (response.visibility === 1) {
                 $('.block_groups').find('.membergroup-' + response.id).addClass('hiddengroups');
             }
-            $('.block_groups').find('.group-' + response.id + ' .block_groups_toggle').on('click', {courseid: event.data.courseid},
-                changevisibility);
+            $('.block_groups').find('.group-' + response.id + ' .block_groups_toggle').on('click',
+                {courseid: event.data.courseid}, changevisibility);
             remove_spinner(response.id);
         }).fail(function () {
             add_warning(groupid);

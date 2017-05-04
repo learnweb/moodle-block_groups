@@ -113,12 +113,15 @@ class block_groups extends block_base
                 }
             }
         }
+
         // Empty block or block with checkboxes.
         $href = $CFG->wwwroot . '/group/index.php?id=' . $COURSE->id;
         if (count($groupsarray) == 0) {
             $content .= $renderer->get_link_modify_groups($href);
             $content .= get_string('nogroups', 'block_groups');
         } else {
+            // Since 3.3-r5 shows line with link to change all groups.
+            $content .= $renderer->change_all_groups();
             $groupingsarray = $this->build_grouping_array($allgroupings);
             if (!empty($groupingsarray)) {
                 $content .= $renderer->teaching_groups_or_groupings_list($groupingsarray, false);

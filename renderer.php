@@ -97,6 +97,28 @@ class block_groups_renderer extends plugin_renderer_base {
         return $name . '   ' . get_string('brackets', 'block_groups', $counter);
     }
     /**
+     * Renders line to change all groups.
+     *
+     * @return string html string
+     */
+    public function change_all_groups() {
+        global $OUTPUT, $CFG, $COURSE;
+        // Creates two urls for showing all groups hiding all groups.
+        $urlshow = new moodle_url($CFG->wwwroot . '/blocks/groups/changeallgroups.php',
+            array('courseid' => $COURSE->id, 'hide' => '0'));
+        $urlhide = new moodle_url($CFG->wwwroot . '/blocks/groups/changeallgroups.php',
+            array('courseid' => $COURSE->id, 'hide' => '1'));
+
+        $iconhide = $OUTPUT->pix_icon('t/' . 'hide', get_string('hidegroup', 'block_groups'), 'moodle');
+        $iconshow = $OUTPUT->pix_icon('t/' . 'show', get_string('showgroup', 'block_groups'), 'moodle');
+        $rightaligndivhide = html_writer::div($iconhide, 'rightalign');
+        $rightaligndivshow = html_writer::div($iconshow, 'rightalign');
+        $line = html_writer::span('Change all groups', 'allgroups') .
+            html_writer::link($urlhide, $rightaligndivhide, array('data-action' => 'hide')) .
+            html_writer::link($urlshow, $rightaligndivshow, array('data-action' => 'show'));
+        return $line;
+    }
+    /**
      * Returns the frame for the memberlist.
      *
      * @param $enrolledgroups
