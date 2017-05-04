@@ -61,4 +61,22 @@ class behat_block_groups extends behat_base {
                                 li[contains(.,'". $groupname . "')]//child::div[@class='rightalign']");
         $eyeicon->click();
     }
+    /**
+     * Clicks on all groups
+     *
+     * @When /^I click in the groups block on all groups "(?P<action_string>(?:[^"]|\\")*)"$/
+     *
+     * @param string $action identifier of the Group
+     */
+    public function i_click_in_the_groups_block_on_all_groups($action) {
+        if ($action == 'hide') {
+            $eyeicon = $this->find('xpath' ,
+                "//span[@class='wrapperblockgroupsallgroups']//following::a[2]//child::div[@class='rightalign']");
+        }
+        if ($action == 'show') {
+            $eyeicon = $this->find('xpath' ,
+                "//span[@class='wrapperblockgroupsallgroups']//following::a[1]//child::div[@class='rightalign']");
+        }
+        $eyeicon->click();
+    }
 }

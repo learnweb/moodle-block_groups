@@ -117,7 +117,7 @@ class block_groups_renderer extends plugin_renderer_base {
         $iconhide = $OUTPUT->pix_icon('t/' . 'hide', get_string('showgroup', 'block_groups'), 'moodle');
         $rightaligndivhide = html_writer::div($iconhide, 'rightalign');
         $rightaligndivshow = html_writer::div($iconshow, 'rightalign');
-        $line = html_writer::span('Change all groups', 'allgroups') .
+        $line = html_writer::span('Change all groups', 'wrapperblockgroupsallgroups') .
             html_writer::link($urlhide, $rightaligndivhide, array('data-action' => 'hide')) .
             html_writer::link($urlshow, $rightaligndivshow, array('data-action' => 'show'));
         return $line;
