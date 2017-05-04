@@ -73,12 +73,16 @@ class block_groups_renderer extends plugin_renderer_base {
         global $OUTPUT;
         if ($visibility === false) {
             $action = 'hide';
+            $reverse = 'show';
+            $message = get_string('hidegroup', 'block_groups');
             $spanstring = '';
         } else {
             $action = 'show';
+            $reverse = 'hide';
+            $message = get_string('showgroup', 'block_groups');
             $spanstring = 'hiddengroups';
         }
-        $icon = $OUTPUT->pix_icon('t/' . $action, get_string('hidegroup', 'block_groups'), 'moodle',
+        $icon = $OUTPUT->pix_icon('t/' . $reverse, $message, 'moodle',
             array('class' => "imggroup-". $value->id));
         $rightaligndiv = html_writer::div($icon, 'rightalign');
         $line = html_writer::span($value->name . '   ' .get_string('brackets', 'block_groups', $countmembers), $spanstring) .
@@ -105,12 +109,12 @@ class block_groups_renderer extends plugin_renderer_base {
         global $OUTPUT, $CFG, $COURSE;
         // Creates two urls for showing all groups hiding all groups.
         $urlshow = new moodle_url($CFG->wwwroot . '/blocks/groups/changeallgroups.php',
-            array('courseid' => $COURSE->id, 'hide' => '0'));
-        $urlhide = new moodle_url($CFG->wwwroot . '/blocks/groups/changeallgroups.php',
             array('courseid' => $COURSE->id, 'hide' => '1'));
+        $urlhide = new moodle_url($CFG->wwwroot . '/blocks/groups/changeallgroups.php',
+            array('courseid' => $COURSE->id, 'hide' => '0'));
 
-        $iconhide = $OUTPUT->pix_icon('t/' . 'hide', get_string('hidegroup', 'block_groups'), 'moodle');
-        $iconshow = $OUTPUT->pix_icon('t/' . 'show', get_string('showgroup', 'block_groups'), 'moodle');
+        $iconshow = $OUTPUT->pix_icon('t/' . 'show', get_string('hidegroup', 'block_groups'), 'moodle');
+        $iconhide = $OUTPUT->pix_icon('t/' . 'hide', get_string('showgroup', 'block_groups'), 'moodle');
         $rightaligndivhide = html_writer::div($iconhide, 'rightalign');
         $rightaligndivshow = html_writer::div($iconshow, 'rightalign');
         $line = html_writer::span('Change all groups', 'allgroups') .

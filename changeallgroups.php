@@ -40,7 +40,7 @@ require_capability('moodle/course:managegroups', context_course::instance($cours
 $groupsuitable = $DB->get_records('groups', array('courseid' => $courseid));
 // The Course has no groups therefore changing all is not possible.
 if (empty($groupsuitable)) {
-    notice(get_string('nochangeindatabasepossible', 'block_groups'),
+    notice(get_string('nogroups', 'block_groups'),
         $CFG->wwwroot . '/course/view.php?id=' . $courseid);
     exit();
 }
