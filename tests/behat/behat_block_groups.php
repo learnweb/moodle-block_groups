@@ -57,8 +57,8 @@ class behat_block_groups extends behat_base {
      * @param string $groupname identifier of the Group
      */
     public function i_click_on_the_eye_icon_of_group_name($groupname) {
-        $eyeicon = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]//
-                                li[contains(.,'". $groupname . "')]//child::div[@class='rightalign']");
+        $eyeicon = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]
+              //li[contains(.,'". $groupname . "')]//child::div[@class='rightalign']");
         $eyeicon->click();
     }
     /**
@@ -71,11 +71,11 @@ class behat_block_groups extends behat_base {
     public function i_click_in_the_groups_block_on_all_groups($action) {
         if ($action == 'hide') {
             $eyeicon = $this->find('xpath' ,
-                "//span[@class='wrapperblockgroupsallgroups']//following::a[2]//child::div[@class='rightalign']");
+                "//span[@class='wrapperblockgroupsallgroups']//following::a[2]");
         }
         if ($action == 'show') {
             $eyeicon = $this->find('xpath' ,
-                "//span[@class='wrapperblockgroupsallgroups']//following::a[1]//child::div[@class='rightalign']");
+                "//span[@class='wrapperblockgroupsallgroups']//following::a[1]");
         }
         $eyeicon->click();
     }
