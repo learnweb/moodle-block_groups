@@ -61,6 +61,8 @@ Feature: Hide a group in a group block
   Scenario: Change all groups hide does hide all groups
     Given I log in as "teacher1"
     And I am on "Course 1" course homepage
+    When I click in the groups block on all groups "show"
+    Then I wait "3" seconds
     When I click in the groups block on all groups "hide"
     Then I wait "3" seconds
     Then "Groups and Groupings" "block" should exist
