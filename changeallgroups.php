@@ -54,8 +54,10 @@ foreach ($groupsuitable as $group) {
     }
 }
 $groups = $groupsvisible;
+$messageaction = 'hidden';
 
 if ($hide === 0) {
+    $messageaction = 'visible';
     $tempgroup = array();
     foreach ($groupsuitable as $group) {
         if (!empty($groupsvisible)) {
@@ -69,8 +71,7 @@ if ($hide === 0) {
     $groups = $tempgroup;
 }
 if (empty($groups)) {
-    // TODO: Fehler abfangen wenn alle gruppen sichtbar sind.
-    notice(get_string('nochangeindatabasepossible', 'block_groups'),
+    notice(get_string('allgroupsinstate', 'block_groups', $messageaction),
         $CFG->wwwroot . '/course/view.php?id=' . $courseid);
     exit();
 }
@@ -78,5 +79,6 @@ require_once($CFG->dirroot.'/blocks/groups/locallib.php');
 foreach ($groups as $group) {
     block_groups_db_transaction_change_visibility($group, $courseid);
 }
-redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
+notice(get_string('groupschanged', 'block_groups', $messageaction),
+    $CFG->wwwroot . '/course/view.php?id=' . $courseid);
 exit();

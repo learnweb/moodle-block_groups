@@ -36,5 +36,7 @@ $string['showgroup'] = 'show group';
 $string['nochangeindatabasepossible'] = 'The required change was not possible';
 $string['nocourse'] = 'Problem to find course, please try again later.';
 $string['nogroups'] = 'The requested course has no groups.';
+$string['allgroupsinstate'] = 'All groups are already {$a}.';
+$string['groupschanged'] = 'All groups are {$a}.';
 $string['errortitle'] = 'Error';
 $string['errorbutton'] = 'OK';
