@@ -62,14 +62,14 @@ Feature: Hide a group in a group block
     Given I log in as "teacher1"
     And I am on "Course 1" course homepage
     When I click in the groups block on all groups "show"
-    Then I wait "3" seconds
+    And I am on "Course 1" course homepage
     When I click in the groups block on all groups "hide"
-    Then I wait "3" seconds
+    And I am on "Course 1" course homepage
+    And I click on the eye icon of group name "Group 2"
     Then "Groups and Groupings" "block" should exist
-    Then I should see "Group 1" in the "Groups and Groupings" "block"
     Given I am on homepage
     When I log out
-    And I log in as "student1"
+    And I log in as "student2"
     And I am on "Course 1" course homepage
     Then I should not see "Group 1" in the "Groups" "block"
     Given I am on homepage
