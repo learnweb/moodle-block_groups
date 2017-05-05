@@ -43,7 +43,7 @@ Feature: Hide a group in a group block
     And I add the "Groups and Groupings" block
     And I log out
 
-  Scenario: Change all groups does change all groups
+  Scenario: Change all groups show does show all groups
     Given I log in as "teacher1"
     And I am on "Course 1" course homepage
     When I click in the groups block on all groups "show"
@@ -55,5 +55,20 @@ Feature: Hide a group in a group block
     And I log in as "student1"
     And I am on "Course 1" course homepage
     Then I should see "Group 1" in the "Groups" "block"
+    Given I am on homepage
+    And I log out
+
+  Scenario: Change all groups hide does hide all groups
+    Given I log in as "teacher1"
+    And I am on "Course 1" course homepage
+    When I click in the groups block on all groups "hide"
+    Then I wait "3" seconds
+    Then "Groups and Groupings" "block" should exist
+    Then I should see "Group 1" in the "Groups and Groupings" "block"
+    Given I am on homepage
+    When I log out
+    And I log in as "student1"
+    And I am on "Course 1" course homepage
+    Then I should not see "Group 1" in the "Groups" "block"
     Given I am on homepage
     And I log out
