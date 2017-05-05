@@ -71,14 +71,18 @@ if ($hide === 0) {
     $groups = $tempgroup;
 }
 if (empty($groups)) {
-    notice(get_string('allgroupsinstate', 'block_groups', $messageaction),
-        $CFG->wwwroot . '/course/view.php?id=' . $courseid);
+    // Shows course page with warning message.
+    redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid,
+        get_string('allgroupsinstate', 'block_groups', $messageaction),
+        null, \core\output\notification::NOTIFY_WARNING);
     exit();
 }
 require_once($CFG->dirroot.'/blocks/groups/locallib.php');
 foreach ($groups as $group) {
     block_groups_db_transaction_change_visibility($group, $courseid);
 }
-notice(get_string('groupschanged', 'block_groups', $messageaction),
-    $CFG->wwwroot . '/course/view.php?id=' . $courseid);
+// Shows course page with success message.
+redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid,
+    get_string('groupschanged', 'block_groups', $messageaction),
+    null, \core\output\notification::NOTIFY_SUCCESS);
 exit();
