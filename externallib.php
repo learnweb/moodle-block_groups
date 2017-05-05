@@ -95,4 +95,84 @@ class block_groups_visibility_change extends external_api{
         }
         return  $output;
     }
+    /**
+     * Specifys the input parameters.
+     */
+    public static function create_allgroups_output_parameters() {
+        return new external_function_parameters(
+            array(
+                'groups' => new external_single_structure(
+                    array(
+                        // Insert 1 for hide groups 0 for show groups.
+                        'action' => new external_value(PARAM_INT, 'id of group'),
+                        'courseid' => new external_value(PARAM_INT, 'id of course'),
+                    )
+                )
+            )
+        );
+    }
+
+    /**
+     * Specifys the output parameters.
+     */
+    public static function create_allgroups_output_returns() {
+        return new external_single_structure(
+            array(
+                'courseid' => new external_value(PARAM_INT, 'id of course'),
+                'newelement' => new external_value(PARAM_RAW, 'replace html-element'),
+                'visibility' => new external_value(PARAM_INT, 'returns the visibility value')
+            )
+        );
+    }
+    /**
+     * Changed the Database and returns the updated html content.
+     * create_allgroups_output
+     * @param $groups
+     * @return array
+     */
+    public static function create_allgroups_output($groups) {
+        global $PAGE, $CFG, $DB;
+        $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
+        $PAGE->set_context(context_course::instance($params['groups']['courseid']));
+        require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
+        require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+        $groupsuitable = $DB->get_records('groups', array($params['groups']['courseid']));
+        // The Course has no groups therefore changing all is not possible.
+        if (empty($groupsuitable)) {
+            // TODO: Suitable Params?
+        }
+        $groups = array();
+        $groupsvisible = array();
+        foreach ($groupsuitable as $group) {
+            $entry = $DB->get_records('block_groups_hide', array('id' => $group->id));
+            // In the Case, that the group of the course has an entry in the 'block_groups_hide' table the group is visible.
+            if (!empty($entry)) {
+                $groupsvisible[$group->id] = $group->id;
+            }
+        }
+        $groups = $groupsvisible;
+        $messageaction = 'hidden';
+        if ($params['groups']['action'] == 1) {
+            $messageaction = 'visible';
+            $tempgroup = array();
+            foreach ($groupsuitable as $group) {
+                if (!empty($groupsvisible)) {
+                    if (!(in_array($group->id, $groups))) {
+                        $tempgroup[$group->id] = $group->id;
+                    }
+                } else {
+                    $tempgroup[$group->id] = $group->id;
+                }
+            }
+            $groups = $tempgroup;
+        }
+        if (empty($groups)) {
+            // TODO: suitable params
+        }
+        require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+        foreach ($groups as $group) {
+            block_groups_db_transaction_change_visibility($group, $params['groups']['courseid']);
+        }
+        // TODO: create htmlelement
+    }
 }
