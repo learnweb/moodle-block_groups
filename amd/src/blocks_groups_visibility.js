@@ -136,7 +136,6 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
      */
     return {
         initialise: function(courseid){
-            //TODO: additional function for all groups.
             $('.block_groups_toggle').on('click', {courseid: courseid}, changevisibility);
         }
     };
