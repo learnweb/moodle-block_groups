@@ -38,3 +38,6 @@
     margin-top: 3px;
     vertical-align: top;
 }
+.block_groups li {
+    line-height: 22px;
+}
