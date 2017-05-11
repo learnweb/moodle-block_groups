@@ -47,7 +47,7 @@ class block_groups_renderer extends plugin_renderer_base {
         $contentgroups = html_writer::tag('input', '', array('type' => "checkbox", 'value' => "1",
                 'class' => "blockgroupsandgroupingcheckbox", 'id' => 'checkbox' . $type)) .
             html_writer::tag('label', get_string($type, 'block_groups'), array('for' => "checkbox" . $type));
-        $contentgroups .= html_writer::alist($elementarray);
+        $contentgroups .= html_writer::alist($elementarray, array('class' => 'wrapperlist' . $type));
         return html_writer::tag('div', $contentgroups, array('class' => 'wrapperblockgroupsandgroupingcheckbox'));
     }
     /**
@@ -106,20 +106,12 @@ class block_groups_renderer extends plugin_renderer_base {
      * @return string html string
      */
     public function change_all_groups() {
-        global $OUTPUT, $CFG, $COURSE;
         // Creates two urls for showing all groups hiding all groups.
-        $urlshow = new moodle_url($CFG->wwwroot . '/blocks/groups/changeallgroups.php',
-            array('courseid' => $COURSE->id, 'hide' => '1'));
-        $urlhide = new moodle_url($CFG->wwwroot . '/blocks/groups/changeallgroups.php',
-            array('courseid' => $COURSE->id, 'hide' => '0'));
+        $urlshow = $this->create_all_groups_link('show');
+        $urlhide = $this->create_all_groups_link('hide');
 
-        $iconshow = $OUTPUT->pix_icon('t/' . 'show', get_string('hidegroup', 'block_groups'), 'moodle');
-        $iconhide = $OUTPUT->pix_icon('t/' . 'hide', get_string('showgroup', 'block_groups'), 'moodle');
-        $rightaligndivhide = html_writer::div($iconhide, 'rightalign');
-        $rightaligndivshow = html_writer::div($iconshow, 'rightalign');
         $line = html_writer::span('Change all groups', 'wrapperblockgroupsallgroups') .
-            html_writer::link($urlhide, $rightaligndivhide, array('data-action' => 'hide')) .
-            html_writer::link($urlshow, $rightaligndivshow, array('data-action' => 'show'));
+           $urlshow . $urlhide;
         return $line;
     }
     /**
@@ -147,5 +139,27 @@ class block_groups_renderer extends plugin_renderer_base {
             $spanclasses .= ' hiddengroups';
         }
         return html_writer::span($group->name, $spanclasses);
+    }
+
+    /**
+     * Internal Function to create two links for showing all groups hiding all groups.
+     * @param $action string show/hide
+     * @return string html_link
+     */
+    private function create_all_groups_link($action) {
+        global $OUTPUT, $CFG, $COURSE;
+        if ($action === 'hide') {
+            $actionnumber = 0;
+            $reverse = 'show';
+        } else {
+            $actionnumber = 1;
+            $reverse = 'hide';
+        }
+        $urlhide = new moodle_url($CFG->wwwroot . '/blocks/groups/changeallgroups.php',
+            array('courseid' => $COURSE->id, 'hide' => $actionnumber));
+
+        $icon = $OUTPUT->pix_icon('t/' . $action, get_string($reverse . 'group', 'block_groups'), 'moodle');
+        $rightaligndiv = html_writer::div($icon, 'rightalign');
+        return html_writer::link($urlhide, $rightaligndiv, array('data-action' => $action, 'class' => 'block_groups_all_toggle'));
     }
 }
