@@ -93,7 +93,7 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
     var changevisibilityall = function (event) {
-        //add_spinner($(this).data('action'));
+        // Add_spinner($(this).data('action'));
 
         var promises = ajax.call([
             {
@@ -102,7 +102,7 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
                         action: $(this).data('action'),
                         courseid: event.data.courseid
                     }
-               }
+                }
             }
         ]);
 
@@ -117,7 +117,7 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
                 partsOfStr.each(checkmember());
             }
         }).fail(function () {
-            //add_warning($(this).data('action'));
+            // Add_warning($(this).data('action'));
             return false;
         });
         return false;
