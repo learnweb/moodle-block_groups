@@ -33,7 +33,7 @@ $functions = array(
         'ajax' => true,
     ),
     'block_groups_create_allgroups_output' => array(
-        'classname' => 'block_groups_visibility_change',
+        'classname' => 'block_groups_visibilityall_change',
         'methodname' => 'create_allgroups_output',
         'classpath'   => 'blocks/groups/externallib.php',
         'description' => 'Service to allow changing the visibility of all groups',
