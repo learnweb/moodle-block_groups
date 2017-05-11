@@ -141,7 +141,9 @@ class block_groups_visibility_change extends external_api{
         $groupsuitable = $DB->get_records('groups', array($params['groups']['courseid']));
         // The Course has no groups therefore changing all is not possible.
         if (empty($groupsuitable)) {
-            // TODO: Suitable Params?
+            $output['courseid'] = $params['groups']['courseid'];
+            $output['newelement'] = '';
+            $output['visibility'] = 'already' . $params['groups']['action'];
         }
         $groupsvisible = array();
         foreach ($groupsuitable as $group) {
