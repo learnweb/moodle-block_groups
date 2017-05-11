@@ -36,7 +36,7 @@ require_once("$CFG->libdir/externallib.php");
 class block_groups_visibility_change extends external_api{
 
     /**
-     * Specifys the input parameters.
+     * Specifies the input parameters.
      */
     public static function create_output_parameters() {
         return new external_function_parameters(
@@ -52,7 +52,7 @@ class block_groups_visibility_change extends external_api{
     }
 
     /**
-     * Specifys the output parameters.
+     * Specifies the output parameters.
      */
     public static function create_output_returns() {
         return new external_single_structure(
@@ -95,8 +95,10 @@ class block_groups_visibility_change extends external_api{
         }
         return  $output;
     }
+}
+class block_groups_visibilityall_change extends external_api{
     /**
-     * Specifys the input parameters.
+     * Specifies the input parameters.
      */
     public static function create_allgroups_output_parameters() {
         return new external_function_parameters(
@@ -104,7 +106,7 @@ class block_groups_visibility_change extends external_api{
                 'groups' => new external_single_structure(
                     array(
                         // Insert 1 for hide groups 0 for show groups.
-                        'action' => new external_value(PARAM_INT, 'id of group'),
+                        'action' => new external_value(PARAM_RAW, 'action'),
                         'courseid' => new external_value(PARAM_INT, 'id of course'),
                     )
                 )
@@ -113,14 +115,21 @@ class block_groups_visibility_change extends external_api{
     }
 
     /**
-     * Specifys the output parameters.
+     * Specifies the output parameters.
      */
     public static function create_allgroups_output_returns() {
         return new external_single_structure(
             array(
                 'courseid' => new external_value(PARAM_INT, 'id of course'),
                 'newelement' => new external_value(PARAM_RAW, 'replace html-element'),
-                'visibility' => new external_value(PARAM_TEXT, 'returns the visibility value')
+                'visibility' => new external_value(PARAM_TEXT, 'returns the visibility value'),
+                'changedgroups' => new external_multiple_structure(
+                    new external_single_structure(
+                        array(
+                            'groupid' => new external_value(PARAM_SEQUENCE, 'group-id', VALUE_OPTIONAL)
+                        )
+                    )
+                )
             )
         );
     }
@@ -132,22 +141,27 @@ class block_groups_visibility_change extends external_api{
      */
     public static function create_allgroups_output($groups) {
         global $PAGE, $CFG, $DB;
-        $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
+        $params = self::validate_parameters(self::create_allgroups_output_parameters(), array('groups' => $groups));
 
         require_once($CFG->dirroot.'/blocks/groups/locallib.php');
 
         $PAGE->set_context(context_course::instance($params['groups']['courseid']));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
-        $groupsuitable = $DB->get_records('groups', array($params['groups']['courseid']));
+        $groupsuitable = $DB->get_records('groups', array('courseid' => $params['groups']['courseid']));
         // The Course has no groups therefore changing all is not possible.
+
         if (empty($groupsuitable)) {
             $output['courseid'] = $params['groups']['courseid'];
             $output['newelement'] = '';
             $output['visibility'] = 'already' . $params['groups']['action'];
+            return $output;
         }
         $groupsvisible = array();
+        $renderer = $PAGE->get_renderer('block_groups');
+
         foreach ($groupsuitable as $group) {
             $entry = $DB->get_records('block_groups_hide', array('id' => $group->id));
+
             // In the Case, that the group of the course has an entry in the 'block_groups_hide' table the group is visible.
             if (!empty($entry)) {
                 $groupsvisible[$group->id] = $group->id;
@@ -155,7 +169,7 @@ class block_groups_visibility_change extends external_api{
         }
         $groups = $groupsvisible;
         $messageaction = 'hidden';
-        if ($params['groups']['action'] == 1) {
+        if ($params['groups']['action'] == "show") {
             $messageaction = 'visible';
             $tempgroup = array();
             foreach ($groupsuitable as $group) {
@@ -173,18 +187,34 @@ class block_groups_visibility_change extends external_api{
             $output['courseid'] = $params['groups']['courseid'];
             $output['newelement'] = '';
             $output['visibility'] = $messageaction;
+            return $output;
+
         }
-        $renderer = $PAGE->get_renderer('block_groups');
+        $changedgroups = array();
+        $output['changedgroups'] = array();
+        $stringgroups = '';
         foreach ($groups as $group) {
-            $fullgroup = groups_get_group($params['groups']['id']);
-            $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $params['groups']['courseid'] .
-                '&groupid=' . $params['groups']['id'];
-            $countmembers = count(groups_get_members($params['groups']['id']));
             block_groups_db_transaction_change_visibility($group, $params['groups']['courseid']);
-            $groupsarray[] = $renderer->get_string_group($fullgroup, $href, $countmembers, true);
+            $stringgroups .= $group . ',';
+        }
+        $output['changedgroups']['groupid'] = array('groupid' => $stringgroups);
+
+        foreach ($groupsuitable as $group) {
+            $fullgroup = groups_get_group($group->id);
+            $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $params['groups']['courseid'] .
+                '&groupid=' . $group->id;
+            $countmembers = count(groups_get_members($group->id));
+            if ($params['groups']['action'] == 'hide') {
+                $visibility = true;
+            }
+            if ($params['groups']['action'] == 'show') {
+                $visibility = false;
+            }
+            $groupsarray[] = $renderer->get_string_group($fullgroup, $href, $countmembers, $visibility);
         }
         $output['courseid'] = $params['groups']['courseid'];
         $output['newelement'] = html_writer::alist($groupsarray, array('class' => 'wrapperlistgroup'));
         $output['visibility'] = $messageaction;
+        return $output;
     }
 }
