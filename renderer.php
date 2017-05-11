@@ -160,6 +160,6 @@ class block_groups_renderer extends plugin_renderer_base {
 
         $icon = $OUTPUT->pix_icon('t/' . $action, get_string($reverse . 'group', 'block_groups'), 'moodle');
         $rightaligndiv = html_writer::div($icon, 'rightalign');
-        return html_writer::link($urlhide, $rightaligndiv, array('data-action' => $action, 'class' => 'block_groups_all_toggle'));
+        return html_writer::link($urlhide, $rightaligndiv, array('data-action' => $reverse, 'class' => 'block_groups_all_toggle'));
     }
 }
