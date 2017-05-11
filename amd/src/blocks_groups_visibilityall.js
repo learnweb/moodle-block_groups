@@ -26,69 +26,78 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery','core/ajax','core/url','core/notification'], function($, ajax) {
+define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, notification, url) {
     /**
      * Methode to remove warnings
      * @param int $groupid
      */
-/*    var remove_warning = function(groupid){
+    var remove_warning = function(groupid){
         $('.block_groups').find('.warning' + groupid).remove();
-    };*/
+    };
     /**
      * Removes the Spinner Class
      * @param int $id that identifies to which group the spinner belongs to.
      */
-/*    var remove_spinner = function (groupid) {
+    var remove_spinner = function (groupid) {
         $('.block_groups').find('.spinner' + groupid).remove();
-    };*/
+    };
     /**
      * Creates a warning message.
      */
-/*    var create_warning_message = function (){
+    var create_warning_message = function (){
         notification.alert(M.util.get_string('errortitle', 'block_groups'),
             M.util.get_string('nochangeindatabasepossible', 'block_groups'),
             M.util.get_string('errorbutton', 'block_groups'));
-    };*/
+    };
     /**
      * Initialises Spinner.
      * @param int $groupid
      */
-/*    var add_spinner = function (groupid) {
-        if($('.block_groups').find('.warning' + groupid).length > 0){
-            remove_warning(groupid);
+    var add_spinner = function (action) {
+        if($('.block_groups').find('.warning' + action).length > 0){
+            remove_warning(action);
         }
         var imgurl = url.imageUrl("i/loading_small",'moodle');
         var spinner = document.createElement("img");
-        spinner.className = 'spinner' + groupid;
+        spinner.className = 'spinner' + action;
         spinner.src = imgurl;
         spinner.hidden = false;
-        $('.block_groups').find('.imggroup-' + groupid).before(spinner);
-    };*/
+        $('.block_groups').find('.wrapperlistgroup').before(spinner);
+    };
     /**
      * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
      * @param int $groupid
      */
-/*    var add_warning = function (groupid){
-        if($('.block_groups').find('.warning' + groupid).length > 0){
-            remove_spinner(groupid);
+    var add_warning = function (action){
+        if($('.block_groups').find('.warning' + action).length > 0){
+            remove_spinner(action);
             create_warning_message();
             return false;
         }
         var imgurl = url.imageUrl("i/warning",'moodle');
         var warning = document.createElement("img");
-        warning.className = 'warning' + groupid;
+        warning.className = 'warning' + action;
         warning.src = imgurl;
-        remove_spinner(groupid);
-        ($('.block_groups').find('.imggroup-' + groupid).before(warning)).on('click', create_warning_message);
-    };*/
-
+        remove_spinner(action);
+        ($('.block_groups').find('.wrapperlistgroup').before(warning)).on('click', create_warning_message);
+    };
+    var checkmember = function(){
+        if ($(this).data('action') == 'show') {
+            $('.block_groups').find('.hiddengroups').removeClass('hiddengroups');
+        }
+        if ($(this).data('action') == 'hide') {
+            $('.block_groups').find('.membergroup-').addClass('hiddengroups');
+        }
+    }
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
     var changevisibilityall = function (event) {
+        //add_spinner($(this).data('action'));
+
         var promises = ajax.call([
             {
-                methodname: 'create_allgroups_output', args: {
+                methodname: 'block_groups_create_allgroups_output', args: {
                     groups: {
                         action: $(this).data('action'),
                         courseid: event.data.courseid
@@ -100,8 +109,15 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax) 
         promises[0].done(function (response) {
             $('.block_groups').find('.wrapperlistgroup').replaceWith(response.newelement);
             // Replaces the used element, therefore removes the spinner.
-            // TODO: Change list groups
+            // TODO: Change list groups does not work yet
+            var exists = false;
+            try { $(this).data('changedgroups'); exists = true;} catch(e) {}
+            if (exists) {
+                var partsOfStr = $(this).data('changedgroups').split(',');
+                partsOfStr.each(checkmember());
+            }
         }).fail(function () {
+            //add_warning($(this).data('action'));
             return false;
         });
         return false;
