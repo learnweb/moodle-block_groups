@@ -71,11 +71,11 @@ class behat_block_groups extends behat_base {
     public function i_click_in_the_groups_block_on_all_groups($action) {
         if ($action == 'hide') {
             $eyeicon = $this->find('xpath' ,
-                "//span[@class='wrapperblockgroupsallgroups']//following::a[2]");
+                "//span[@class='wrapperblockgroupsallgroups']//following::a[1]");
         }
         if ($action == 'show') {
             $eyeicon = $this->find('xpath' ,
-                "//span[@class='wrapperblockgroupsallgroups']//following::a[1]");
+                "//span[@class='wrapperblockgroupsallgroups']//following::a[2]");
         }
         $eyeicon->click();
     }
