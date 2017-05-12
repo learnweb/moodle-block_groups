@@ -16,9 +16,9 @@
 /**
  * Upgrade for the groups block.
  *
- * @package block_groups
- * @copyright 2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   block_groups
+ * @copyright 2016/17 N Herrmann
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 /**
  * Function to upgrade for the groups block.

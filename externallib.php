@@ -17,10 +17,9 @@
 /**
  * External block_groups API
  *
- * @package block_groups
- * @category
- * @copyright 2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_groups
+ * @copyright  2016/17 N Herrmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 require_once("$CFG->libdir/externallib.php");
@@ -28,10 +27,10 @@ require_once("$CFG->libdir/externallib.php");
 /**
  * block_groups external functions
  *
- * @category  External functions API
- * @copyright  2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @since Moodle 2.9
+ * @category   External functions API
+ * @copyright  2016/17 N Herrmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @since      Moodle 2.9
  */
 class block_groups_visibility_change extends external_api{
 

@@ -18,7 +18,7 @@
  *
  * @package    block_groups
  * @category   phpunit
- * @copyright  2016 Nina Herrmann
+ * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * @package    block_groups
  * @category   phpunit
- * @copyright  2016 Nina Herrmann
+ * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_groups_generator_testcase extends advanced_testcase {
