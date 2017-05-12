@@ -16,9 +16,9 @@
 /**
  * This file contains language strings used in the group block
  *
- * @package block_groups
- * @copyright 2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_groups
+ * @copyright  2016/17 N Herrmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $string['groups:addinstance'] = 'Add a new Group block';

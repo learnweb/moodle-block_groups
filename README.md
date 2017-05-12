@@ -17,20 +17,17 @@ This plugin should go into `blocks/groups`. Moodle plugin directory link is http
 
 ### Teachers' view
 In initial state value groups and groupings are not listed.</br>
-![Teachers' View_hidden](https://cloud.githubusercontent.com/assets/18289780/14320600/fa2933aa-fc15-11e5-9e91-5129e7f37f4f.png)</br>
+![Teachers' View_hidden](https://cloud.githubusercontent.com/assets/18289780/25997177/4959b3a0-371b-11e7-84dd-42fe09a67659.png)</br>
 The block displays all existing groups and groupings as well as all enrolled groups on request.
 The number inside the brackets displays the number of members in a group or grouping.
 Additionally groups can be hidden, illustrated by an eye icon and a change in opacity.
 When the icon is clicked the visibility of groups changes. Javascript files exist to update the block.
 When the block is installed for the first time all groups are hidden</br>
-![Teachers' View](https://cloud.githubusercontent.com/assets/18289780/15298723/0871071c-1ba1-11e6-8fc9-2b0b1d58aaaf.png)</br>
+![Teachers' View](https://cloud.githubusercontent.com/assets/18289780/25997181/4e3f328c-371b-11e7-9de7-00fde7a99885.png)</br>
 In case the required change is not possible a warning message is displayed and the affected group is marked with a triangle.</br>
-![Teachers' View](https://cloud.githubusercontent.com/assets/18289780/15849889/21be9d4c-2c95-11e6-967b-8daac7140892.png)
+![Teachers' View](https://cloud.githubusercontent.com/assets/18289780/25997183/4ffe9982-371b-11e7-9d3b-7fe121ba3f9f.png)
 
 ### Students' view
 In the current state of the block groupings are not displayed to the students.</br>
 Students are only able to view the groups they are enrolled in.</br>
-![Students' View](https://cloud.githubusercontent.com/assets/18289780/14318694/6bcaae1a-fc0e-11e5-822b-75e5b45316d5.png)
-
-
-
+![Students' View](https://cloud.githubusercontent.com/assets/18289780/25997179/4beb7658-371b-11e7-923d-ac84cdbb4878.png)

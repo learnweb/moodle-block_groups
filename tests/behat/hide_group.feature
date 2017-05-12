@@ -39,14 +39,13 @@ Feature: Hide a group in a group block
       | GG1      | G1    |
       | GG2      | G2    |
     And I log in as "teacher1"
-    And I follow "Course 1"
-    And I turn editing mode on
+    And I am on "Course 1" course homepage with editing mode on
     And I add the "Groups and Groupings" block
     And I log out
 
   Scenario: The modify link leads to the modify group page
     Given I log in as "teacher1"
-    And I follow "Course 1"
+    And I am on "Course 1" course homepage
     When I click on "modify groups" "link" in the "Groups and Groupings" "block"
     Then I should see "Group 2" in the "#groupeditform" "css_element"
     Then I should see "Group 1" in the "#groupeditform" "css_element"
@@ -55,13 +54,13 @@ Feature: Hide a group in a group block
   @javascript
   Scenario: Students do not see block in groups when he is not member of a visible group
     Given I log in as "student1"
-    And I follow "Course 1"
+    And I am on "Course 1" course homepage
     Then "Groups" "block" should not exist
 
   @javascript
   Scenario: Students do not see group when it is hidden again
     Given I log in as "teacher1"
-    And I follow "Course 1"
+    And I am on "Course 1" course homepage
     When I click on the "Groups" block groups label
     And I click on the eye icon of group name "Group 1"
     Then I wait "3" seconds
@@ -70,12 +69,12 @@ Feature: Hide a group in a group block
     Given I am on homepage
     When I log out
     And I log in as "student1"
-    And I follow "Course 1"
+    And I am on "Course 1" course homepage
     Then I should see "Group 1" in the "Groups" "block"
     Given I am on homepage
     And I log out
     And I log in as "teacher1"
-    And I follow "Course 1"
+    And I am on "Course 1" course homepage
     When I click on the "Groups" block groups label
     And I click on the eye icon of group name "Group 1"
     Then I wait "3" seconds
@@ -85,11 +84,11 @@ Feature: Hide a group in a group block
     Given I am on homepage
     And I log out
     And I log in as "student1"
-    And I follow "Course 1"
+    And I am on "Course 1" course homepage
     Then "Groups" "block" should not exist
     And I log out
     And I log in as "student2"
-    And I follow "Course 1"
+    And I am on "Course 1" course homepage
     Then I should not see "Group 1" in the "Groups" "block"
     Then I should see "Group 2" in the "Groups" "block"
     And I log out

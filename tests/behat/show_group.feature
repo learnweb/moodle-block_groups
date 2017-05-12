@@ -39,15 +39,14 @@ Feature: Make a group visible in a group block
       | GG1      | 1    |
       | GG2      | 2    |
     And I log in as "teacher1"
-    And I follow "Course 1"
-    And I turn editing mode on
+    And I am on "Course 1" course homepage with editing mode on
     And I add the "Groups and Groupings" block
     And I log out
 
   @javascript
   Scenario: Teacher sees a list of all groups and groupings when they click on the label
       Given I log in as "teacher1"
-      And I follow "Course 1"
+      And I am on "Course 1" course homepage
       When I click on the "Groups" block groups label
       When I click on the "Grouping" block groups label
       Then I should see "Group 2" in the "Groups and Groupings" "block"
@@ -58,20 +57,20 @@ Feature: Make a group visible in a group block
   @javascript
   Scenario: Click on eye icon, only enrolled students are able to see the block
       Given I log in as "teacher1"
-      And I follow "Course 1"
+      And I am on "Course 1" course homepage
       When I click on the "Groups" block groups label
       And I click on the eye icon of group name "Group 1"
       Then I wait "3" seconds
       Given I am on homepage
       And I log out
       And I log in as "student1"
-      And I follow "Course 1"
+      And I am on "Course 1" course homepage
       Then "Groups" "block" should exist
       Then I should see "Group 1" in the "Groups" "block"
       Then I should not see "Group 2" in the "Groups" "block"
       And I log out
       And I log in as "student3"
-      And I follow "Course 1"
+      And I am on "Course 1" course homepage
       Then "Groups and Groupings" "block" should not exist
 
 

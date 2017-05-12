@@ -17,13 +17,21 @@
 /**
  * The class contains a test script for the moodle block groups
  *
- * @package block_groups
- * @copyright 2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_groups
+ * @copyright  2016/17 N Herrmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Class block_groups_testcase
+ */
 class block_groups_testcase extends advanced_testcase {
 
+    /**
+     * Set up environment for phpunit test.
+     * @return mixed data for test
+     */
     protected function set_up() {
         // Recommended in Moodle docs to always include CFG.
         global $CFG;

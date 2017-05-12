@@ -18,7 +18,7 @@
  * block_groups renderer.
  *
  * @package    block_groups
- * @copyright  2016 Nina Herrmann
+ * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die;
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die;
  * Class of the block_groups renderer.
  *
  * @package    block_groups
- * @copyright  2016 Nina Herrmann
+ * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_groups_renderer extends plugin_renderer_base {
@@ -36,7 +36,7 @@ class block_groups_renderer extends plugin_renderer_base {
      *
      * @param array $elementarray
      * @param bool $group true is for groups false for groupings
-     * @return string
+     * @return string html-string
      */
     public function teaching_groups_or_groupings_list($elementarray, $group) {
         if ($group === true) {
@@ -50,11 +50,11 @@ class block_groups_renderer extends plugin_renderer_base {
         $contentgroups .= html_writer::alist($elementarray);
         return html_writer::tag('div', $contentgroups, array('class' => 'wrapperblockgroupsandgroupingcheckbox'));
     }
+
     /**
      * Generates a link to refer to the groupsmodify page.
-     *
-     * @param $href
-     * @return string
+     * @param string $href
+     * @return string html-string
      */
     public function get_link_modify_groups($href) {
         return html_writer::link($href , get_string('modify', 'block_groups'));
@@ -63,24 +63,26 @@ class block_groups_renderer extends plugin_renderer_base {
      * Generates components for a groupsarrayentry.
      * (false for hidden groups)
      *
-     * @param $value
-     * @param $href
-     * @param $countmembers
-     * @param $visibility
-     * @return string
+     * @param stdClass $value
+     * @param string $href
+     * @param integer $countmembers
+     * @param boolean $visibility
+     * @return string html-string
      */
     public function get_string_group($value, $href, $countmembers, $visibility) {
         global $OUTPUT;
         if ($visibility === false) {
             $action = 'hide';
+            $reverse = 'show';
             $spanstring = '';
         } else {
             $action = 'show';
+            $reverse = 'hide';
             $spanstring = 'hiddengroups';
         }
-        $img = html_writer::img($OUTPUT->pix_url('t/' . $action), get_string('hidegroup', 'block_groups'),
+        $icon = $OUTPUT->pix_icon('t/' . $reverse, get_string('hidegroup', 'block_groups'), 'moodle',
             array('class' => "imggroup-". $value->id));
-        $rightaligndiv = html_writer::div($img, 'rightalign');
+        $rightaligndiv = html_writer::div($icon, 'rightalign');
         $line = html_writer::span($value->name . '   ' .get_string('brackets', 'block_groups', $countmembers), $spanstring) .
             html_writer::link($href, $rightaligndiv, array('class' => 'block_groups_toggle', 'data-groupid' => $value->id,
                 'data-action' => $action));
@@ -89,9 +91,9 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Generates string for a grouping list item
      *
-     * @param $name
-     * @param $counter
-     * @return string
+     * @param string $name
+     * @param integer $counter
+     * @return string html-string
      */
     public function get_grouping($name, $counter) {
         return $name . '   ' . get_string('brackets', 'block_groups', $counter);
@@ -99,8 +101,8 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Returns the frame for the memberlist.
      *
-     * @param $enrolledgroups
-     * @return string
+     * @param array $enrolledgroups
+     * @return string html-string
      */
     public function get_membership_content($enrolledgroups) {
         $membercontent = get_string('introduction', 'block_groups');
@@ -111,9 +113,9 @@ class block_groups_renderer extends plugin_renderer_base {
      * Returns the html-span for a single group.
      * (false vor hidden groups)
      *
-     * @param $group
-     * @param $visibility
-     * @return string
+     * @param stdClass $group
+     * @param boolean $visibility
+     * @return string html-string
      */
     public function get_tag_group($group, $visibility) {
         $spanclasses = "membergroup-" . $group->id;

@@ -17,22 +17,22 @@
 /**
  * The file contains a class to build a Group Block
  *
- * @package block_groups
- * @copyright 2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   block_groups
+ * @copyright 2016/17 N Herrmann
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->dirroot.'/blocks/groups/locallib.php');
 /**
  * The block_group class
  *
  * Displays a group and grouping block.
  *
- * @package block_groups
- * @copyright 2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   block_groups
+ * @copyright 2016/17 N Herrmann
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->dirroot.'/blocks/groups/locallib.php');
 
 class block_groups extends block_base
 {
@@ -76,17 +76,17 @@ class block_groups extends block_base
         return $this->content;
     }
     /**
-     * The Block is only availeable at course-view pages
+     * The Block is only available at course-view pages
      *
-     * @return array
+     * @return array of applicable formats.
      */
     public function applicable_formats() {
         return array('course-view' => true, 'mod' => false, 'my' => false);
     }
     /**
-     * Returns a List of all existing groups and groupings
+     * Returns a html representation of all existing groups and groupings
      *
-     * @return string
+     * @return string html-string
      */
     private function get_content_teaching() {
         global  $COURSE, $PAGE, $DB, $CFG;
@@ -131,7 +131,7 @@ class block_groups extends block_base
 
     /**
      * Returns all registered groups.
-     * @return string
+     * @return string html-string representing all member groups
      */
     private function get_content_groupmembers() {
         global $COURSE, $DB, $PAGE;
@@ -163,7 +163,7 @@ class block_groups extends block_base
      * Generates an array of groupingnames and their members.
      *
      * @param array $allgroupings
-     * @return array
+     * @return array every key is a group id and point to a grouping
      */
     public function build_grouping_array($allgroupings) {
         global $PAGE;

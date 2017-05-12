@@ -16,15 +16,15 @@
 
 /**
  * Version details
- * @package block_groups
- * @copyright 2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   block_groups
+ * @copyright 2016/17 N Herrmann
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017042100;     // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2017051200;     // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2015111000;     // Requires this Moodle version.
 $plugin->component = 'block_groups'; // Full name of the plugin (used for diagnostics).
-$plugin->release = 'v3.1-r4';
-$plugin->maturity = MATURITY_RC;
+$plugin->release = 'v3.3-r5';
+$plugin->maturity = MATURITY_STABLE;
