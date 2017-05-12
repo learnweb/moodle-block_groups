@@ -17,7 +17,7 @@
  * PHPUnit data generator tests
  *
  * @package    block_groups
- * @category   phpunit
+ * @category   test
  * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
  * PHPUnit data generator testcase
  *
  * @package    block_groups
- * @category   phpunit
+ * @category   test
  * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

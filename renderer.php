@@ -50,10 +50,10 @@ class block_groups_renderer extends plugin_renderer_base {
         $contentgroups .= html_writer::alist($elementarray);
         return html_writer::tag('div', $contentgroups, array('class' => 'wrapperblockgroupsandgroupingcheckbox'));
     }
+
     /**
      * Generates a link to refer to the groupsmodify page.
-     *
-     * @param $href
+     * @param string $href
      * @return string
      */
     public function get_link_modify_groups($href) {
@@ -63,10 +63,10 @@ class block_groups_renderer extends plugin_renderer_base {
      * Generates components for a groupsarrayentry.
      * (false for hidden groups)
      *
-     * @param $value
-     * @param $href
-     * @param $countmembers
-     * @param $visibility
+     * @param stdClass $value
+     * @param string $href
+     * @param integer $countmembers
+     * @param boolean $visibility
      * @return string
      */
     public function get_string_group($value, $href, $countmembers, $visibility) {
@@ -91,8 +91,8 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Generates string for a grouping list item
      *
-     * @param $name
-     * @param $counter
+     * @param string $name
+     * @param integer $counter
      * @return string
      */
     public function get_grouping($name, $counter) {
@@ -101,7 +101,7 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Returns the frame for the memberlist.
      *
-     * @param $enrolledgroups
+     * @param array $enrolledgroups
      * @return string
      */
     public function get_membership_content($enrolledgroups) {
@@ -113,8 +113,8 @@ class block_groups_renderer extends plugin_renderer_base {
      * Returns the html-span for a single group.
      * (false vor hidden groups)
      *
-     * @param $group
-     * @param $visibility
+     * @param stdClass $group
+     * @param boolean $visibility
      * @return string
      */
     public function get_tag_group($group, $visibility) {

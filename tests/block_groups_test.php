@@ -22,8 +22,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Class block_groups_testcase
+ */
 class block_groups_testcase extends advanced_testcase {
 
+    /**
+     * Set up environment for phpunit test.
+     * @return mixed
+     */
     protected function set_up() {
         // Recommended in Moodle docs to always include CFG.
         global $CFG;

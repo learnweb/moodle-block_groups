@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *
+ * Generator for the block_groups testcase.
  * @package    block_groups
  * @category   test
  * @copyright  2016/17 N Herrmann
@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- *
+ * Generator class for the block_groups testcase.
  *
  * @package    block_groups
  * @category   test
