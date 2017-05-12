@@ -24,7 +24,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Function to upgrade for the groups block.
  * @param integer $oldversion
- * @return bool
+ * @return bool upgrade successful/not
  */
 function xmldb_block_groups_upgrade($oldversion) {
     return true;

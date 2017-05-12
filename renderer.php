@@ -36,7 +36,7 @@ class block_groups_renderer extends plugin_renderer_base {
      *
      * @param array $elementarray
      * @param bool $group true is for groups false for groupings
-     * @return string
+     * @return string html-string
      */
     public function teaching_groups_or_groupings_list($elementarray, $group) {
         if ($group === true) {
@@ -54,7 +54,7 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Generates a link to refer to the groupsmodify page.
      * @param string $href
-     * @return string
+     * @return string html-string
      */
     public function get_link_modify_groups($href) {
         return html_writer::link($href , get_string('modify', 'block_groups'));
@@ -67,7 +67,7 @@ class block_groups_renderer extends plugin_renderer_base {
      * @param string $href
      * @param integer $countmembers
      * @param boolean $visibility
-     * @return string
+     * @return string html-string
      */
     public function get_string_group($value, $href, $countmembers, $visibility) {
         global $OUTPUT;
@@ -93,7 +93,7 @@ class block_groups_renderer extends plugin_renderer_base {
      *
      * @param string $name
      * @param integer $counter
-     * @return string
+     * @return string html-string
      */
     public function get_grouping($name, $counter) {
         return $name . '   ' . get_string('brackets', 'block_groups', $counter);
@@ -102,7 +102,7 @@ class block_groups_renderer extends plugin_renderer_base {
      * Returns the frame for the memberlist.
      *
      * @param array $enrolledgroups
-     * @return string
+     * @return string html-string
      */
     public function get_membership_content($enrolledgroups) {
         $membercontent = get_string('introduction', 'block_groups');
@@ -115,7 +115,7 @@ class block_groups_renderer extends plugin_renderer_base {
      *
      * @param stdClass $group
      * @param boolean $visibility
-     * @return string
+     * @return string html-string
      */
     public function get_tag_group($group, $visibility) {
         $spanclasses = "membergroup-" . $group->id;

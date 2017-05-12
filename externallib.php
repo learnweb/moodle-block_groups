@@ -70,7 +70,7 @@ class block_groups_visibility_change extends external_api{
     /**
      * Changed the Database and returns the updated html content.
      * @param array $groups
-     * @return array
+     * @return array of output_parameters
      */
     public static function create_output($groups) {
         global $PAGE, $CFG, $DB;

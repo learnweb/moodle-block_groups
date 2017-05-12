@@ -68,7 +68,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification'], function($, aja
     /**
      * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
      * @param {number} groupid
-     * @return {boolean}
+     * @return {boolean} success
      */
     var add_warning = function(groupid) {
         var divblockgroups = $('.block_groups');
@@ -89,7 +89,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification'], function($, aja
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
      * @param {*} event
-     * @return {boolean}
+     * @return {boolean} success
      */
     var changevisibility = function(event) {
         var groupid = $(this).data('groupid');
