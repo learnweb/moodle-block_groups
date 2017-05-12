@@ -1,7 +1,9 @@
 language: php
 
-
 sudo: false
+
+notifications:
+  email: true
 
 cache:
   directories:
