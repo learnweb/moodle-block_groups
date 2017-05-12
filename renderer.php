@@ -73,12 +73,14 @@ class block_groups_renderer extends plugin_renderer_base {
         global $OUTPUT;
         if ($visibility === false) {
             $action = 'hide';
+            $reverse = 'show';
             $spanstring = '';
         } else {
             $action = 'show';
+            $reverse = 'hide';
             $spanstring = 'hiddengroups';
         }
-        $icon = $OUTPUT->pix_icon('t/' . $action, get_string('hidegroup', 'block_groups'), 'moodle',
+        $icon = $OUTPUT->pix_icon('t/' . $reverse, get_string('hidegroup', 'block_groups'), 'moodle',
             array('class' => "imggroup-". $value->id));
         $rightaligndiv = html_writer::div($icon, 'rightalign');
         $line = html_writer::span($value->name . '   ' .get_string('brackets', 'block_groups', $countmembers), $spanstring) .
