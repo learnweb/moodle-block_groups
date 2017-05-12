@@ -31,29 +31,29 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
      * Methode to remove warnings
      * @param int $groupid
      */
-    var remove_warning = function(groupid){
+/*    var remove_warning = function(groupid){
         $('.block_groups').find('.warning' + groupid).remove();
-    };
+    };*/
     /**
      * Removes the Spinner Class
      * @param int $id that identifies to which group the spinner belongs to.
      */
-    var remove_spinner = function (groupid) {
+/*    var remove_spinner = function (groupid) {
         $('.block_groups').find('.spinner' + groupid).remove();
-    };
+    };*/
     /**
      * Creates a warning message.
      */
-    var create_warning_message = function (){
+/*    var create_warning_message = function (){
         notification.alert(M.util.get_string('errortitle', 'block_groups'),
             M.util.get_string('nochangeindatabasepossible', 'block_groups'),
             M.util.get_string('errorbutton', 'block_groups'));
-    };
+    };*/
     /**
      * Initialises Spinner.
      * @param int $groupid
      */
-    var add_spinner = function (action) {
+/*    var add_spinner = function (action) {
         if($('.block_groups').find('.warning' + action).length > 0){
             remove_warning(action);
         }
@@ -63,12 +63,12 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         spinner.src = imgurl;
         spinner.hidden = false;
         $('.block_groups').find('.wrapperlistgroup').before(spinner);
-    };
+    };*/
     /**
      * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
      * @param int $groupid
      */
-    var add_warning = function (action){
+/*    var add_warning = function (action){
         if($('.block_groups').find('.warning' + action).length > 0){
             remove_spinner(action);
             create_warning_message();
@@ -80,7 +80,7 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         warning.src = imgurl;
         remove_spinner(action);
         ($('.block_groups').find('.wrapperlistgroup').before(warning)).on('click', create_warning_message);
-    };
+    };*/
     var checkmember = function(){
         if ($(this).data('action') == 'show') {
             $('.block_groups').find('.hiddengroups').removeClass('hiddengroups');
@@ -88,7 +88,7 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         if ($(this).data('action') == 'hide') {
             $('.block_groups').find('.membergroup-').addClass('hiddengroups');
         }
-    }
+    };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
