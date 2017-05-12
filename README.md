@@ -1,4 +1,4 @@
-# moodle-block_groups *(release_candidate)* 
+# moodle-block_groups
 [![Build Status](https://travis-ci.org/learnweb/moodle-block_groups.svg?branch=master)](https://travis-ci.org/learnweb/moodle-block_groups)
 [![codecov](https://codecov.io/gh/learnweb/moodle-block_groups/branch/master/graph/badge.svg)](https://codecov.io/gh/learnweb/moodle-block_groups)
 
