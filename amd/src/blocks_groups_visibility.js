@@ -143,10 +143,33 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         }
     };
     /**
+     * Initialises all Spinners.
+     * @param int $groupid
+     */
+    var add_spinners = function () {
+        if($('.block_groups').find('.warningall').length > 0){
+            //remove the warning
+        }
+        var imgurl = url.imageUrl("i/loading_small",'moodle');
+        var spinner = document.createElement("img");
+        spinner.className = 'spinnerall';
+        spinner.src = imgurl;
+        spinner.hidden = false;
+        $('.block_groups').find('.imggroup').before(spinner);
+    };
+    /**
+     * Removes all Spinner Classes
+     * @param int $id that identifies to which group the spinner belongs to.
+     */
+    var remove_spinners = function () {
+        $('.block_groups').find('.spinnerall').remove();
+    };
+    /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
     var changevisibilityall = function (event) {
         // Add_spinner($(this).data('action'));
+        add_spinners();
 
         var promises = ajax.call([
             {
@@ -171,6 +194,7 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
             // Add_warning($(this).data('action'));
             return false;
         });
+        remove_spinners();
         return false;
     };
 

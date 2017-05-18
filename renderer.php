@@ -83,7 +83,7 @@ class block_groups_renderer extends plugin_renderer_base {
             $spanstring = 'hiddengroups';
         }
         $icon = $OUTPUT->pix_icon('t/' . $reverse, $message, 'moodle',
-            array('class' => "imggroup-". $value->id));
+            array('class' => "imggroup-". $value->id . ' imggroup'));
         $rightaligndiv = html_writer::div($icon, 'rightalign');
         $line = html_writer::span($value->name . '   ' .get_string('brackets', 'block_groups', $countmembers), $spanstring) .
             html_writer::link($href, $rightaligndiv, array('class' => 'block_groups_toggle', 'data-groupid' => $value->id,
@@ -134,7 +134,7 @@ class block_groups_renderer extends plugin_renderer_base {
      * @return string
      */
     public function get_tag_group($group, $visibility) {
-        $spanclasses = "membergroup-" . $group->id;
+        $spanclasses = "membergroup-" . $group->id . ' block-groups-membergroup';
         if ($visibility === false) {
             $spanclasses .= ' hiddengroups';
         }
@@ -158,7 +158,8 @@ class block_groups_renderer extends plugin_renderer_base {
         $urlhide = new moodle_url($CFG->wwwroot . '/blocks/groups/changeallgroups.php',
             array('courseid' => $COURSE->id, 'hide' => $actionnumber));
 
-        $icon = $OUTPUT->pix_icon('t/' . $action, get_string($reverse . 'group', 'block_groups'), 'moodle');
+        $icon = $OUTPUT->pix_icon('t/' . $action, get_string($reverse . 'group', 'block_groups'),
+            'moodle', array('class' => "imggroup-all imggroup"));
         $rightaligndiv = html_writer::div($icon, 'rightalign');
         return html_writer::link($urlhide, $rightaligndiv, array('data-action' => $reverse, 'class' => 'block_groups_all_toggle'));
     }
