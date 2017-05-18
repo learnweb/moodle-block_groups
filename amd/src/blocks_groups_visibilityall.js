@@ -26,7 +26,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, notification, url) {
+define(['jquery','core/ajax','core/url','core/notification'], function($, ajax) {
     /**
      * Methode to remove warnings
      * @param int $groupid
