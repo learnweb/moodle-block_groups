@@ -191,7 +191,6 @@ class block_groups_visibilityall_change extends external_api{
 
         }
         $output['changedgroups'] = array();
-        $stringgroups = '';
         foreach ($groups as $group) {
             block_groups_db_transaction_change_visibility($group, $params['groups']['courseid']);
             array_push($output['changedgroups'], array('groupid' => $group));
@@ -211,6 +210,7 @@ class block_groups_visibilityall_change extends external_api{
                 '&groupid=' . $group->id;
             $countmembers = count(groups_get_members($group->id));
             if ($params['groups']['action'] == 'hide') {
+                $visibility = true;
             }
             if ($params['groups']['action'] == 'show') {
                 $visibility = false;

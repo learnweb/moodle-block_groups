@@ -59,27 +59,28 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         }
         var imgurl = url.imageUrl("i/loading_small",'moodle');
         var spinner = document.createElement("img");
-        spinner.className = 'spinner' + groupid;
+        spinner.className = 'spinner' + groupid + ' spinner';
         spinner.src = imgurl;
         spinner.hidden = false;
         $('.block_groups').find('.imggroup-' + groupid).before(spinner);
     };
     /**
      * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
-     * @param int $groupid
+     * @param int $identifier
      */
-    var add_warning = function (groupid){
-        if($('.block_groups').find('.warning' + groupid).length > 0){
-            remove_spinner(groupid);
+    var add_warning = function (identifier){
+        if($('.block_groups').find('.warning' + identifier).length > 0){
+            remove_spinner(identifier);
             create_warning_message();
             return false;
         }
-        var imgurl = url.imageUrl("i/warning",'moodle');
+        var imgurl = url.imageUrl("i/warning", 'moodle');
         var warning = document.createElement("img");
-        warning.className = 'warning' + groupid;
+        warning.className = 'warning' + identifier;
         warning.src = imgurl;
-        remove_spinner(groupid);
-        ($('.block_groups').find('.imggroup-' + groupid).before(warning)).on('click', create_warning_message);
+        remove_spinner(identifier);
+        create_warning_message();
+        ($('.block_groups').find('.imggroup-' + identifier).before(warning)).on('click', create_warning_message);
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
@@ -148,11 +149,11 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
      */
     var add_spinners = function () {
         if($('.block_groups').find('.warningall').length > 0){
-            //remove the warning
+            remove_warning(all);
         }
         var imgurl = url.imageUrl("i/loading_small",'moodle');
         var spinner = document.createElement("img");
-        spinner.className = 'spinnerall';
+        spinner.className = 'spinner-all spinner';
         spinner.src = imgurl;
         spinner.hidden = false;
         $('.block_groups').find('.imggroup').before(spinner);
@@ -161,16 +162,17 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
      * Removes all Spinner Classes
      * @param int $id that identifies to which group the spinner belongs to.
      */
-    var remove_spinners = function () {
-        $('.block_groups').find('.spinnerall').remove();
+    var remove_spinners = function() {
+        $('.block_groups').find('.spinner-all').remove();
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components.
      */
     var changevisibilityall = function (event) {
-        // Add_spinner($(this).data('action'));
+        if ($('.block_groups').find('.spinner').length > 0) {
+            return false;
+        }
         add_spinners();
-
         var promises = ajax.call([
             {
                 methodname: 'block_groups_create_allgroups_output', args: {
@@ -181,7 +183,10 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
             }
             }
         ]);
-
+        $(document).ajaxError(function () {
+            add_warning('all');
+            return false;
+        });
         promises[0].done(function(response) {
             if (response === null) {
                 return false;
