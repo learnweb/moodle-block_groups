@@ -164,7 +164,6 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
                 return false;
             }
             $('.block_groups').find('.wrapperlistgroup').replaceWith(response.newelement);
-           
             $('.block_groups').find('.block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
              // TODO warning no groups changed
             checkmember(response);
