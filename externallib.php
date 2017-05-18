@@ -126,7 +126,7 @@ class block_groups_visibilityall_change extends external_api{
                 'changedgroups' => new external_multiple_structure(
                     new external_single_structure(
                         array(
-                            'groupid' => new external_value(PARAM_SEQUENCE, 'group-id', VALUE_OPTIONAL)
+                            'groupid' => new external_value(PARAM_INT, 'group-id', VALUE_OPTIONAL)
                         )
                     )
                 )
@@ -190,14 +190,12 @@ class block_groups_visibilityall_change extends external_api{
             return $output;
 
         }
-        $changedgroups = array();
         $output['changedgroups'] = array();
         $stringgroups = '';
         foreach ($groups as $group) {
             block_groups_db_transaction_change_visibility($group, $params['groups']['courseid']);
-            $stringgroups .= $group . ',';
+            array_push($output['changedgroups'], array('groupid' => $group));
         }
-        $output['changedgroups']['groupid'] = array('groupid' => $stringgroups);
 
         foreach ($groupsuitable as $group) {
             $fullgroup = groups_get_group($group->id);
