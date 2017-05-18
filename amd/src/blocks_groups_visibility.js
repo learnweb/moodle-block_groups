@@ -29,14 +29,14 @@
 define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, url, notification) {
     /**
      * Methode to remove warnings
-     * @param int $groupid
+     * @param {int} identifier
      */
-    var remove_warning = function(groupid){
-        $('.block_groups').find('.warning' + groupid).remove();
+    var remove_warning = function(identifier){
+        $('.block_groups').find('.warning' + identifier).remove();
     };
     /**
-     * Removes the Spinner Class
-     * @param int $id that identifies to which group the spinner belongs to.
+     * Removes the Spinner Class of a single group.
+     * @param {int} groupid that identifies to which group the spinner belongs to.
      */
     var remove_spinner = function (groupid) {
         $('.block_groups').find('.spinner' + groupid).remove();
@@ -50,8 +50,8 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
             M.util.get_string('errorbutton', 'block_groups'));
     };
     /**
-     * Initialises Spinner.
-     * @param int $groupid
+     * Initialises Spinner for a single group.
+     * @param {int} groupid
      */
     var add_spinner = function (groupid) {
         if($('.block_groups').find('.warning' + groupid).length > 0){
@@ -66,7 +66,7 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
     };
     /**
      * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
-     * @param int $identifier
+     * @param {int} identifier
      */
     var add_warning = function (identifier){
         if($('.block_groups').find('.warning' + identifier).length > 0){
@@ -83,11 +83,12 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         ($('.block_groups').find('.imggroup-' + identifier).before(warning)).on('click', create_warning_message);
     };
     /**
-     * Method that calls for an ajax script and replaces and/or changes the output components.
+     * Method that calls for an ajax script and replaces and/or changes the output components for a single group.
      */
     var changevisibility = function (event) {
         var groupid = $(this).data('groupid');
-        if ($('.block_groups').find('.spinner' + $(this).data('groupid')).length > 0) {
+        if ($('.block_groups').find('.spinner' + $(this).data('groupid')).length > 0 ||
+            $('.block_groups').find('.spinner-all').length > 0) {
             return false;
         }
         add_spinner($(this).data('groupid'));
@@ -132,9 +133,6 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         return false;
     };
     var checkmember = function(response){
-        // find membergroup-id remove hidden, add hiddengroups
-        // div class memberlist
-        // var groups = response.changedgroups;
         var visibility = response.visibility;
         if (visibility === 1) {
             $('.block-groups-membergroup').removeClass('hiddengroups');
@@ -144,12 +142,11 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         }
     };
     /**
-     * Initialises all Spinners.
-     * @param int $groupid
+     * Initialises spinners for all groups.
      */
     var add_spinners = function () {
         if($('.block_groups').find('.warningall').length > 0){
-            remove_warning(all);
+            remove_warning('all');
         }
         var imgurl = url.imageUrl("i/loading_small",'moodle');
         var spinner = document.createElement("img");
@@ -159,20 +156,21 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         $('.block_groups').find('.imggroup').before(spinner);
     };
     /**
-     * Removes all Spinner Classes
-     * @param int $id that identifies to which group the spinner belongs to.
+     * Removes all spinners.
      */
     var remove_spinners = function() {
         $('.block_groups').find('.spinner-all').remove();
     };
     /**
-     * Method that calls for an ajax script and replaces and/or changes the output components.
+     * Method that calls for an ajax script and replaces and/or changes the output components for all groups.
+     * @param {int} event
      */
     var changevisibilityall = function (event) {
         if ($('.block_groups').find('.spinner').length > 0) {
             return false;
         }
         add_spinners();
+        // Calls for the externallib.
         var promises = ajax.call([
             {
                 methodname: 'block_groups_create_allgroups_output', args: {
@@ -187,16 +185,23 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
             add_warning('all');
             return false;
         });
+        // Response is processed.
         promises[0].done(function(response) {
+            // Catch misleading responses.
             if (response === null) {
+                add_warning('all');
                 return false;
             }
+            if (response.error === true) {
+                add_warning('all');
+                return false;
+            }
+            // Old Elements are replaced and on click event added.
             $('.block_groups').find('.wrapperlistgroup').replaceWith(response.newelement);
             $('.block_groups').find('.block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
-             // TODO warning no groups changed
             checkmember(response);
         }).fail(function () {
-            // Add_warning($(this).data('action'));
+            add_warning('all');
             return false;
         });
         remove_spinners();
@@ -204,7 +209,9 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
     };
 
     /**
-     * Calls for the main method.
+     * Calls for the main method. Either single groups are changed with block_groups_toggle or all groups with
+     * block_groups_all_toggle.
+     * @param {int} courseid
      */
     return {
         initialise: function(courseid){
