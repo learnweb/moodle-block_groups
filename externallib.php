@@ -122,7 +122,7 @@ class block_groups_visibilityall_change extends external_api{
             array(
                 'courseid' => new external_value(PARAM_INT, 'id of course'),
                 'newelement' => new external_value(PARAM_RAW, 'replace html-element'),
-                'visibility' => new external_value(PARAM_TEXT, 'returns the visibility value'),
+                'visibility' => new external_value(PARAM_INT, 'returns the visibility value'),
                 'changedgroups' => new external_multiple_structure(
                     new external_single_structure(
                         array(
@@ -196,23 +196,31 @@ class block_groups_visibilityall_change extends external_api{
             block_groups_db_transaction_change_visibility($group, $params['groups']['courseid']);
             array_push($output['changedgroups'], array('groupid' => $group));
         }
-
+        if ($params['groups']['action'] == 'hide') {
+            $outputvisibility = 0;
+        }
+        if ($params['groups']['action'] == 'show') {
+            $outputvisibility = 1;
+        }
+        if ($outputvisibility != 0 && $outputvisibility != 1) {
+            $outputvisibility = 2;
+        }
         foreach ($groupsuitable as $group) {
             $fullgroup = groups_get_group($group->id);
             $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $params['groups']['courseid'] .
                 '&groupid=' . $group->id;
             $countmembers = count(groups_get_members($group->id));
             if ($params['groups']['action'] == 'hide') {
-                $visibility = true;
             }
             if ($params['groups']['action'] == 'show') {
                 $visibility = false;
+
             }
             $groupsarray[] = $renderer->get_string_group($fullgroup, $href, $countmembers, $visibility);
         }
         $output['courseid'] = $params['groups']['courseid'];
         $output['newelement'] = html_writer::alist($groupsarray, array('class' => 'wrapperlistgroup'));
-        $output['visibility'] = $messageaction;
+        $output['visibility'] = $outputvisibility;
         return $output;
     }
 }

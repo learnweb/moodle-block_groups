@@ -81,12 +81,16 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax) 
         remove_spinner(action);
         ($('.block_groups').find('.wrapperlistgroup').before(warning)).on('click', create_warning_message);
     };*/
-    var checkmember = function(){
-        if ($(this).data('action') == 'show') {
-            $('.block_groups').find('.hiddengroups').removeClass('hiddengroups');
+    var checkmember = function(response){
+        // find membergroup-id remove hidden, add hiddengroups
+        // div class memberlist
+        // var groups = response.changedgroups;
+        var visibility = response.visibility;
+        if (visibility === 1) {
+            $('.block-groups-membergroup').removeClass('hiddengroups');
         }
-        if ($(this).data('action') == 'hide') {
-            $('.block_groups').find('.membergroup-').addClass('hiddengroups');
+        if (visibility === 0) {
+            $('.block-groups-membergroup').addClass('hiddengroups');
         }
     };
     /**
@@ -106,16 +110,18 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax) 
             }
         ]);
 
-        promises[0].done(function (response) {
+        promises[0].done(function(response) {
+            if (response === null) {
+                return false;
+            }
             $('.block_groups').find('.wrapperlistgroup').replaceWith(response.newelement);
             // Replaces the used element, therefore removes the spinner.
             // TODO: Change list groups does not work yet
-            var exists = false;
-            try { $(this).data('changedgroups'); exists = true;} catch(e) {}
-            if (exists) {
-                var partsOfStr = $(this).data('changedgroups').split(',');
-                partsOfStr.each(checkmember());
-            }
+            /*try { response.changedgroups; exists = true; } catch(e) {
+                // TODO warning no groups changed
+            }*/
+
+            checkmember(response);
         }).fail(function () {
             // Add_warning($(this).data('action'));
             return false;
