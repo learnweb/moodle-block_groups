@@ -130,6 +130,51 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
         });
         return false;
     };
+    var checkmember = function(response){
+        // find membergroup-id remove hidden, add hiddengroups
+        // div class memberlist
+        // var groups = response.changedgroups;
+        var visibility = response.visibility;
+        if (visibility === 1) {
+            $('.block-groups-membergroup').removeClass('hiddengroups');
+        }
+        if (visibility === 0) {
+            $('.block-groups-membergroup').addClass('hiddengroups');
+        }
+    };
+    /**
+     * Method that calls for an ajax script and replaces and/or changes the output components.
+     */
+    var changevisibilityall = function (event) {
+        // Add_spinner($(this).data('action'));
+
+        var promises = ajax.call([
+            {
+                methodname: 'block_groups_create_allgroups_output', args: {
+                groups: {
+                    action: $(this).data('action'),
+                    courseid: event.data.courseid
+                }
+            }
+            }
+        ]);
+
+        promises[0].done(function(response) {
+            if (response === null) {
+                return false;
+            }
+            $('.block_groups').find('.wrapperlistgroup').replaceWith(response.newelement);
+            // TODO add a click event for each group
+            /*$('.block_groups').find('.group-' + response.id + ' .block_groups_toggle').on('click',
+                {courseid: event.data.courseid}, changevisibility);*/
+             // TODO warning no groups changed
+            checkmember(response);
+        }).fail(function () {
+            // Add_warning($(this).data('action'));
+            return false;
+        });
+        return false;
+    };
 
     /**
      * Calls for the main method.
@@ -137,6 +182,8 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
     return {
         initialise: function(courseid){
             $('.block_groups_toggle').on('click', {courseid: courseid}, changevisibility);
+            $('.block_groups_all_toggle').on('click', {courseid: courseid}, changevisibilityall);
+
         }
     };
 });
