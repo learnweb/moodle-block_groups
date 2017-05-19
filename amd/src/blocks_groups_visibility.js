@@ -181,11 +181,11 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         var promises = ajax.call([
             {
                 methodname: 'block_groups_create_allgroups_output', args: {
-                groups: {
-                    action: $(this).data('action'),
-                    courseid: event.data.courseid
+                    groups: {
+                        action: $(this).data('action'),
+                        courseid: event.data.courseid
+                    }
                 }
-            }
             }
         ]);
         $(document).ajaxError(function () {
@@ -214,7 +214,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             $('.block_groups').find('.wrapperlistgroup').replaceWith(response.newelement);
             $('.block_groups').find('.block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
             checkmember(response);
-            // $outputvisibility 0->nogroups 1 -> hidden 2->visible 3-> all are hidden 4-> all are visible
+            // Outputvisibility 0->nogroups 1 -> hidden 2->visible 3-> all are hidden 4-> all are visible.
             switch (response.visibility) {
                 case 1:
                     add_notification('success', M.util.get_string('groupschanged', 'block_groups', 'hidden'));
