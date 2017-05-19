@@ -50,6 +50,7 @@ Feature: Hide a group in a group block
     Then I wait "3" seconds
     Then "Groups and Groupings" "block" should exist
     Then I should see "Group 1" in the "Groups and Groupings" "block"
+    Then I should see "All groups are visible." in the "region-main" "region"
     Given I am on homepage
     When I log out
     And I log in as "student1"
@@ -64,6 +65,7 @@ Feature: Hide a group in a group block
     When I click in the groups block on all groups "show"
     And I am on "Course 1" course homepage
     When I click in the groups block on all groups "hide"
+    Then I should see "All groups are hidden." in the "region-main" "region"
     And I am on "Course 1" course homepage
     And I click on the eye icon of group name "Group 2"
     Then "Groups and Groupings" "block" should exist
