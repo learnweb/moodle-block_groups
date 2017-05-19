@@ -152,8 +152,12 @@ class block_groups_visibilityall_change extends external_api{
 
         if (empty($groupsuitable)) {
             $output['courseid'] = $params['groups']['courseid'];
-            $output['newelement'] = '';
-            $output['visibility'] = 'already' . $params['groups']['action'];
+            $link = html_writer::link(new moodle_url('/group/index.php',
+                array('id' => $params['groups']['courseid'])), 'modify groups');
+            $content = html_writer::div(get_string('nogroups', 'block_groups')) . $link;
+            $output['newelement'] = html_writer::div($content, array('class' => 'content'));
+            $output['visibility'] = '0';
+            $output['changedgroups'] = array();
             return $output;
         }
         $groupsvisible = array();
@@ -168,41 +172,29 @@ class block_groups_visibilityall_change extends external_api{
             }
         }
         $groups = $groupsvisible;
-        $messageaction = 'hidden';
+        $outputvisibility = '3';
         if ($params['groups']['action'] == "show") {
-            $messageaction = 'visible';
+            $outputvisibility = '4';
             $tempgroup = array();
-            foreach ($groupsuitable as $group) {
-                if (!empty($groupsvisible)) {
-                    if (!(in_array($group->id, $groups))) {
+            if (!empty($groupsuitable)) {
+                foreach ($groupsuitable as $group) {
+                    if (!empty($groupsvisible)) {
+                        if (!(in_array($group->id, $groups))) {
+                            $tempgroup[$group->id] = $group->id;
+                        }
+                    } else {
                         $tempgroup[$group->id] = $group->id;
                     }
-                } else {
-                    $tempgroup[$group->id] = $group->id;
                 }
             }
             $groups = $tempgroup;
         }
-        if (empty($groups)) {
-            $output['courseid'] = $params['groups']['courseid'];
-            $output['newelement'] = '';
-            $output['visibility'] = $messageaction;
-            return $output;
-
-        }
         $output['changedgroups'] = array();
-        foreach ($groups as $group) {
-            block_groups_db_transaction_change_visibility($group, $params['groups']['courseid']);
-            array_push($output['changedgroups'], array('groupid' => $group));
-        }
-        if ($params['groups']['action'] == 'hide') {
-            $outputvisibility = 0;
-        }
-        if ($params['groups']['action'] == 'show') {
-            $outputvisibility = 1;
-        }
-        if ($outputvisibility != 0 && $outputvisibility != 1) {
-            $outputvisibility = 2;
+        if (!empty($groups)) {
+            foreach ($groups as $group) {
+                block_groups_db_transaction_change_visibility($group, $params['groups']['courseid']);
+                array_push($output['changedgroups'], array('groupid' => $group));
+            }
         }
         foreach ($groupsuitable as $group) {
             $fullgroup = groups_get_group($group->id);
@@ -218,8 +210,20 @@ class block_groups_visibilityall_change extends external_api{
             }
             $groupsarray[] = $renderer->get_string_group($fullgroup, $href, $countmembers, $visibility);
         }
-        $output['courseid'] = $params['groups']['courseid'];
         $output['newelement'] = html_writer::alist($groupsarray, array('class' => 'wrapperlistgroup'));
+        $output['courseid'] = $params['groups']['courseid'];
+
+        if (empty($groups)) {
+            $output['visibility'] = $outputvisibility;
+            return $output;
+        }
+        // $outputvisibility 0->nogroups 1 -> hidden 2->visible 3-> all are hidden 4-> all are visible
+        if ($params['groups']['action'] == 'hide') {
+            $outputvisibility = 1;
+        }
+        if ($params['groups']['action'] == 'show') {
+            $outputvisibility = 2;
+        }
         $output['visibility'] = $outputvisibility;
         return $output;
     }

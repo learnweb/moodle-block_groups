@@ -26,7 +26,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, url, notification) {
+define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], function($, ajax, url, notification) {
     /**
      * Methode to remove warnings
      * @param {int} identifier
@@ -134,10 +134,10 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
     };
     var checkmember = function(response){
         var visibility = response.visibility;
-        if (visibility === 1) {
+        if (visibility === 2) {
             $('.block-groups-membergroup').removeClass('hiddengroups');
         }
-        if (visibility === 0) {
+        if (visibility === 1) {
             $('.block-groups-membergroup').addClass('hiddengroups');
         }
     };
@@ -160,6 +160,13 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
      */
     var remove_spinners = function() {
         $('.block_groups').find('.spinner-all').remove();
+    };
+
+    var add_notification = function(type, text) {
+        notification.addNotification({
+            message: text,
+            type: type
+        });
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components for all groups.
@@ -196,10 +203,34 @@ define(['jquery','core/ajax','core/url','core/notification'], function($, ajax, 
                 add_warning('all');
                 return false;
             }
+            if(response.visibility === 0 ){
+                // Is nearly impossible since group has to be deleted during the request, however it is
+                // possible, therefore a special message is thrown.
+                $('.block_groups').find('.content').replaceWith(response.newelement);
+                add_notification('error', M.util.get_string('nogroups', 'block_groups'));
+                return false;
+            }
             // Old Elements are replaced and on click event added.
             $('.block_groups').find('.wrapperlistgroup').replaceWith(response.newelement);
             $('.block_groups').find('.block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
             checkmember(response);
+            // $outputvisibility 0->nogroups 1 -> hidden 2->visible 3-> all are hidden 4-> all are visible
+            switch (response.visibility) {
+                case 1:
+                    add_notification('success', M.util.get_string('groupschanged', 'block_groups', 'hidden'));
+                    break;
+                case 2:
+                    add_notification('success', M.util.get_string('groupschanged', 'block_groups', 'visible'));
+                    break;
+                case 3:
+                    add_notification('warning', M.util.get_string('allgroupsinstate', 'block_groups', 'hidden'));
+                    break;
+                case 4:
+                    add_notification('warning', M.util.get_string('allgroupsinstate', 'block_groups', 'visible'));
+                    break;
+                default:
+                    break;
+            }
         }).fail(function () {
             add_warning('all');
             return false;

@@ -99,7 +99,8 @@ class block_groups extends block_base
         $renderer = $PAGE->get_renderer('block_groups');
         // Calls Javascript if available.
         $PAGE->requires->js_call_amd('block_groups/blocks_groups_visibility', 'initialise', array($COURSE->id));
-        $PAGE->requires->strings_for_js(array('errortitle', 'nochangeindatabasepossible', 'errorbutton'), 'block_groups');
+        $PAGE->requires->strings_for_js(array('errortitle', 'nochangeindatabasepossible', 'errorbutton',
+            'allgroupsinstate', 'groupschanged', 'nogroups'), 'block_groups');
 
         $groupsarray = array();
         foreach ($allgroups as $value) {
@@ -118,8 +119,8 @@ class block_groups extends block_base
         // Empty block or block with checkboxes.
         $href = $CFG->wwwroot . '/group/index.php?id=' . $COURSE->id;
         if (count($groupsarray) == 0) {
+            $content .= html_writer::div(get_string('nogroups', 'block_groups'));
             $content .= $renderer->get_link_modify_groups($href);
-            $content .= get_string('nogroups', 'block_groups');
         } else {
             // Since 3.3-r5 shows line with link to change all groups.
             $content .= $renderer->change_all_groups();
