@@ -108,7 +108,7 @@ class block_groups extends block_base
             // Checks availability of group and requests the content.
             if (is_object($value) && property_exists($value, 'name')) {
                 $countmembers = count(groups_get_members($value->id));
-                $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $courseid . '&groupid=' . $value->id;
+                $href = new moodle_url('/blocks/groups/changevisibility.php', array('courseid' => $courseid, 'groupid' => $value->id));
                 if (empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
                     $groupsarray[] = $renderer->get_string_group($value, $href, $countmembers, true);
                 } else {
@@ -118,7 +118,7 @@ class block_groups extends block_base
         }
 
         // Empty block or block with checkboxes.
-        $href = $CFG->wwwroot . '/group/index.php?id=' . $courseid;
+        $href = new moodle_url('/group/index.php', array('id' => $courseid));
         if (count($groupsarray) == 0) {
             $content .= html_writer::div(get_string('nogroups', 'block_groups'));
             $content .= $renderer->get_link_modify_groups($href);

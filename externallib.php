@@ -78,8 +78,8 @@ class block_groups_visibility_change extends external_api{
         require_once($CFG->dirroot.'/blocks/groups/locallib.php');
         block_groups_db_transaction_change_visibility($params['groups']['id'], $params['groups']['courseid']);
         $renderer = $PAGE->get_renderer('block_groups');
-        $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $params['groups']['courseid'] .
-            '&groupid=' . $params['groups']['id'];
+        $href = new moodle_url('/blocks/groups/changevisibility.php', array('courseid' => $params['groups']['courseid'],
+            'groupid' => $params['groups']['id']));
         $countmembers = count(groups_get_members($params['groups']['id']));
         $group = groups_get_group($params['groups']['id']);
         $output = array('id' => $params['groups']['id'], 'courseid' => $params['groups']['courseid']);
@@ -198,8 +198,8 @@ class block_groups_visibilityall_change extends external_api{
         }
         foreach ($groupsuitable as $group) {
             $fullgroup = groups_get_group($group->id);
-            $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $params['groups']['courseid'] .
-                '&groupid=' . $group->id;
+            $href = new moodle_url('/blocks/groups/changevisibility.php',
+                array('courseid' => $params['groups']['courseid'], 'groupid' => $group->id));
             $countmembers = count(groups_get_members($group->id));
             if ($params['groups']['action'] == 'hide') {
                 $visibility = true;

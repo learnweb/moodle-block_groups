@@ -47,7 +47,7 @@ class block_groups_testcase extends advanced_testcase {
         $functionresulthide = $DB->get_records('block_groups_hide', array('id' => $data['group2']->id));
         $booleanvisible = empty($functionresultshow);
         $booleandeleted = empty($functionresulthide);
-       
+
         $this->assertEquals(false, $booleanvisible);
         $this->assertEquals(true, $booleandeleted);
 
