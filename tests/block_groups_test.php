@@ -47,15 +47,12 @@ class block_groups_testcase extends advanced_testcase {
         $functionresulthide = $DB->get_records('block_groups_hide', array('id' => $data['group2']->id));
         $booleanvisible = empty($functionresultshow);
         $booleandeleted = empty($functionresulthide);
-        $countgroupings = count_grouping_members($data['course2']->id);
-
-        $this->assertEquals(2, $countgroupings[$data['grouping1']]);
-        $this->assertEquals(3, $countgroupings[$data['grouping2']]);
+       
         $this->assertEquals(false, $booleanvisible);
         $this->assertEquals(true, $booleandeleted);
 
         // Test the function that counts the grouping members.
-        $functioncount = count_grouping_members();
+        $functioncount = count_grouping_members($data['course2']->id);
         $this->assertEquals(2, $functioncount[$data['grouping1']->id]->number);
         // Members are not counted multiple.
         $this->assertEquals(3, $functioncount[$data['grouping2']->id]->number);
