@@ -65,7 +65,6 @@ Feature: Hide a group in a group block
     And I click on the eye icon of group name "Group 1"
     Then I wait "3" seconds
     Then "Groups and Groupings" "block" should exist
-    Then I should see "Group 1" in the "Groups and Groupings" "block"
     Given I am on homepage
     When I log out
     And I log in as "student1"
