@@ -47,7 +47,10 @@ class block_groups_testcase extends advanced_testcase {
         $functionresulthide = $DB->get_records('block_groups_hide', array('id' => $data['group2']->id));
         $booleanvisible = empty($functionresultshow);
         $booleandeleted = empty($functionresulthide);
+        $countgroupings = count_grouping_members($data['course2']->id);
 
+        $this->assertEquals(2, $countgroupings[$data['grouping1']]);
+        $this->assertEquals(3, $countgroupings[$data['grouping2']]);
         $this->assertEquals(false, $booleanvisible);
         $this->assertEquals(true, $booleandeleted);
 
@@ -58,6 +61,7 @@ class block_groups_testcase extends advanced_testcase {
         $this->assertEquals(3, $functioncount[$data['grouping2']->id]->number);
         // Test empty grouping.
         $this->assertEquals(0, $functioncount[$data['grouping3']->id]->number);
+
     }
     /**
      * Methodes recommended by moodle to assure database and dataroot is reset.
