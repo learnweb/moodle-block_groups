@@ -44,6 +44,14 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         divgroup.find('.imggroup-' + groupid).show();
     };
     /**
+     * Removes all spinners.
+     */
+    var remove_spinners = function() {
+        var divgroups = $('.block_groups');
+        divgroups.find('.spinner-all').remove();
+        divgroups.find('.imggroup').show();
+    };
+    /**
      * Creates a warning message.
      * Creates a warning message.m>util
      */
@@ -51,12 +59,12 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         str.get_strings([
             {'key': 'errortitle', component: 'block_groups'},
             {'key': 'nochangeindatabasepossiblereload', component: 'block_groups'},
-            {'key': 'yes'},
-            {'key': 'no'}
+            {'key': 'yes'}
         ]).done(function(s) {
-            notification.confirm(s[0], s[1], s[2], s[3], function() {
-                   location.reload();
-            });
+            notification.alert(s[0], s[1], s[2]);
+            ($('.moodle-dialogue').find('.confirmation-dialogue').find('.btn-primary')).on('click', function () {
+                location.reload();}
+            );
         }).fail(notification.exception);
     };
     /**
@@ -83,25 +91,25 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
      */
     var add_warning = function(identifier) {
         var divgroups = $('.block_groups');
-
-        if (divgroups.find('.warning' + identifier).length > 0) {
+        var warningexist = divgroups.find('.warning' + identifier);
+        if (warningexist.length) {
             remove_spinner(identifier);
-            create_warning_message();
             return false;
-        }
-        if (identifier === 'all') {
-            remove_spinners();
         } else {
-            remove_spinner(identifier);
+            if (identifier === 'all') {
+                remove_spinners();
+            } else {
+                remove_spinner(identifier);
+            }
+            var imgurl = url.imageUrl("i/warning", 'moodle');
+            var warning = document.createElement("img");
+            warning.className = 'warning' + identifier + ' block-groups-warning';
+            warning.src = imgurl;
+            create_warning_message();
+            (divgroups.find('.imggroup-' + identifier).before(warning)).attr("onclick", create_warning_message);
+            divgroups.find('.warning' + identifier).attr("onclick", create_warning_message);
+            divgroups.find('.warning' + identifier).css('padding-right', '6px');
         }
-        var imgurl = url.imageUrl("i/warning", 'moodle');
-        var warning = document.createElement("img");
-        warning.className = 'warning' + identifier;
-        warning.src = imgurl;
-        create_warning_message();
-        (divgroups.find('.imggroup-' + identifier).before(warning)).attr("onclick", create_warning_message);
-        divgroups.find('.warning' + identifier).attr("onclick", create_warning_message);
-        divgroups.find('.warning' + identifier).css('padding-right', '6px');
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components for a single group.
@@ -179,14 +187,6 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         divgroups.find('.imggroup').before(spinner);
         divgroups.find('.spinner-all').css('padding-right', '6px');
         divgroups.find('.imggroup').hide();
-    };
-    /**
-     * Removes all spinners.
-     */
-    var remove_spinners = function() {
-        var divgroups = $('.block_groups');
-        divgroups.find('.spinner-all').remove();
-        divgroups.find('.imggroup').show();
     };
 
     var add_notification = function(type, text) {
