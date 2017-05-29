@@ -217,7 +217,7 @@ class block_groups_visibilityall_change extends external_api{
             $output['visibility'] = $outputvisibility;
             return $output;
         }
-        // $outputvisibility 0->nogroups 1 -> hidden 2->visible 3-> all are hidden 4-> all are visible
+        // Parameter $outputvisibility 0->nogroups 1 -> hidden 2->visible 3-> all are hidden 4-> all are visible.
         if ($params['groups']['action'] == 'hide') {
             $outputvisibility = 1;
         }
