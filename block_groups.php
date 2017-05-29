@@ -21,6 +21,11 @@
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+
 /**
  * The block_group class
  *
@@ -30,10 +35,6 @@
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->dirroot.'/blocks/groups/locallib.php');
-
 class block_groups extends block_base
 {
     /**

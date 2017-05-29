@@ -148,7 +148,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         if($('.block_groups').find('.warningall').length > 0){
             remove_warning('all');
         }
-        var imgurl = url.imageUrl("i/loading_small",'moodle');
+        var imgurl = url.imageUrl("i/loading_small", 'moodle');
         var spinner = document.createElement("img");
         spinner.className = 'spinner-all spinner';
         spinner.src = imgurl;
