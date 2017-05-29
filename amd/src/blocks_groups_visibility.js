@@ -31,27 +31,28 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
      * Methode to remove warnings
      * @param {int} identifier
      */
-    var remove_warning = function(identifier){
+    var remove_warning = function(identifier) {
         $('.block_groups').find('.warning' + identifier).remove();
     };
     /**
      * Removes the Spinner Class of a single group.
      * @param {int} groupid that identifies to which group the spinner belongs to.
      */
-    var remove_spinner = function (groupid) {
-        $('.block_groups').find('.spinner' + groupid).remove();
-        $('.block_groups').find('.imggroup-' + groupid).show();
+    var remove_spinner = function(groupid) {
+        var divgroup = $('.block_groups');
+        divgroup.find('.spinner' + groupid).remove();
+        divgroup.find('.imggroup-' + groupid).show();
     };
     /**
      * Creates a warning message.
      * Creates a warning message.m>util
      */
-    var create_warning_message = function (){
+    var create_warning_message = function() {
         str.get_strings([
-            {'key' : 'errortitle', component : 'block_groups'},
-            {'key' : 'nochangeindatabasepossiblereload', component : 'block_groups'},
-            {'key' : 'yes'},
-            {'key' : 'no'}
+            {'key': 'errortitle', component: 'block_groups'},
+            {'key': 'nochangeindatabasepossiblereload', component: 'block_groups'},
+            {'key': 'yes'},
+            {'key': 'no'}
             ]).done(function(s) {
             notification.confirm(s[0], s[1], s[2], s[3], function() {
                 location.reload();
@@ -62,8 +63,9 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
      * Initialises Spinner for a single group.
      * @param {int} groupid
      */
-    var add_spinner = function (groupid) {
-        if($('.block_groups').find('.warning' + groupid).length > 0){
+    var add_spinner = function(groupid) {
+        var divgroups = $('.block_groups');
+        if (divgroups.find('.warning' + groupid).length > 0) {
             remove_warning(groupid);
         }
         var imgurl = url.imageUrl("i/loading_small",'moodle');
@@ -71,21 +73,23 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         spinner.className = 'spinner' + groupid + ' spinner';
         spinner.src = imgurl;
         spinner.hidden = false;
-        $('.block_groups').find('.imggroup-' + groupid).before(spinner);
-        $('.block_groups').find('.imggroup-' + groupid).hide();
-        $('.block_groups').find('.spinner' + groupid).css('padding-right', '6px');
+        divgroups.find('.imggroup-' + groupid).before(spinner);
+        divgroups.find('.imggroup-' + groupid).hide();
+        divgroups.find('.spinner' + groupid).css('padding-right', '6px');
     };
     /**
      * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
-     * @param {int} identifier
+     * @param {(int|string)} identifier
      */
-    var add_warning = function (identifier){
-        if($('.block_groups').find('.warning' + identifier).length > 0){
+    var add_warning = function(identifier) {
+        var divgroups = $('.block_groups');
+
+        if (divgroups.find('.warning' + identifier).length > 0) {
             remove_spinner(identifier);
             create_warning_message();
             return false;
         }
-        if(identifier === 'all') {
+        if (identifier === 'all') {
             remove_spinners();
         } else {
             remove_spinner(identifier);
@@ -95,17 +99,21 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         warning.className = 'warning' + identifier;
         warning.src = imgurl;
         create_warning_message();
-        ($('.block_groups').find('.imggroup-' + identifier).before(warning)).attr("onclick", create_warning_message);
-        $('.block_groups').find('.warning' + identifier).attr("onclick", create_warning_message);
-        $('.block_groups').find('.warning' + identifier).css('padding-right', '6px');
+        (divgroups.find('.imggroup-' + identifier).before(warning)).attr("onclick", create_warning_message);
+        divgroups.find('.warning' + identifier).attr("onclick", create_warning_message);
+        divgroups.find('.warning' + identifier).css('padding-right', '6px');
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components for a single group.
+     * @param {*} event
+     * @return {boolean}
      */
-    var changevisibility = function (event) {
+    var changevisibility = function(event) {
+        var divgroups = $('.block_groups');
+
         var groupid = $(this).data('groupid');
-        if ($('.block_groups').find('.spinner' + $(this).data('groupid')).length > 0 ||
-            $('.block_groups').find('.spinner-all').length > 0) {
+        if (divgroups.find('.spinner' + $(this).data('groupid')).length > 0 ||
+            divgroups.find('.spinner-all').length > 0) {
             return false;
         }
         add_spinner($(this).data('groupid'));
@@ -119,11 +127,11 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
                 }
             }
         ]);
-        $(document).ajaxError(function () {
+        $(document).ajaxError(function() {
             add_warning(groupid);
             return false;
         });
-        promises[0].done(function (response) {
+        promises[0].done(function(response) {
             if (response === null) {
                 add_warning(groupid);
                 return false;
@@ -132,37 +140,39 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
                 add_warning(groupid);
                 return false;
             }
-            $('.block_groups').find('.group-' + response.id).replaceWith(response.newelement);
+            divgroups.find('.group-' + response.id).replaceWith(response.newelement);
             // Replaces the used element, therefore removes the spinner.
             if (response.visibility === 0) {
-                $('.block_groups').find('.membergroup-' + response.id).removeClass('hiddengroups');
+                divgroups.find('.membergroup-' + response.id).removeClass('hiddengroups');
             }
             if (response.visibility === 1) {
-                $('.block_groups').find('.membergroup-' + response.id).addClass('hiddengroups');
+                divgroups.find('.membergroup-' + response.id).addClass('hiddengroups');
             }
-            $('.block_groups').find('.group-' + response.id + ' .block_groups_toggle').on('click',
+            divgroups.find('.group-' + response.id + ' .block_groups_toggle').on('click',
                 {courseid: event.data.courseid}, changevisibility);
             remove_spinner(response.id);
-        }).fail(function () {
+        }).fail(function() {
             add_warning(groupid);
             return false;
         });
         return false;
     };
-    var checkmember = function(response){
+    var checkmember = function(response) {
+        var membergroup = $('.block-groups-membergroup');
         var visibility = response.visibility;
         if (visibility === 2) {
-            $('.block-groups-membergroup').removeClass('hiddengroups');
+            membergroup.removeClass('hiddengroups');
         }
         if (visibility === 1) {
-            $('.block-groups-membergroup').addClass('hiddengroups');
+            membergroup.addClass('hiddengroups');
         }
     };
     /**
      * Initialises spinners for all groups.
      */
-    var add_spinners = function () {
-        if($('.block_groups').find('.warningall').length > 0){
+    var add_spinners = function() {
+        var divgroups = $('.block_groups');
+        if (divgroups.find('.warningall').length > 0) {
             remove_warning('all');
         }
         var imgurl = url.imageUrl("i/loading_small", 'moodle');
@@ -170,16 +180,17 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         spinner.className = 'spinner-all spinner';
         spinner.src = imgurl;
         spinner.hidden = false;
-        $('.block_groups').find('.imggroup').before(spinner);
-        $('.block_groups').find('.spinner-all').css('padding-right', '6px');
-        $('.block_groups').find('.imggroup').hide();
+        divgroups.find('.imggroup').before(spinner);
+        divgroups.find('.spinner-all').css('padding-right', '6px');
+        divgroups.find('.imggroup').hide();
     };
     /**
      * Removes all spinners.
      */
     var remove_spinners = function() {
-        $('.block_groups').find('.spinner-all').remove();
-        $('.block_groups').find('.imggroup').show();
+        var divgroups = $('.block_groups');
+        divgroups.find('.spinner-all').remove();
+        divgroups.find('.imggroup').show();
     };
 
     var add_notification = function(type, text) {
@@ -191,8 +202,9 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components for all groups.
      * @param {int} event
+     * @return {boolean}
      */
-    var changevisibilityall = function (event) {
+    var changevisibilityall = function(event) {
         if ($('.block_groups').find('.spinner').length > 0) {
             return false;
         }
@@ -208,12 +220,13 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
                 }
             }
         ]);
-        $(document).ajaxError(function () {
+        $(document).ajaxError(function() {
             add_warning('all');
             return false;
         });
         // Response is processed.
         promises[0].done(function(response) {
+            var divgroups = $('.block_groups');
             // Catch misleading responses.
             if (response === null) {
                 add_warning('all');
@@ -223,16 +236,22 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
                 add_warning('all');
                 return false;
             }
-            if(response.visibility === 0 ){
+            if (response.visibility === 0) {
                 // Is nearly impossible since group has to be deleted during the request, however it is
                 // possible, therefore a special message is thrown.
-                $('.block_groups').find('.content').replaceWith(response.newelement);
-                add_notification('error', M.util.get_string('nogroups', 'block_groups'));
+                divgroups.find('.content').replaceWith(response.newelement);
+                str.get_strings([
+                    {key: 'nogroups', component: 'block_groups'}
+                ]).done(function(s) {
+                    add_notification('error', s[0]);
+                    }
+                ).fail(notification.exception);
                 return false;
             }
+
             // Old Elements are replaced and on click event added.
-            $('.block_groups').find('.wrapperlistgroup').replaceWith(response.newelement);
-            $('.block_groups').find('.block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
+            divgroups.find('.wrapperlistgroup').replaceWith(response.newelement);
+            divgroups.find('.block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
             checkmember(response);
             // Outputvisibility 0->nogroups 1 -> hidden 2->visible 3-> all are hidden 4-> all are visible.
             str.get_strings([
@@ -258,7 +277,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
                         break;
                 }
             }).fail(notification.exception);
-        }).fail(function () {
+        }).fail(function() {
             add_warning('all');
             return false;
         });
@@ -272,7 +291,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
      * @param {int} courseid
      */
     return {
-        initialise: function(courseid){
+        initialise: function(courseid) {
             $('.block_groups_toggle').on('click', {courseid: courseid}, changevisibility);
             $('.block_groups_all_toggle').on('click', {courseid: courseid}, changevisibilityall);
 
