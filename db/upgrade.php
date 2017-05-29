@@ -17,13 +17,16 @@
  * Upgrade for the groups block.
  *
  * @package block_groups
- * @copyright 2016 N Herrmann
+ * @copyright 2016/17 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
 /**
  * Function to upgrade for the groups block.
+ * @param int $oldversion
+ * @return bool
  */
-defined('MOODLE_INTERNAL') || die();
 function xmldb_block_groups_upgrade($oldversion) {
     return true;
 }

@@ -32,6 +32,10 @@ defined('MOODLE_INTERNAL') || die();
  */
 class block_groups_testcase extends advanced_testcase {
 
+    /**
+     * Initializes the test environment.
+     * @return mixed
+     */
     protected function set_up() {
         // Recommended in Moodle docs to always include CFG.
         global $CFG;

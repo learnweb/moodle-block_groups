@@ -23,9 +23,8 @@
 defined('MOODLE_INTERNAL') || die();
 /**
  * Executes a change in the block_groups_hide database
- *
- * @param $groupid
- * @param $courseid
+ * @param int $groupid
+ * @param int $courseid
  */
 
 function block_groups_db_transaction_change_visibility($groupid, $courseid) {

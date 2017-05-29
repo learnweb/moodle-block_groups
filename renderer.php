@@ -52,7 +52,6 @@ class block_groups_renderer extends plugin_renderer_base {
     }
     /**
      * Generates a link to refer to the groupsmodify page.
-     *
      * @param $href
      * @return string
      */
@@ -62,7 +61,6 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Generates components for a groupsarrayentry.
      * (false for hidden groups)
-     *
      * @param $value
      * @param $href
      * @param $countmembers
@@ -90,7 +88,6 @@ class block_groups_renderer extends plugin_renderer_base {
     }
     /**
      * Generates string for a grouping list item
-     *
      * @param $name
      * @param $counter
      * @return string
@@ -100,7 +97,6 @@ class block_groups_renderer extends plugin_renderer_base {
     }
     /**
      * Renders line to change all groups.
-     *
      * @return string html string
      */
     public function change_all_groups() {
@@ -114,7 +110,6 @@ class block_groups_renderer extends plugin_renderer_base {
     }
     /**
      * Returns the frame for the memberlist.
-     *
      * @param $enrolledgroups
      * @return string
      */
@@ -126,7 +121,6 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Returns the html-span for a single group.
      * (false vor hidden groups)
-     *
      * @param $group
      * @param $visibility
      * @return string
