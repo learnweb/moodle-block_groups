@@ -57,6 +57,13 @@ Feature: Hide a group in a group block
     And I am on "Course 1" course homepage
     Then I should see "Group 1" in the "Groups" "block"
     Given I am on homepage
+    When I log out
+    And I log in as "student1"
+    And I am on "Course 1" course homepage
+    Then I should see "Group 1" in the "Groups" "block"
+    And I am on "Course 1" course homepage
+    Then I should see "Group 2" in the "Groups" "block"
+    Given I am on homepage
     And I log out
 
   Scenario: Change all groups hide does hide all groups
