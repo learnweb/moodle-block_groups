@@ -26,7 +26,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], function($, ajax, url, notification) {
+define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], function($, ajax, url, notification, str) {
     /**
      * Methode to remove warnings
      * @param {int} identifier
@@ -44,11 +44,19 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     };
     /**
      * Creates a warning message.
+     * Creates a warning message.m>util
      */
     var create_warning_message = function (){
-        notification.alert(M.util.get_string('errortitle', 'block_groups'),
-            M.util.get_string('nochangeindatabasepossible', 'block_groups'),
-            M.util.get_string('errorbutton', 'block_groups'));
+        str.get_strings([
+            {'key' : 'errortitle', component : 'block_groups'},
+            {'key' : 'nochangeindatabasepossiblereload', component : 'block_groups'},
+            {'key' : 'yes'},
+            {'key' : 'no'}
+            ]).done(function(s) {
+            notification.confirm(s[0], s[1], s[2], s[3], function() {
+                location.reload();
+            });
+        }).fail(notification.exception);
     };
     /**
      * Initialises Spinner for a single group.
@@ -77,13 +85,18 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             create_warning_message();
             return false;
         }
-        remove_spinner(identifier);
+        if(identifier === 'all') {
+            remove_spinners();
+        } else {
+            remove_spinner(identifier);
+        }
         var imgurl = url.imageUrl("i/warning", 'moodle');
         var warning = document.createElement("img");
         warning.className = 'warning' + identifier;
         warning.src = imgurl;
         create_warning_message();
-        ($('.block_groups').find('.imggroup-' + identifier).before(warning)).on('click', create_warning_message);
+        ($('.block_groups').find('.imggroup-' + identifier).before(warning)).attr("onclick", create_warning_message);
+        $('.block_groups').find('.warning' + identifier).attr("onclick", create_warning_message);
         $('.block_groups').find('.warning' + identifier).css('padding-right', '6px');
     };
     /**
@@ -158,12 +171,15 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         spinner.src = imgurl;
         spinner.hidden = false;
         $('.block_groups').find('.imggroup').before(spinner);
+        $('.block_groups').find('.spinner-all').css('padding-right', '6px');
+        $('.block_groups').find('.imggroup').hide();
     };
     /**
      * Removes all spinners.
      */
     var remove_spinners = function() {
         $('.block_groups').find('.spinner-all').remove();
+        $('.block_groups').find('.imggroup').show();
     };
 
     var add_notification = function(type, text) {
@@ -219,22 +235,29 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             $('.block_groups').find('.block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
             checkmember(response);
             // Outputvisibility 0->nogroups 1 -> hidden 2->visible 3-> all are hidden 4-> all are visible.
-            switch (response.visibility) {
-                case 1:
-                    add_notification('success', M.util.get_string('groupschanged', 'block_groups', 'hidden'));
-                    break;
-                case 2:
-                    add_notification('success', M.util.get_string('groupschanged', 'block_groups', 'visible'));
-                    break;
-                case 3:
-                    add_notification('warning', M.util.get_string('allgroupsinstate', 'block_groups', 'hidden'));
-                    break;
-                case 4:
-                    add_notification('warning', M.util.get_string('allgroupsinstate', 'block_groups', 'visible'));
-                    break;
-                default:
-                    break;
-            }
+            str.get_strings([
+                {key: 'groupschanged', component: 'block_groups', param: 'hidden'},
+                {key: 'groupschanged', component: 'block_groups', param: 'visible'},
+                {key: 'allgroupsinstate', component: 'block_groups', param: 'hidden'},
+                {key: 'allgroupsinstate', component: 'block_groups', param: 'visible'}
+            ]).done(function(s) {
+                    switch (response.visibility) {
+                    case 1:
+                        add_notification('success', s[0]);
+                        break;
+                    case 2:
+                        add_notification('success', s[1]);
+                        break;
+                    case 3:
+                        add_notification('warning', s[2]);
+                        break;
+                    case 4:
+                        add_notification('warning', s[3]);
+                        break;
+                    default:
+                        break;
+                }
+            }).fail(notification.exception);
         }).fail(function () {
             add_warning('all');
             return false;

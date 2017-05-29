@@ -33,6 +33,7 @@ $string['modify'] = 'modify groups';
 $string['hidegroup'] = 'hide group';
 $string['showgroup'] = 'show group';
 $string['nochangeindatabasepossible'] = 'The required change was not possible. Please reload the page.';
+$string['nochangeindatabasepossiblereload'] = 'The required change was not possible. Do you want to reload the page?';
 $string['nocourse'] = 'Problem to find course, please try again later.';
 $string['nogroups'] = 'The requested course has no groups.';
 $string['allgroupsinstate'] = 'All groups are already {$a}.';
