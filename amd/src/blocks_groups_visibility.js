@@ -40,6 +40,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
      */
     var remove_spinner = function (groupid) {
         $('.block_groups').find('.spinner' + groupid).remove();
+        $('.block_groups').find('.imggroup-' + groupid).show();
     };
     /**
      * Creates a warning message.
@@ -63,6 +64,8 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         spinner.src = imgurl;
         spinner.hidden = false;
         $('.block_groups').find('.imggroup-' + groupid).before(spinner);
+        $('.block_groups').find('.imggroup-' + groupid).hide();
+        $('.block_groups').find('.spinner' + groupid).css('padding-right', '6px');
     };
     /**
      * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
@@ -74,13 +77,14 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             create_warning_message();
             return false;
         }
+        remove_spinner(identifier);
         var imgurl = url.imageUrl("i/warning", 'moodle');
         var warning = document.createElement("img");
         warning.className = 'warning' + identifier;
         warning.src = imgurl;
-        remove_spinner(identifier);
         create_warning_message();
         ($('.block_groups').find('.imggroup-' + identifier).before(warning)).on('click', create_warning_message);
+        $('.block_groups').find('.warning' + identifier).css('padding-right', '6px');
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components for a single group.
