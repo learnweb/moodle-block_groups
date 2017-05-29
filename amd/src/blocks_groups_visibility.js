@@ -29,7 +29,7 @@
 define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], function($, ajax, url, notification, str) {
     /**
      * Methode to remove warnings
-     * @param {int} identifier
+     * @param {(int|string)} identifier
      */
     var remove_warning = function(identifier) {
         $('.block_groups').find('.warning' + identifier).remove();
@@ -68,7 +68,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         if (divgroups.find('.warning' + groupid).length > 0) {
             remove_warning(groupid);
         }
-        var imgurl = url.imageUrl("i/loading_small",'moodle');
+        var imgurl = url.imageUrl("i/loading_small", 'moodle');
         var spinner = document.createElement("img");
         spinner.className = 'spinner' + groupid + ' spinner';
         spinner.src = imgurl;
@@ -132,11 +132,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             return false;
         });
         promises[0].done(function(response) {
-            if (response === null) {
-                add_warning(groupid);
-                return false;
-            }
-            if (response.error === true) {
+            if (response === null || response.error === true) {
                 add_warning(groupid);
                 return false;
             }
@@ -228,11 +224,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         promises[0].done(function(response) {
             var divgroups = $('.block_groups');
             // Catch misleading responses.
-            if (response === null) {
-                add_warning('all');
-                return false;
-            }
-            if (response.error === true) {
+            if (response === null || response.error === true) {
                 add_warning('all');
                 return false;
             }
