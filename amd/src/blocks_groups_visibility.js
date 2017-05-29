@@ -53,9 +53,9 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             {'key': 'nochangeindatabasepossiblereload', component: 'block_groups'},
             {'key': 'yes'},
             {'key': 'no'}
-            ]).done(function(s) {
+        ]).done(function(s) {
             notification.confirm(s[0], s[1], s[2], s[3], function() {
-                location.reload();
+                   location.reload();
             });
         }).fail(notification.exception);
     };
@@ -244,8 +244,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
                     {key: 'nogroups', component: 'block_groups'}
                 ]).done(function(s) {
                     add_notification('error', s[0]);
-                    }
-                ).fail(notification.exception);
+                }).fail(notification.exception);
                 return false;
             }
 
@@ -260,7 +259,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
                 {key: 'allgroupsinstate', component: 'block_groups', param: 'hidden'},
                 {key: 'allgroupsinstate', component: 'block_groups', param: 'visible'}
             ]).done(function(s) {
-                    switch (response.visibility) {
+                switch (response.visibility) {
                     case 1:
                         add_notification('success', s[0]);
                         break;
