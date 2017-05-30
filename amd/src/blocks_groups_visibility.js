@@ -108,7 +108,8 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             warning.className = 'warning' + identifier + ' block-groups-warning';
             warning.src = imgurl;
             create_warning_message();
-            (divgroups.find('.imggroup-' + identifier).before(warning)).on('click', create_warning_message);
+            (divgroups.find('.imggroup-' + identifier).before(warning));
+            divgroups.find('.imggroup-' + identifier).on('click', create_warning_message);
             divgroups.find('.warning' + identifier).on('click', create_warning_message);
         }
     };
@@ -226,6 +227,11 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             // Catch misleading responses.
             if (response === null || response.error === true || (typeof response.changedgroups !== 'undefined' &&
                 response.changedgroups > 0)) {
+                add_warning('all');
+                return false;
+            }
+            var warningexist = divgroups.find('.block-groups-warning');
+            if (typeof warningexist !== 'undefined' && warningexist > 0) {
                 add_warning('all');
                 return false;
             }
