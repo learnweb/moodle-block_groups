@@ -90,7 +90,7 @@ class block_groups_visibility_change extends external_api{
             $output['newelement'] = $renderer->get_string_group($group, $href, $countmembers, false);
             $output['visibility'] = 0;
         }
-        return  $output;
+        return $output;
     }
 }
 class block_groups_visibilityall_change extends external_api{

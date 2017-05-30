@@ -77,6 +77,7 @@ Feature: Hide a group in a group block
     When I click on the "Groups" block groups label
     And I click on the eye icon of group name "Group 1"
     Then I wait "3" seconds
+    And I am on "Course 1" course homepage
     When I click on the "Groups" block groups label
     And I click on the eye icon of group name "Group 2"
     Then I wait "3" seconds
