@@ -144,7 +144,7 @@ class block_groups_visibilityall_change extends external_api{
 
         $PAGE->set_context(context_course::instance($params['groups']['courseid']));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
-        $groupsuitable = $DB->get_records('groups', array('courseid' => $params['groups']['courseid']));
+        $groupsuitable = $DB->get_records('groups', array('courseid' => $params['groups']['courseid']), 'id ASC');
         // The Course has no groups therefore changing all is not possible.
 
         if (empty($groupsuitable)) {
