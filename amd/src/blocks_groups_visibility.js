@@ -205,6 +205,11 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         if ($('.block_groups').find('.spinner').length > 0) {
             return false;
         }
+        var warningexist = $('.block_groups').find('.block-groups-warning');
+        if (typeof warningexist !== 'undefined' && warningexist.length > 0) {
+            add_warning('all');
+            return false;
+        }
         add_spinners();
         // Calls for the externallib.
         var promises = ajax.call([
@@ -226,12 +231,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             var divgroups = $('.block_groups');
             // Catch misleading responses.
             if (response === null || response.error === true || (typeof response.changedgroups !== 'undefined' &&
-                response.changedgroups > 0)) {
-                add_warning('all');
-                return false;
-            }
-            var warningexist = divgroups.find('.block-groups-warning');
-            if (typeof warningexist !== 'undefined' && warningexist > 0) {
+                response.changedgroups.length > 0)) {
                 add_warning('all');
                 return false;
             }
