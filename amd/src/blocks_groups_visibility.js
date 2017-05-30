@@ -78,12 +78,11 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         }
         var imgurl = url.imageUrl("i/loading_small", 'moodle');
         var spinner = document.createElement("img");
-        spinner.className = 'spinner' + groupid + ' spinner';
+        spinner.className = 'spinner' + groupid + ' spinner block-groups-spinner' ;
         spinner.src = imgurl;
         spinner.hidden = false;
         divgroups.find('.imggroup-' + groupid).before(spinner);
         divgroups.find('.imggroup-' + groupid).hide();
-        divgroups.find('.spinner' + groupid).css('padding-right', '6px');
     };
     /**
      * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
@@ -106,9 +105,8 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             warning.className = 'warning' + identifier + ' block-groups-warning';
             warning.src = imgurl;
             create_warning_message();
-            (divgroups.find('.imggroup-' + identifier).before(warning)).attr("onclick", create_warning_message);
-            divgroups.find('.warning' + identifier).attr("onclick", create_warning_message);
-            divgroups.find('.warning' + identifier).css('padding-right', '6px');
+            (divgroups.find('.imggroup-' + identifier).before(warning)).on('click', create_warning_message);
+            divgroups.find('.warning' + identifier).on('click', create_warning_message);
         }
     };
     /**
@@ -139,7 +137,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             add_warning(groupid);
             return false;
         });
-        promises[0].done(function(response) {
+        promises[0].then(function(response) {
             if (response === null || response.error === true) {
                 add_warning(groupid);
                 return false;
@@ -181,11 +179,10 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         }
         var imgurl = url.imageUrl("i/loading_small", 'moodle');
         var spinner = document.createElement("img");
-        spinner.className = 'spinner-all spinner';
+        spinner.className = 'spinner-all spinner block-groups-spinner';
         spinner.src = imgurl;
         spinner.hidden = false;
         divgroups.find('.imggroup').before(spinner);
-        divgroups.find('.spinner-all').css('padding-right', '6px');
         divgroups.find('.imggroup').hide();
     };
 
@@ -221,7 +218,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             return false;
         });
         // Response is processed.
-        promises[0].done(function(response) {
+        promises[0].then(function(response) {
             var divgroups = $('.block_groups');
             // Catch misleading responses.
             if (response === null || response.error === true) {
