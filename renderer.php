@@ -47,7 +47,7 @@ class block_groups_renderer extends plugin_renderer_base {
         $contentgroups = html_writer::tag('input', '', array('type' => "checkbox", 'value' => "1",
                 'class' => "blockgroupsandgroupingcheckbox", 'id' => 'checkbox' . $type)) .
             html_writer::tag('label', get_string($type, 'block_groups'), array('for' => "checkbox" . $type));
-        $contentgroups .= html_writer::alist($elementarray);
+        $contentgroups .= html_writer::alist($elementarray, array('class' => 'wrapperlist' . $type));
         return html_writer::tag('div', $contentgroups, array('class' => 'wrapperblockgroupsandgroupingcheckbox'));
     }
 
@@ -73,15 +73,17 @@ class block_groups_renderer extends plugin_renderer_base {
         global $OUTPUT;
         if ($visibility === false) {
             $action = 'hide';
-            $reverse = 'show';
+
+            $message = get_string('hidegroup', 'block_groups');
             $spanstring = '';
         } else {
             $action = 'show';
-            $reverse = 'hide';
+            $message = get_string('showgroup', 'block_groups');
             $spanstring = 'hiddengroups';
         }
-        $icon = $OUTPUT->pix_icon('t/' . $reverse, get_string('hidegroup', 'block_groups'), 'moodle',
-            array('class' => "imggroup-". $value->id));
+        $icon = $OUTPUT->pix_icon('t/' . $action, $message, 'moodle',
+            array('class' => "imggroup-". $value->id . ' imggroup'));
+
         $rightaligndiv = html_writer::div($icon, 'rightalign');
         $line = html_writer::span($value->name . '   ' .get_string('brackets', 'block_groups', $countmembers), $spanstring) .
             html_writer::link($href, $rightaligndiv, array('class' => 'block_groups_toggle', 'data-groupid' => $value->id,
@@ -90,7 +92,6 @@ class block_groups_renderer extends plugin_renderer_base {
     }
     /**
      * Generates string for a grouping list item
-     *
      * @param string $name
      * @param integer $counter
      * @return string html-string
@@ -99,8 +100,20 @@ class block_groups_renderer extends plugin_renderer_base {
         return $name . '   ' . get_string('brackets', 'block_groups', $counter);
     }
     /**
+     * Renders line to change all groups.
+     * @return string html string
+     */
+    public function change_all_groups() {
+        // Creates two urls for showing all groups hiding all groups.
+        $urlshow = $this->create_all_groups_link('show');
+        $urlhide = $this->create_all_groups_link('hide');
+
+        $line = html_writer::span('Change all groups', 'wrapperblockgroupsallgroups') .
+           $urlshow . $urlhide;
+        return $line;
+    }
+    /**
      * Returns the frame for the memberlist.
-     *
      * @param array $enrolledgroups
      * @return string html-string
      */
@@ -112,16 +125,38 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Returns the html-span for a single group.
      * (false vor hidden groups)
-     *
      * @param stdClass $group
      * @param boolean $visibility
      * @return string html-string
      */
     public function get_tag_group($group, $visibility) {
-        $spanclasses = "membergroup-" . $group->id;
+        $spanclasses = "membergroup-" . $group->id . ' block-groups-membergroup';
         if ($visibility === false) {
             $spanclasses .= ' hiddengroups';
         }
         return html_writer::span($group->name, $spanclasses);
+    }
+
+    /**
+     * Internal Function to create two links for showing all groups hiding all groups.
+     * @param $action string show/hide
+     * @return string html_link
+     */
+    private function create_all_groups_link($action) {
+        global $OUTPUT, $CFG, $COURSE;
+        if ($action === 'hide') {
+            $actionnumber = 0;
+            $reverse = 'show';
+        } else {
+            $actionnumber = 1;
+            $reverse = 'hide';
+        }
+        $urlhide = new moodle_url($CFG->wwwroot . '/blocks/groups/changeallgroups.php',
+            array('courseid' => $COURSE->id, 'hide' => $actionnumber));
+
+        $icon = $OUTPUT->pix_icon('t/' . $reverse, get_string($reverse . 'group', 'block_groups'),
+            'moodle', array('class' => "imggroup-all imggroup"));
+        $rightaligndiv = html_writer::div($icon, 'rightalign');
+        return html_writer::link($urlhide, $rightaligndiv, array('data-action' => $reverse, 'class' => 'block_groups_all_toggle'));
     }
 }

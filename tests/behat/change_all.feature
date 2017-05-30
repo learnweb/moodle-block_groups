@@ -1,4 +1,4 @@
-@block @block_groups @groups_hide
+@block @block_groups @groups_change_all
 Feature: Hide a group in a group block
   In order to hide groups for students
   As a user
@@ -43,58 +43,43 @@ Feature: Hide a group in a group block
     And I add the "Groups and Groupings" block
     And I log out
 
-  Scenario: The modify link leads to the modify group page
+  Scenario: Change all groups show does show all groups
     Given I log in as "teacher1"
     And I am on "Course 1" course homepage
-    When I click on "modify groups" "link" in the "Groups and Groupings" "block"
-    Then I should see "Group 2" in the "#groupeditform" "css_element"
-    Then I should see "Group 1" in the "#groupeditform" "css_element"
-    Then I should see "Group 3" in the "#groupeditform" "css_element"
-
-  @javascript
-  Scenario: Students do not see block in groups when he is not member of a visible group
-    Given I log in as "student1"
-    And I am on "Course 1" course homepage
-    Then "Groups" "block" should not exist
-
-  @javascript
-  Scenario: Students do not see group when it is hidden again
-    Given I log in as "teacher1"
-    And I am on "Course 1" course homepage
-    When I click on the "Groups" block groups label
-    And I click on the eye icon of group name "Group 1"
+    When I click in the groups block on all groups "show"
     Then I wait "3" seconds
     Then "Groups and Groupings" "block" should exist
+    Then I should see "Group 1" in the "Groups and Groupings" "block"
+    Then I should see "All groups are visible." in the "region-main" "region"
     Given I am on homepage
     When I log out
     And I log in as "student1"
     And I am on "Course 1" course homepage
     Then I should see "Group 1" in the "Groups" "block"
     Given I am on homepage
-    And I log out
-    And I log in as "teacher1"
+    When I log out
+    And I log in as "student2"
     And I am on "Course 1" course homepage
-    When I click on the "Groups" block groups label
-    And I click on the eye icon of group name "Group 1"
-    Then I wait "3" seconds
+    Then I should see "Group 1" in the "Groups" "block"
     And I am on "Course 1" course homepage
-    When I click on the "Groups" block groups label
-    And I click on the eye icon of group name "Group 2"
-    Then I wait "3" seconds
-    And I am on "Course 1" course homepage
-    When I click on the "Groups" block groups label
-    Then I should see "Group 1" in the "Groups and Groupings" "block"
+    Then I should see "Group 2" in the "Groups" "block"
     Given I am on homepage
     And I log out
-    And I log in as "student1"
+
+  Scenario: Change all groups hide does hide all groups
+    Given I log in as "teacher1"
     And I am on "Course 1" course homepage
-    Then "Groups" "block" should not exist
-    And I log out
+    When I click in the groups block on all groups "show"
+    And I am on "Course 1" course homepage
+    When I click in the groups block on all groups "hide"
+    Then I should see "All groups are hidden." in the "region-main" "region"
+    And I am on "Course 1" course homepage
+    And I click on the eye icon of group name "Group 2"
+    Then "Groups and Groupings" "block" should exist
+    Given I am on homepage
+    When I log out
     And I log in as "student2"
     And I am on "Course 1" course homepage
     Then I should not see "Group 1" in the "Groups" "block"
-    Then I should see "Group 2" in the "Groups" "block"
+    Given I am on homepage
     And I log out
-
-
-

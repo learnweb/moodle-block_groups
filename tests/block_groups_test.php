@@ -25,6 +25,10 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Class block_groups_testcase
+ * @package block_groups
+ * @category   test
+ * @copyright 2016/17 N Herrmann
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_groups_testcase extends advanced_testcase {
 
@@ -60,12 +64,13 @@ class block_groups_testcase extends advanced_testcase {
         $this->assertEquals(true, $booleandeleted);
 
         // Test the function that counts the grouping members.
-        $functioncount = count_grouping_members();
+        $functioncount = count_grouping_members($data['course2']->id);
         $this->assertEquals(2, $functioncount[$data['grouping1']->id]->number);
         // Members are not counted multiple.
         $this->assertEquals(3, $functioncount[$data['grouping2']->id]->number);
         // Test empty grouping.
         $this->assertEquals(0, $functioncount[$data['grouping3']->id]->number);
+
     }
     /**
      * Methodes recommended by moodle to assure database and dataroot is reset.

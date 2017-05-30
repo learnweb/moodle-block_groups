@@ -21,6 +21,7 @@
  * @copyright 2016/17 N Herrmann
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/blocks/groups/locallib.php');
@@ -90,22 +91,22 @@ class block_groups extends block_base
      */
     private function get_content_teaching() {
         global  $COURSE, $PAGE, $DB, $CFG;
+        $courseid = $COURSE->id;
         // Array to save all groups.
-        $allgroups = groups_get_all_groups($COURSE->id);
+        $allgroups = groups_get_all_groups($courseid);
         // Array to save all groupings.
-        $allgroupings = groups_get_all_groupings($COURSE->id);
+        $allgroupings = groups_get_all_groupings($courseid);
         $content = '';
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
         // Calls Javascript if available.
-        $PAGE->requires->js_call_amd('block_groups/blocks_groups_visibility', 'initialise', array($COURSE->id));
-        $PAGE->requires->strings_for_js(array('errortitle', 'nochangeindatabasepossible', 'errorbutton'), 'block_groups');
+        $PAGE->requires->js_call_amd('block_groups/blocks_groups_visibility', 'initialise', array($courseid));
         $groupsarray = array();
         foreach ($allgroups as $value) {
             // Checks availability of group and requests the content.
             if (is_object($value) && property_exists($value, 'name')) {
                 $countmembers = count(groups_get_members($value->id));
-                $href = $CFG->wwwroot . '/blocks/groups/changevisibility.php?courseid=' . $COURSE->id . '&groupid=' . $value->id;
+                $href = new moodle_url('/blocks/groups/changevisibility.php', array('courseid' => $courseid, 'groupid' => $value->id));
                 if (empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
                     $groupsarray[] = $renderer->get_string_group($value, $href, $countmembers, true);
                 } else {
@@ -113,13 +114,16 @@ class block_groups extends block_base
                 }
             }
         }
+
         // Empty block or block with checkboxes.
-        $href = $CFG->wwwroot . '/group/index.php?id=' . $COURSE->id;
+        $href = new moodle_url('/group/index.php', array('id' => $courseid));
         if (count($groupsarray) == 0) {
+            $content .= html_writer::div(get_string('nogroups', 'block_groups'));
             $content .= $renderer->get_link_modify_groups($href);
-            $content .= get_string('nogroups', 'block_groups');
         } else {
-            $groupingsarray = $this->build_grouping_array($allgroupings);
+            // Since 3.3-r5 shows line with link to change all groups.
+            $content .= $renderer->change_all_groups();
+            $groupingsarray = $this->build_grouping_array($allgroupings, $courseid);
             if (!empty($groupingsarray)) {
                 $content .= $renderer->teaching_groups_or_groupings_list($groupingsarray, false);
             }
@@ -165,12 +169,12 @@ class block_groups extends block_base
      * @param array $allgroupings
      * @return array every key is a group id and point to a grouping
      */
-    public function build_grouping_array($allgroupings) {
+    public function build_grouping_array($allgroupings, $courseid) {
         global $PAGE;
         /* @var $renderer block_groups_renderer*/
         $renderer = $PAGE->get_renderer('block_groups');
         $groupingsarray = array();
-        $arrayofmembers = count_grouping_members();
+        $arrayofmembers = count_grouping_members($courseid);
         foreach ($allgroupings as $g => $value) {
             if (is_object($value) && property_exists($value, 'name')) {
                 // Necessary DB query to prohibit multiple ids of grouping members.

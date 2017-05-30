@@ -15,7 +15,6 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * PHPUnit data generator tests
- *
  * @package    block_groups
  * @category   test
  * @copyright  2016/17 N Herrmann
@@ -27,7 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * PHPUnit data generator testcase
- *
  * @package    block_groups
  * @category   test
  * @copyright  2016/17 N Herrmann
