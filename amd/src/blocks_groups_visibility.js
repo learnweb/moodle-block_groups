@@ -53,19 +53,22 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     };
     /**
      * Creates a warning message.
-     * Creates a warning message.m>util
      */
     var create_warning_message = function() {
         str.get_strings([
             {'key': 'errortitle', component: 'block_groups'},
             {'key': 'nochangeindatabasepossiblereload', component: 'block_groups'},
-            {'key': 'yes'}
+            {'key': 'yes'},
+            {'key': 'no'}
         ]).done(function(s) {
-            notification.alert(s[0], s[1], s[2]);
-            ($('.moodle-dialogue').find('.confirmation-dialogue').find('.btn-primary')).on('click', function() {
-                location.reload();
-            });
+            notification.confirm(s[0], s[1], s[2], s[3], reload_page);
         }).fail(notification.exception);
+    };
+    /**
+     * Reloads the current page.
+     */
+    var reload_page = function() {
+        location.reload(true);
     };
     /**
      * Initialises Spinner for a single group.
@@ -78,7 +81,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         }
         var imgurl = url.imageUrl("i/loading_small", 'moodle');
         var spinner = document.createElement("img");
-        spinner.className = 'spinner' + groupid + ' spinner block-groups-spinner' ;
+        spinner.className = 'spinner' + groupid + ' spinner block-groups-spinner';
         spinner.src = imgurl;
         spinner.hidden = false;
         divgroups.find('.imggroup-' + groupid).before(spinner);
@@ -221,7 +224,8 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         promises[0].then(function(response) {
             var divgroups = $('.block_groups');
             // Catch misleading responses.
-            if (response === null || response.error === true) {
+            if (response === null || response.error === true || (typeof response.changedgroups !== 'undefined' &&
+                response.changedgroups > 0)) {
                 add_warning('all');
                 return false;
             }

@@ -101,9 +101,6 @@ class block_groups extends block_base
         $renderer = $PAGE->get_renderer('block_groups');
         // Calls Javascript if available.
         $PAGE->requires->js_call_amd('block_groups/blocks_groups_visibility', 'initialise', array($courseid));
-        $PAGE->requires->strings_for_js(array('errortitle', 'nochangeindatabasepossible', 'errorbutton',
-            'allgroupsinstate', 'groupschanged', 'nogroups'), 'block_groups');
-
         $groupsarray = array();
         foreach ($allgroups as $value) {
             // Checks availability of group and requests the content.
