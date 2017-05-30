@@ -62,9 +62,9 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             {'key': 'yes'}
         ]).done(function(s) {
             notification.alert(s[0], s[1], s[2]);
-            ($('.moodle-dialogue').find('.confirmation-dialogue').find('.btn-primary')).on('click', function () {
-                location.reload();}
-            );
+            ($('.moodle-dialogue').find('.confirmation-dialogue').find('.btn-primary')).on('click', function() {
+                location.reload();
+            });
         }).fail(notification.exception);
     };
     /**

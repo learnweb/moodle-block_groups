@@ -221,7 +221,7 @@ class block_groups_visibilityall_change extends external_api{
         if ($params['groups']['action'] == 'show') {
             $outputvisibility = 2;
         }
-        //$output['visibility'] = $outputvisibility;
+        $output['visibility'] = $outputvisibility;
         return $output;
     }
 }
