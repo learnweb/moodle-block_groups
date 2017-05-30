@@ -30,8 +30,8 @@ Group 1 and Group 2.1 are hidden. The other groups are visible. </br> </br>
 <img src="https://cloud.githubusercontent.com/assets/18289780/26582345/195400aa-4541-11e7-9d25-184ee8cbcc7d.png" width="500"></br> </br>
 
 In case the required change is not possible a warning message is displayed and the affected group is marked with a triangle. </br></br>
-<img src="https://cloud.githubusercontent.com/assets/18289780/26582340/162f7b84-4541-11e7-9a6a-36949f1b5edd.png" width="500"></br></br>
-<img src="https://cloud.githubusercontent.com/assets/18289780/26582350/1d2b760e-4541-11e7-948c-5f0318aa9c4c.png" width="500"></br></br>
+<img src="https://cloud.githubusercontent.com/assets/18289780/26582340/162f7b84-4541-11e7-9a6a-36949f1b5edd.png" width="254">
+<img src="https://cloud.githubusercontent.com/assets/18289780/26582350/1d2b760e-4541-11e7-948c-5f0318aa9c4c.png" width="250"></br></br>
 
 ### Students' view
 In the current state of the block groupings are not displayed to the students. </br>
