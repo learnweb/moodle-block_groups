@@ -230,8 +230,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         promises[0].then(function(response) {
             var divgroups = $('.block_groups');
             // Catch misleading responses.
-            if (response === null || response.error === true || (typeof response.changedgroups !== 'undefined' &&
-                response.changedgroups.length > 0)) {
+            if (response === null || response.error === true) {
                 add_warning('all');
                 return false;
             }
