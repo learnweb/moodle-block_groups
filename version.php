@@ -16,12 +16,13 @@
 
 /**
  * Version details
- * @package block_groups
- * @copyright 2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   block_groups
+ * @copyright 2016/17 N Herrmann
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
+
 
 $plugin->version   = 2017053000;     // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2015111000;     // Requires this Moodle version.

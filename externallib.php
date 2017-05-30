@@ -17,9 +17,9 @@
 /**
  * External block_groups API
  *
- * @package block_groups
- * @copyright 2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_groups
+ * @copyright  2016/17 N Herrmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 require_once("$CFG->libdir/externallib.php");
@@ -27,14 +27,17 @@ require_once("$CFG->libdir/externallib.php");
 /**
  * block_groups external functions
  *
- * @copyright  2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @since Moodle 2.9
+ * @copyright  2016/17 N Herrmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @since      Moodle 2.9
+
  */
 class block_groups_visibility_change extends external_api{
 
+
     /**
      * Specifies the input parameters.
+     * @return external_function_parameters
      */
     public static function create_output_parameters() {
         return new external_function_parameters(
@@ -49,8 +52,10 @@ class block_groups_visibility_change extends external_api{
         );
     }
 
+
     /**
      * Specifies the output parameters.
+     * @return external_single_structure
      */
     public static function create_output_returns() {
         return new external_single_structure(
@@ -62,10 +67,11 @@ class block_groups_visibility_change extends external_api{
             )
         );
     }
+
     /**
      * Changed the Database and returns the updated html content.
-     * @param $groups
-     * @return array
+     * @param array $groups
+     * @return array of output_parameters
      */
     public static function create_output($groups) {
         global $PAGE, $CFG, $DB;

@@ -17,10 +17,10 @@
 /**
  * File which changes the visibility of groups.
  *
- * @package block_groups
+ * @package    block_groups
  * @category   upgrade
- * @copyright 2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2016/17 N Herrmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once('../../config.php');
 require_login();

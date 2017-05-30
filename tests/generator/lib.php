@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Class to generate data.
+ * Generator for the block_groups testcase.
  * @package    block_groups
  * @category   test
- * @copyright  2016/17 Nina Herrmann
+ * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,11 +26,11 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * Class to generate data.
+ * Generator class for the block_groups testcase.
  *
  * @package    block_groups
  * @category   test
- * @copyright  2016/17 Nina Herrmann
+ * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_groups_generator extends testing_block_generator {

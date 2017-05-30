@@ -17,16 +17,15 @@
  * blocks_groups internal functions
  *
  * @package    block_groups
- * @copyright  2016 N Herrmann
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2016/17 N Herrmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 /**
  * Executes a change in the block_groups_hide database
- * @param int $groupid
- * @param int $courseid
+ * @param integer $groupid
+ * @param integer $courseid
  */
-
 function block_groups_db_transaction_change_visibility($groupid, $courseid) {
     global $DB;
     $transaction = $DB->start_delegated_transaction();
@@ -45,7 +44,7 @@ function block_groups_db_transaction_change_visibility($groupid, $courseid) {
 }
 /**
  * Counts grouping members.
- * @return array
+ * @return array of database records
  */
 function count_grouping_members ($courseid) {
     global $DB;

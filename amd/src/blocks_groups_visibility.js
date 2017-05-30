@@ -22,21 +22,22 @@
  * Javascript module for block_groups
  *
  * @package    block_groups
- * @copyright  2016 Nina Herrmann
+ * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 
 define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], function($, ajax, url, notification, str) {
     /**
      * Methode to remove warnings
-     * @param {(int|string)} identifier
+     * @param {(number|string)} identifier
      */
     var remove_warning = function(identifier) {
         $('.block_groups').find('.warning' + identifier).remove();
     };
     /**
      * Removes the Spinner Class of a single group.
-     * @param {int} groupid that identifies to which group the spinner belongs to.
+     * @param {number} groupid that identifies to which group the spinner belongs to.
      */
     var remove_spinner = function(groupid) {
         var divgroup = $('.block_groups');
@@ -61,6 +62,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
      * Creates a warning message.
      */
     var create_warning_message = function() {
+
         str.get_strings([
             {'key': 'errortitle', component: 'block_groups'},
             {'key': 'nochangeindatabasepossiblereload', component: 'block_groups'},
@@ -72,11 +74,12 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     };
     /**
      * Initialises Spinner for a single group.
-     * @param {int} groupid
+     * @param {number} groupid
      */
     var add_spinner = function(groupid) {
         var divgroups = $('.block_groups');
         if (divgroups.find('.warning' + groupid).length > 0) {
+
             remove_warning(groupid);
         }
         var imgurl = url.imageUrl("i/loading_small", 'moodle');
@@ -84,12 +87,13 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         spinner.className = 'spinner' + groupid + ' spinner block-groups-spinner';
         spinner.src = imgurl;
         spinner.hidden = false;
+
         divgroups.find('.imggroup-' + groupid).before(spinner);
         divgroups.find('.imggroup-' + groupid).hide();
     };
     /**
      * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
-     * @param {(int|string)} identifier
+     * @param {(number|string)} identifier
      */
     var add_warning = function(identifier) {
         var divgroups = $('.block_groups');
@@ -112,6 +116,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             divgroups.find('.imggroup-' + identifier).on('click', create_warning_message);
             divgroups.find('.warning' + identifier).on('click', create_warning_message);
         }
+\
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components for a single group.
@@ -128,12 +133,14 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         }
         add_spinner($(this).data('groupid'));
         var promises = ajax.call([
+
             {
                 methodname: 'block_groups_create_output', args: {
                     groups: {
                         id: $(this).data('groupid'),
                         courseid: event.data.courseid
                     }
+
                 }
             }
         ]);
@@ -141,6 +148,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             add_warning(groupid);
             return false;
         });
+
         promises[0].then(function(response) {
             if (response === null || response.error === true) {
                 add_warning(groupid);
@@ -157,6 +165,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             divgroups.find('.group-' + response.id + ' .block_groups_toggle').on('click',
                 {courseid: event.data.courseid}, changevisibility);
             remove_spinner(response.id);
+
         }).fail(function() {
             add_warning(groupid);
             return false;
@@ -198,7 +207,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components for all groups.
-     * @param {int} event
+     * @param {number} event
      * @return {boolean}
      */
     var changevisibilityall = function(event) {
@@ -285,7 +294,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     /**
      * Calls for the main method. Either single groups are changed with block_groups_toggle or all groups with
      * block_groups_all_toggle.
-     * @param {int} courseid
+     * @param {number} courseid
      */
     return {
         initialise: function(courseid) {
