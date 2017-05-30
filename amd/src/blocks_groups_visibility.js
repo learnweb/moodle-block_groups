@@ -52,6 +52,12 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         divgroups.find('.imggroup').show();
     };
     /**
+     * Reloads the current page.
+     */
+    var reload_page = function() {
+        location.reload(true);
+    };
+    /**
      * Creates a warning message.
      */
     var create_warning_message = function() {
@@ -63,12 +69,6 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         ]).done(function(s) {
             notification.confirm(s[0], s[1], s[2], s[3], reload_page);
         }).fail(notification.exception);
-    };
-    /**
-     * Reloads the current page.
-     */
-    var reload_page = function() {
-        location.reload(true);
     };
     /**
      * Initialises Spinner for a single group.
