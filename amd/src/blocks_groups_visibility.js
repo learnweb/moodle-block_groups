@@ -116,7 +116,6 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             divgroups.find('.imggroup-' + identifier).on('click', create_warning_message);
             divgroups.find('.warning' + identifier).on('click', create_warning_message);
         }
-\
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components for a single group.
