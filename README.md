@@ -31,7 +31,7 @@ Group 1 and Group 2.1 are hidden. The other groups are visible. </br> </br>
 
 In case the required change is not possible a warning message is displayed and the affected group is marked with a triangle. </br></br>
 <img src="https://cloud.githubusercontent.com/assets/18289780/26582340/162f7b84-4541-11e7-9a6a-36949f1b5edd.png" width="254">
-<img src="https://cloud.githubusercontent.com/assets/18289780/26582350/1d2b760e-4541-11e7-948c-5f0318aa9c4c.png" width="250"></br></br>
+<img src="https://cloud.githubusercontent.com/assets/18289780/26668032/276cea4a-46a8-11e7-8232-ca2fd62ea52d.png" width="320"></br></br>
 
 ### Students' view
 In the current state of the block groupings are not displayed to the students. </br>
