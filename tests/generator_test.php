@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
  * PHPUnit data generator testcase
  * @package    block_groups
  * @category   test
+ * @group block_groups
  * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
