@@ -1,6 +1,7 @@
 language: php
 
-sudo: false
+sudo: required
+dist: precise
 
 notifications:
   email: true
@@ -71,7 +72,7 @@ script:
   - moodle-plugin-ci jshint
   - moodle-plugin-ci validate
   - moodle-plugin-ci phpunit --coverage-clover
-  - moodle-plugin-ci behat
+  - moodle-plugin-ci behat --dump
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
