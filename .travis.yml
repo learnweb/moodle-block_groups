@@ -15,7 +15,12 @@ php:
  - 7.1
 
 addons:
+ firefox: "47.0.1"
  postgresql: "9.3"
+apt:
+  packages:
+    - oracle-java8-installer
+    - oracle-java8-set-default
 
 matrix:
   allow_failures:
@@ -28,10 +33,14 @@ matrix:
       env: DB=mysqli MOODLE_BRANCH=MOODLE_31_STABLE
     - php: 7.1
       env: DB=pgsql MOODLE_BRANCH=MOODLE_31_STABLE
+    - php: 5.6
+      env: DB=pgsql MOODLE_BRANCH=master
+    - php: 7.1
+      env: DB=mysqli MOODLE_BRANCH=master
 
 env:
  global:
-  - IGNORE_PATHS=amd/build
+  - IGNORE_PATHS=amd/build BEHAT=yes
  matrix:
   - DB=pgsql MOODLE_BRANCH=MOODLE_31_STABLE
   - DB=pgsql MOODLE_BRANCH=MOODLE_32_STABLE
