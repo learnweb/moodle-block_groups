@@ -58,7 +58,7 @@ class behat_block_groups extends behat_base {
      */
     public function i_click_on_the_eye_icon_of_group_name($groupname) {
         $eyeicon = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]
-              //li[contains(.,'". $groupname . "')]//child::a");
+              //li[contains(.,'". $groupname . "')]//a[@class='block_groups_toggle']//i");
         $eyeicon->click();
     }
     /**
@@ -79,4 +79,5 @@ class behat_block_groups extends behat_base {
         }
         $eyeicon->click();
     }
+
 }

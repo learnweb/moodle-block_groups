@@ -69,6 +69,7 @@ Feature: Hide a group in a group block
     When I log out
     And I log in as "student1"
     And I am on "Course 1" course homepage
+    Then "Groups" "block" should exist
     Then I should see "Group 1" in the "Groups" "block"
     Given I am on homepage
     And I log out
