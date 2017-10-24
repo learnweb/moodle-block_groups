@@ -1,8 +1,8 @@
 @block @block_groups @groups_change_all
-Feature: Hide a group in a group block
-  In order to hide groups for students
-  As a user
-  In need to hide groups
+Feature: Change all groups in a group block
+  In order to change all groups with one click
+  As a course administrator
+  In need to change all groups
 
   Background:
     Given the following "courses" exist:

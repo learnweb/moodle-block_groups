@@ -4,44 +4,44 @@ Feature: Make a group visible in a group block
   As a user
   In need to make groups visible
 
-Background:
-  Given the following "courses" exist:
-    | fullname | shortname | category |
-    | Course 1 | C1 | 0 |
-  And the following "users" exist:
-    | username | firstname | lastname | email | idnumber |
-    | teacher1 | Teacher | 1 | teacher1@example.com | T1 |
-    | student1 | Student | 1 | student1@example.com | S1 |
-    | student2 | Student | 2 | student2@example.com | S2 |
-    | student3 | Student | 3 | student3@example.com | S3 |
-  And the following "course enrolments" exist:
-    | user | course | role |
-    | teacher1 | C1 | editingteacher |
-    | student1 | C1 | student |
-    | student2 | C1 | student |
-    | student3 | C1 | student |
-  And the following "groups" exist:
-    | name | course | idnumber |
-    | Group 1   | C1 | 1   |
-    | Group 2   | C1 | 2   |
-  And the following "groupings" exist:
-    | name | course | idnumber |
-    | Grouping 1 | C1 | GG1 |
-    | Grouping 2 | C1 | GG2 |
-  And the following "group members" exist:
-    | user     | group   |
-    | student1 | 1 |
-    | student2 | 1 |
-    | student3 | 2 |
-    | teacher1  | 1 |
-  And the following "grouping groups" exist:
-    | grouping | group |
-    | GG1      | 1    |
-    | GG2      | 2    |
-  And I log in as "teacher1"
-  And I am on "Course 1" course homepage with editing mode on
-  And I add the "Groups and Groupings" block
-  And I log out
+  Background:
+    Given the following "courses" exist:
+      | fullname | shortname | category |
+      | Course 1 | C1 | 0 |
+    And the following "users" exist:
+      | username | firstname | lastname | email | idnumber |
+      | teacher1 | Teacher | 1 | teacher1@example.com | T1 |
+      | student1 | Student | 1 | student1@example.com | S1 |
+      | student2 | Student | 2 | student2@example.com | S2 |
+      | student3 | Student | 3 | student3@example.com | S3 |
+    And the following "course enrolments" exist:
+      | user | course | role |
+      | teacher1 | C1 | editingteacher |
+      | student1 | C1 | student |
+      | student2 | C1 | student |
+      | student3 | C1 | student |
+    And the following "groups" exist:
+      | name | course | idnumber |
+      | Group 1   | C1 | 1   |
+      | Group 2   | C1 | 2   |
+    And the following "groupings" exist:
+      | name | course | idnumber |
+      | Grouping 1 | C1 | GG1 |
+      | Grouping 2 | C1 | GG2 |
+    And the following "group members" exist:
+      | user     | group   |
+      | student1 | 1 |
+      | student2 | 1 |
+      | student3 | 2 |
+      | teacher1  | 1 |
+    And the following "grouping groups" exist:
+      | grouping | group |
+      | GG1      | 1    |
+      | GG2      | 2    |
+    And I log in as "teacher1"
+    And I am on "Course 1" course homepage with editing mode on
+    And I add the "Groups and Groupings" block
+    And I log out
 
 @javascript
   Scenario: Teacher sees a list of all groups and groupings when they click on the label
