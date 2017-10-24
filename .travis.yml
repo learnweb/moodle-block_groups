@@ -35,6 +35,7 @@ matrix:
       env: DB=pgsql MOODLE_BRANCH=master
     - php: 7.1
       env: DB=mysqli MOODLE_BRANCH=master
+  fast_finish: true
 
 env:
  global:
@@ -60,14 +61,37 @@ before_install:
 install:
   - moodle-plugin-ci install
 
+jobs:
+  include:
+    # Prechecks against latest Moodle stable only.
+    - stage: static
+      php: 7.1
+      env: DB=mysqli MOODLE_BRANCH=MOODLE_33_STABLE
+      script:
+      - moodle-plugin-ci phplint
+      # - moodle-plugin-ci phpcpd
+      - moodle-plugin-ci phpmd
+      # - moodle-plugin-ci codechecker
+      - moodle-plugin-ci savepoints
+      # - moodle-plugin-ci mustache
+      - moodle-plugin-ci grunt
+      - moodle-plugin-ci validate
+    # Smaller build matrix for development builds
+    - stage: develop
+      php: 7.1
+      env: DB=mysqli MOODLE_BRANCH=MOODLE_33_STABLE
+      script:
+      - moodle-plugin-ci phpunit --coverage-clover
+      - moodle-plugin-ci behat
+# Unit tests and behat tests against full matrix.
 script:
-  - moodle-plugin-ci phplint
-  - moodle-plugin-ci phpcpd
-  - moodle-plugin-ci phpmd
-  - moodle-plugin-ci codechecker
-  - moodle-plugin-ci validate
   - moodle-plugin-ci phpunit --coverage-clover
   - moodle-plugin-ci behat
-
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+stages:
+  - static
+  - name: develop
+    if: branch != master AND (type != pull_request OR head_branch != master) AND (tag IS blank)
+  - name: test
+    if: branch = master OR (type = pull_request AND head_branch = master) OR (tag IS present)
