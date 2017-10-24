@@ -44,7 +44,7 @@ Background:
   And I log out
 
 @javascript
-Scenario: Teacher sees a list of all groups and groupings when they click on the label
+  Scenario: Teacher sees a list of all groups and groupings when they click on the label
     Given I log in as "teacher1"
     And I am on "Course 1" course homepage
     When I click on the "Groups" block groups label
@@ -55,7 +55,7 @@ Scenario: Teacher sees a list of all groups and groupings when they click on the
     Then I should see "Grouping 1" in the "Groups and Groupings" "block"
 
 @javascript
-Scenario: Click on eye icon, only enrolled students are able to see the block
+  Scenario: Click on eye icon, only enrolled students are able to see the block
     Given I log in as "teacher1"
     And I am on "Course 1" course homepage
     When I click on the "Groups" block groups label
