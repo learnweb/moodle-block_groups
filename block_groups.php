@@ -14,14 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * The file contains a class to build a Group Block
- *
- * @package   block_groups
- * @copyright 2016/17 N Herrmann
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/blocks/groups/locallib.php');
@@ -106,7 +98,8 @@ class block_groups extends block_base
             // Checks availability of group and requests the content.
             if (is_object($value) && property_exists($value, 'name')) {
                 $countmembers = count(groups_get_members($value->id));
-                $href = new moodle_url('/blocks/groups/changevisibility.php', array('courseid' => $courseid, 'groupid' => $value->id));
+                $href = new moodle_url('/blocks/groups/changevisibility.php',
+                    array('courseid' => $courseid, 'groupid' => $value->id));
                 if (empty($DB->get_records('block_groups_hide', array('id' => $value->id)))) {
                     $groupsarray[] = $renderer->get_string_group($value, $href, $countmembers, true);
                 } else {
@@ -167,6 +160,7 @@ class block_groups extends block_base
      * Generates an array of groupingnames and their members.
      *
      * @param array $allgroupings
+     * @param integer $courseid
      * @return array every key is a group id and point to a grouping
      */
     public function build_grouping_array($allgroupings, $courseid) {

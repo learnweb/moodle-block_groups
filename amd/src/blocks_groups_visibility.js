@@ -26,20 +26,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], function($, ajax, url, notification, str) {
     /**
      * Methode to remove warnings
-     * @param {(number|string)} identifier
+     * @param {(Number|String)} identifier
      */
-    var remove_warning = function(identifier) {
+    var removeWarning = function(identifier) {
         $('.block_groups').find('.warning' + identifier).remove();
     };
     /**
      * Removes the Spinner Class of a single group.
-     * @param {number} groupid that identifies to which group the spinner belongs to.
+     * @param {Number} groupid that identifies to which group the spinner belongs to.
      */
-    var remove_spinner = function(groupid) {
+    var removeSpinner = function(groupid) {
         var divgroup = $('.block_groups');
         divgroup.find('.spinner' + groupid).remove();
         divgroup.find('.imggroup-' + groupid).show();
@@ -47,7 +46,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     /**
      * Removes all spinners.
      */
-    var remove_spinners = function() {
+    var removeSpinners = function() {
         var divgroups = $('.block_groups');
         divgroups.find('.spinner-all').remove();
         divgroups.find('.imggroup').show();
@@ -55,13 +54,13 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     /**
      * Reloads the current page.
      */
-    var reload_page = function() {
+    var reloadPage = function() {
         location.reload(true);
     };
     /**
      * Creates a warning message.
      */
-    var create_warning_message = function() {
+    var createWarningMessage = function() {
 
         str.get_strings([
             {'key': 'errortitle', component: 'block_groups'},
@@ -69,18 +68,18 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             {'key': 'yes'},
             {'key': 'no'}
         ]).done(function(s) {
-            notification.confirm(s[0], s[1], s[2], s[3], reload_page);
+            notification.confirm(s[0], s[1], s[2], s[3], reloadPage);
         }).fail(notification.exception);
     };
     /**
      * Initialises Spinner for a single group.
-     * @param {number} groupid
+     * @param {Number} groupid
      */
-    var add_spinner = function(groupid) {
+    var addSpinner = function(groupid) {
         var divgroups = $('.block_groups');
         if (divgroups.find('.warning' + groupid).length > 0) {
 
-            remove_warning(groupid);
+            removeWarning(groupid);
         }
         var imgurl = url.imageUrl("i/loading_small", 'moodle');
         var spinner = document.createElement("img");
@@ -93,34 +92,36 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     };
     /**
      * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
-     * @param {(number|string)} identifier
+     * @param {(Number|String)} identifier
+     * @returns {Boolean} false
      */
-    var add_warning = function(identifier) {
+    var addWarning = function(identifier) {
         var divgroups = $('.block_groups');
         var warningexist = divgroups.find('.warning' + identifier);
         if (warningexist.length) {
-            remove_spinner(identifier);
+            removeSpinner(identifier);
             return false;
         } else {
             if (identifier === 'all') {
-                remove_spinners();
+                removeSpinners();
             } else {
-                remove_spinner(identifier);
+                removeSpinner(identifier);
             }
             var imgurl = url.imageUrl("i/warning", 'moodle');
             var warning = document.createElement("img");
             warning.className = 'warning' + identifier + ' block-groups-warning';
             warning.src = imgurl;
-            create_warning_message();
+            createWarningMessage();
             (divgroups.find('.imggroup-' + identifier).before(warning));
-            divgroups.find('.imggroup-' + identifier).on('click', create_warning_message);
-            divgroups.find('.warning' + identifier).on('click', create_warning_message);
+            divgroups.find('.imggroup-' + identifier).on('click', createWarningMessage);
+            divgroups.find('.warning' + identifier).on('click', createWarningMessage);
         }
+        return false;
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components for a single group.
      * @param {*} event
-     * @return {boolean}
+     * @return {Boolean}
      */
     var changevisibility = function(event) {
         var divgroups = $('.block_groups');
@@ -130,7 +131,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             divgroups.find('.spinner-all').length > 0) {
             return false;
         }
-        add_spinner($(this).data('groupid'));
+        addSpinner($(this).data('groupid'));
         var promises = ajax.call([
 
             {
@@ -144,13 +145,13 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             }
         ]);
         $(document).ajaxError(function() {
-            add_warning(groupid);
+            addWarning(groupid);
             return false;
         });
 
         promises[0].then(function(response) {
             if (response === null || response.error === true) {
-                add_warning(groupid);
+                addWarning(groupid);
                 return false;
             }
             divgroups.find('.group-' + response.id).replaceWith(response.newelement);
@@ -163,15 +164,15 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             }
             divgroups.find('.group-' + response.id + ' .block_groups_toggle').on('click',
                 {courseid: event.data.courseid}, changevisibility);
-            remove_spinner(response.id);
-
+            removeSpinner(response.id);
+            return false;
         }).fail(function() {
-            add_warning(groupid);
+            addWarning(groupid);
             return false;
         });
         return false;
     };
-    var checkmember = function(response) {
+    var checkMember = function(response) {
         var membergroup = $('.block-groups-membergroup');
         var visibility = response.visibility;
         if (visibility === 2) {
@@ -184,10 +185,10 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     /**
      * Initialises spinners for all groups.
      */
-    var add_spinners = function() {
+    var addSpinners = function() {
         var divgroups = $('.block_groups');
         if (divgroups.find('.warningall').length > 0) {
-            remove_warning('all');
+            removeWarning('all');
         }
         var imgurl = url.imageUrl("i/loading_small", 'moodle');
         var spinner = document.createElement("img");
@@ -198,7 +199,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         divgroups.find('.imggroup').hide();
     };
 
-    var add_notification = function(type, text) {
+    var addNotification = function(type, text) {
         notification.addNotification({
             message: text,
             type: type
@@ -206,19 +207,19 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     };
     /**
      * Method that calls for an ajax script and replaces and/or changes the output components for all groups.
-     * @param {number} event
-     * @return {boolean}
+     * @param {Number} event
+     * @return {Boolean}
      */
-    var changevisibilityall = function(event) {
+    var changeVisibilityAll = function(event) {
         if ($('.block_groups').find('.spinner').length > 0) {
             return false;
         }
         var warningexist = $('.block_groups').find('.block-groups-warning');
         if (typeof warningexist !== 'undefined' && warningexist.length > 0) {
-            add_warning('all');
+            addWarning('all');
             return false;
         }
-        add_spinners();
+        addSpinners();
         // Calls for the externallib.
         var promises = ajax.call([
             {
@@ -231,7 +232,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             }
         ]);
         $(document).ajaxError(function() {
-            add_warning('all');
+            addWarning('all');
             return false;
         });
         // Response is processed.
@@ -239,7 +240,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             var divgroups = $('.block_groups');
             // Catch misleading responses.
             if (response === null || response.error === true) {
-                add_warning('all');
+                addWarning('all');
                 return false;
             }
             if (response.visibility === 0) {
@@ -249,7 +250,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
                 str.get_strings([
                     {key: 'nogroups', component: 'block_groups'}
                 ]).done(function(s) {
-                    add_notification('error', s[0]);
+                    addNotification('error', s[0]);
                 }).fail(notification.exception);
                 return false;
             }
@@ -257,7 +258,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             // Old Elements are replaced and on click event added.
             divgroups.find('.wrapperlistgroup').replaceWith(response.newelement);
             divgroups.find('.block_groups_toggle').on('click', {courseid: event.data.courseid}, changevisibility);
-            checkmember(response);
+            checkMember(response);
             // Outputvisibility 0->nogroups 1 -> hidden 2->visible 3-> all are hidden 4-> all are visible.
             str.get_strings([
                 {key: 'groupschanged', component: 'block_groups', param: 'hidden'},
@@ -267,38 +268,39 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             ]).done(function(s) {
                 switch (response.visibility) {
                     case 1:
-                        add_notification('success', s[0]);
+                        addNotification('success', s[0]);
                         break;
                     case 2:
-                        add_notification('success', s[1]);
+                        addNotification('success', s[1]);
                         break;
                     case 3:
-                        add_notification('warning', s[2]);
+                        addNotification('warning', s[2]);
                         break;
                     case 4:
-                        add_notification('warning', s[3]);
+                        addNotification('warning', s[3]);
                         break;
                     default:
                         break;
                 }
             }).fail(notification.exception);
+            return false;
         }).fail(function() {
-            add_warning('all');
+            addWarning('all');
             return false;
         });
-        remove_spinners();
+        removeSpinners();
         return false;
     };
 
     /**
      * Calls for the main method. Either single groups are changed with block_groups_toggle or all groups with
      * block_groups_all_toggle.
-     * @param {number} courseid
+     * @param {Number} courseid
      */
     return {
         initialise: function(courseid) {
             $('.block_groups_toggle').on('click', {courseid: courseid}, changevisibility);
-            $('.block_groups_all_toggle').on('click', {courseid: courseid}, changevisibilityall);
+            $('.block_groups_all_toggle').on('click', {courseid: courseid}, changeVisibilityAll);
 
         }
     };

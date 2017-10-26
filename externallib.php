@@ -30,10 +30,8 @@ require_once("$CFG->libdir/externallib.php");
  * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since      Moodle 2.9
-
  */
 class block_groups_visibility_change extends external_api{
-
 
     /**
      * Specifies the input parameters.
@@ -51,7 +49,6 @@ class block_groups_visibility_change extends external_api{
                 )
         );
     }
-
 
     /**
      * Specifies the output parameters.
@@ -99,6 +96,13 @@ class block_groups_visibility_change extends external_api{
         return $output;
     }
 }
+/**
+ * Class to implement the External Api to change all groups
+ *
+ * @package    block_groups
+ * @copyright  2016/17 N Herrmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class block_groups_visibilityall_change extends external_api{
     /**
      * Specifies the input parameters.
@@ -139,7 +143,7 @@ class block_groups_visibilityall_change extends external_api{
     /**
      * Changed the Database and returns the updated html content.
      * create_allgroups_output
-     * @param $groups
+     * @param array $groups
      * @return array
      */
     public static function create_allgroups_output($groups) {
