@@ -50,15 +50,27 @@ class behat_block_groups extends behat_base {
     }
 
     /**
-     * Clicks on eye icon
+     * Clicks on eye icon when javascript is turned on.
      *
-     * @When /^I click on the eye icon of group name "(?P<groupname_string>(?:[^"]|\\")*)"$/
+     * @When /^I click on the eye icon of group name "(?P<groupname_string>(?:[^"]|\\")*)" with javascript enabled$/
      *
      * @param string $groupname identifier of the Group
      */
-    public function i_click_on_the_eye_icon_of_group_name($groupname) {
+    public function i_click_on_the_eye_icon_of_group_name_with_javascript_enabled($groupname) {
         $eyeicon = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]
               //li[contains(.,'". $groupname . "')]//a[@class='block_groups_toggle']//i");
+        $eyeicon->click();
+    }
+    /**
+     * Clicks on eye icon without javascript turned on.
+     *
+     * @When /^I click on the eye icon of group name "(?P<groupname_string>(?:[^"]|\\")*)" without javascript enabled$/
+     *
+     * @param string $groupname identifier of the Group
+     */
+    public function i_click_on_the_eye_icon_of_group_name_without_javascript_enabled($groupname) {
+        $eyeicon = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]
+              //li[contains(.,'". $groupname . "')]//a[@class='block_groups_toggle']");
         $eyeicon->click();
     }
     /**

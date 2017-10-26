@@ -58,11 +58,11 @@ Feature: Hide a group in a group block
     Then "Groups" "block" should not exist
 
 @javascript
-  Scenario: Students do not see group when it is hidden again
+  Scenario: Students do not see group when it is hidden again with javascript
     Given I log in as "teacher1"
     And I am on "Course 1" course homepage
     When I click on the "Groups" block groups label
-    And I click on the eye icon of group name "Group 1"
+    And I click on the eye icon of group name "Group 1" with javascript enabled
     Then I wait "3" seconds
     Then "Groups and Groupings" "block" should exist
     Given I am on homepage
@@ -76,14 +76,52 @@ Feature: Hide a group in a group block
     And I log in as "teacher1"
     And I am on "Course 1" course homepage
     When I click on the "Groups" block groups label
-    And I click on the eye icon of group name "Group 1"
+    And I click on the eye icon of group name "Group 1" with javascript enabled
     Then I wait "3" seconds
     And I am on "Course 1" course homepage
     When I click on the "Groups" block groups label
-    And I click on the eye icon of group name "Group 2"
+    And I click on the eye icon of group name "Group 2" with javascript enabled
     Then I wait "3" seconds
     And I am on "Course 1" course homepage
     When I click on the "Groups" block groups label
+    Then I should see "Group 1" in the "Groups and Groupings" "block"
+    Given I am on homepage
+    And I log out
+    And I log in as "student1"
+    And I am on "Course 1" course homepage
+    Then "Groups" "block" should not exist
+    And I log out
+    And I log in as "student2"
+    And I am on "Course 1" course homepage
+    Then I should not see "Group 1" in the "Groups" "block"
+    Then I should see "Group 2" in the "Groups" "block"
+    And I log out
+
+  Scenario: Students do not see group when it is hidden again without javascript
+    Given I log in as "teacher1"
+    And I am on "Course 1" course homepage
+    Then I should see "Group 1" in the "Groups and Groupings" "block"
+    And I click on the eye icon of group name "Group 1" without javascript enabled
+    Then I wait "3" seconds
+    Then "Groups and Groupings" "block" should exist
+    Given I am on homepage
+    When I log out
+    And I log in as "student1"
+    And I am on "Course 1" course homepage
+    Then "Groups" "block" should exist
+    Then I should see "Group 1" in the "Groups" "block"
+    Given I am on homepage
+    And I log out
+    And I log in as "teacher1"
+    And I am on "Course 1" course homepage
+    Then I should see "Group 1" in the "Groups and Groupings" "block"
+    And I click on the eye icon of group name "Group 1" without javascript enabled
+    Then I wait "3" seconds
+    And I am on "Course 1" course homepage
+    Then I should see "Group 2" in the "Groups and Groupings" "block"
+    And I click on the eye icon of group name "Group 2" without javascript enabled
+    Then I wait "3" seconds
+    And I am on "Course 1" course homepage
     Then I should see "Group 1" in the "Groups and Groupings" "block"
     Given I am on homepage
     And I log out
