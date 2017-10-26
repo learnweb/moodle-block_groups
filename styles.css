@@ -41,6 +41,7 @@
 .block_groups li {
     line-height: 22px;
 }
-.block_groups .block-groups-warning, .block_groups .block-groups-spinner {
+.block_groups .block-groups-warning,
+.block_groups .block-groups-spinner {
     padding-right: 6px;
 }

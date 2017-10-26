@@ -139,7 +139,7 @@ class block_groups_renderer extends plugin_renderer_base {
 
     /**
      * Internal Function to create two links for showing all groups hiding all groups.
-     * @param $action string show/hide
+     * @param string $action show/hide
      * @return string html_link
      */
     private function create_all_groups_link($action) {
