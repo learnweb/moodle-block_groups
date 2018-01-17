@@ -130,11 +130,22 @@ class block_groups_renderer extends plugin_renderer_base {
      * @return string html-string
      */
     public function get_tag_group($group, $visibility) {
+        global $CFG, $COURSE;
+
         $spanclasses = "membergroup-" . $group->id . ' block-groups-membergroup';
         if ($visibility === false) {
             $spanclasses .= ' hiddengroups';
         }
-        return html_writer::span($group->name, $spanclasses);
+
+        $tag = html_writer::span($group->name, $spanclasses);
+
+        if ($COURSE->groupmode != NOGROUPS) {
+            $url = new moodle_url($CFG->wwwroot . '/user/index.php',
+                        array('id' => $COURSE->id, 'group' => $group->id, 'mode' => 1));
+            $tag = html_writer::tag('a', $tag, array('href' => $url));
+        }
+
+        return $tag;
     }
 
     /**
