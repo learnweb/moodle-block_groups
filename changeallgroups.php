@@ -73,7 +73,7 @@ if ($hide === 0) {
 if (empty($groups)) {
     // Shows course page with warning message.
     redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid,
-        get_string('allgroupsinstate', 'block_groups', $messageaction),
+        get_string('allgroupsinstate' . $messageaction, 'block_groups'),
         null, \core\output\notification::NOTIFY_WARNING);
     exit();
 }
@@ -83,6 +83,6 @@ foreach ($groups as $group) {
 }
 // Shows course page with success message.
 redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid,
-    get_string('groupschanged', 'block_groups', $messageaction),
+    get_string('groupschanged' . $messageaction, 'block_groups'),
     null, \core\output\notification::NOTIFY_SUCCESS);
 exit();

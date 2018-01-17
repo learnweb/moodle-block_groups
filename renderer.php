@@ -108,7 +108,7 @@ class block_groups_renderer extends plugin_renderer_base {
         $urlshow = $this->create_all_groups_link('show');
         $urlhide = $this->create_all_groups_link('hide');
 
-        $line = html_writer::span('Change all groups', 'wrapperblockgroupsallgroups') .
+        $line = html_writer::span(get_string('changeallgroups', 'block_groups'), 'wrapperblockgroupsallgroups') .
            $urlshow . $urlhide;
         return $line;
     }
