@@ -261,10 +261,10 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             checkMember(response);
             // Outputvisibility 0->nogroups 1 -> hidden 2->visible 3-> all are hidden 4-> all are visible.
             str.get_strings([
-                {key: 'groupschanged', component: 'block_groups', param: 'hidden'},
-                {key: 'groupschanged', component: 'block_groups', param: 'visible'},
-                {key: 'allgroupsinstate', component: 'block_groups', param: 'hidden'},
-                {key: 'allgroupsinstate', component: 'block_groups', param: 'visible'}
+                {key: 'groupschangedhidden', component: 'block_groups'},
+                {key: 'groupschangedvisible', component: 'block_groups'},
+                {key: 'allgroupsinstatehidden', component: 'block_groups'},
+                {key: 'allgroupsinstatevisible', component: 'block_groups'}
             ]).done(function(s) {
                 switch (response.visibility) {
                     case 1:
