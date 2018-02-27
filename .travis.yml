@@ -38,13 +38,15 @@ env:
   - IGNORE_PATHS=amd/build BEHAT=yes
  matrix:
   - DB=pgsql MOODLE_BRANCH=MOODLE_33_STABLE
+  - DB=pgsql MOODLE_BRANCH=MOODLE_34_STABLE
   - DB=pgsql MOODLE_BRANCH=master
   - DB=mysqli MOODLE_BRANCH=MOODLE_33_STABLE
+  - DB=mysqli MOODLE_BRANCH=MOODLE_34_STABLE
   - DB=mysqli MOODLE_BRANCH=master
 
 before_install:
   - phpenv config-rm xdebug.ini
-  - nvm install --lts
+  - nvm install 0.8.9
   - cd ../..
   - composer selfupdate
   - composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci ^2
