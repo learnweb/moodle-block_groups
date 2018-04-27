@@ -43,3 +43,4 @@ $string['groupschangedvisible'] = 'All groups are visible.';
 $string['errortitle'] = 'Synchronization error';
 $string['errorbutton'] = 'OK';
 $string['changeallgroups'] = 'Change all groups';
+$string['privacy:metadata'] = 'The Group block only displays information about groups, but does not effect or store any personal data. The existing groups and groupings data are stored in other locations.';
