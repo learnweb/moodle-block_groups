@@ -15,7 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 defined('MOODLE_INTERNAL') || die();
-
+/**
+ * The File for the block groups class.
+ *
+ * Displays a group and grouping block.
+ *
+ * @package   block_groups
+ * @copyright 2016/17 N Herrmann
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require_once($CFG->dirroot.'/blocks/groups/locallib.php');
 /**
  * The block_group class
@@ -26,7 +34,6 @@ require_once($CFG->dirroot.'/blocks/groups/locallib.php');
  * @copyright 2016/17 N Herrmann
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class block_groups extends block_base
 {
     /**
