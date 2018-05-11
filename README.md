@@ -6,7 +6,7 @@
 A Moodle block to display groups and groupings to users. The plugin differentiates between the capability rights of users
 to evaluate the appropriate amount of information to be displayed.
 
-This plugin is written by [Jan Dageförde](https://github.com/Dagefoerde), [Tobias Reischmann](https://github.com/tobiasreischmann) and [Nina Herrmann](https://github.com/NinaHerrmann).
+This plugin is written by [Jan Dageförde](https://github.com/Dagefoerde), [Tobias Reischmann](https://github.com/tobiasreischmann), [Tamara Gunkel](https://github.com/TamaraGunkel), and [Nina Herrmann](https://github.com/NinaHerrmann).
 
 
 
