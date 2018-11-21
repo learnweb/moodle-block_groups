@@ -14,9 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->dirroot.'/blocks/groups/locallib.php');
 /**
  * The File for the block groups class.
  *
@@ -26,6 +23,10 @@ require_once($CFG->dirroot.'/blocks/groups/locallib.php');
  * @copyright 2016/17 N Herrmann
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+
 /**
  * The block_group class
  *
