@@ -98,7 +98,7 @@ class block_groups extends block_base
         // Array to save all groupings.
         $allgroupings = groups_get_all_groupings($courseid);
         $content = '';
-        /* @var $renderer block_groups_renderer*/
+        /* @var $renderer block_groups_renderer */
         $renderer = $PAGE->get_renderer('block_groups');
         // Calls Javascript if available.
         $PAGE->requires->js_call_amd('block_groups/blocks_groups_visibility', 'initialise', array($courseid));
@@ -145,7 +145,7 @@ class block_groups extends block_base
         $allgroups = groups_get_my_groups();
         // Necessary to show hidden groups to Course Managers.
         $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
-        /* @var $renderer block_groups_renderer*/
+        /* @var $renderer block_groups_renderer */
         $renderer = $PAGE->get_renderer('block_groups');
         foreach ($allgroups as $group) {
             if (($group->courseid == $COURSE->id)) {
@@ -174,7 +174,7 @@ class block_groups extends block_base
      */
     public function build_grouping_array($allgroupings, $courseid) {
         global $PAGE;
-        /* @var $renderer block_groups_renderer*/
+        /* @var $renderer block_groups_renderer */
         $renderer = $PAGE->get_renderer('block_groups');
         $groupingsarray = array();
         $arrayofmembers = count_grouping_members($courseid);
