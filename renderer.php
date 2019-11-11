@@ -105,8 +105,8 @@ class block_groups_renderer extends plugin_renderer_base {
      */
     public function change_all_groups() {
         // Creates two urls for showing all groups hiding all groups.
-        $urlshow = $this->create_all_groups_link('show');
-        $urlhide = $this->create_all_groups_link('hide');
+        $urlshow = $this->create_all_groups_link('show', false);
+        $urlhide = $this->create_all_groups_link('hide', false);
 
         $line = html_writer::span(get_string('changeallgroups', 'block_groups'), 'wrapperblockgroupsallgroups') .
            $urlshow . $urlhide;
@@ -140,9 +140,10 @@ class block_groups_renderer extends plugin_renderer_base {
     /**
      * Internal Function to create two links for showing all groups hiding all groups.
      * @param string $action show/hide
+     * @param bool $reverseimage whether to reverse the icon (show crossed out eye for 'show' action).
      * @return string html_link
      */
-    private function create_all_groups_link($action) {
+    private function create_all_groups_link($action, $reverseimage = true) {
         global $OUTPUT, $CFG, $COURSE;
         if ($action === 'hide') {
             $actionnumber = 0;
@@ -154,7 +155,7 @@ class block_groups_renderer extends plugin_renderer_base {
         $urlhide = new moodle_url($CFG->wwwroot . '/blocks/groups/changeallgroups.php',
             array('courseid' => $COURSE->id, 'hide' => $actionnumber));
 
-        $icon = $OUTPUT->pix_icon('t/' . $reverse, get_string($reverse . 'group', 'block_groups'),
+        $icon = $OUTPUT->pix_icon('t/' . ($reverseimage ? $reverse : $action), get_string($reverse . 'group', 'block_groups'),
             'moodle', array('class' => "imggroup-all imggroup"));
         $rightaligndiv = html_writer::div($icon, 'rightalign');
         return html_writer::link($urlhide, $rightaligndiv, array('data-action' => $reverse, 'class' => 'block_groups_all_toggle'));
