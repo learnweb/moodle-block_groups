@@ -51,13 +51,13 @@ Feature: Hide a group in a group block
     Then I should see "Group 1" in the "#groupeditform" "css_element"
     Then I should see "Group 3" in the "#groupeditform" "css_element"
 
-@javascript
+  @javascript
   Scenario: Students do not see block in groups when he is not member of a visible group
     Given I log in as "student1"
     And I am on "Course 1" course homepage
     Then "Groups" "block" should not exist
 
-@javascript
+  @javascript
   Scenario: Students do not see group when it is hidden again with javascript
     Given I log in as "teacher1"
     And I am on "Course 1" course homepage

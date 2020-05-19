@@ -43,7 +43,7 @@ Feature: Make a group visible in a group block
     And I add the "Groups and Groupings" block
     And I log out
 
-@javascript
+  @javascript
   Scenario: Teacher sees a list of all groups and groupings when they click on the label
     Given I log in as "teacher1"
     And I am on "Course 1" course homepage
@@ -54,7 +54,7 @@ Feature: Make a group visible in a group block
     Then I should see "Grouping 2" in the "Groups and Groupings" "block"
     Then I should see "Grouping 1" in the "Groups and Groupings" "block"
 
-@javascript
+  @javascript
   Scenario: Click on eye icon, only enrolled students are able to see the block
     Given I log in as "teacher1"
     And I am on "Course 1" course homepage
