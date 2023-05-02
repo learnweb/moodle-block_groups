@@ -27,7 +27,7 @@ jobs:
       - name: Check for test folder
         id: check_tests
         run: |
-          echo "::set-output name=has_tests::${{ hashFiles('plugin/tests') != '' }}"
+          echo "has_tests=${{ hashFiles('plugin/tests') != '' }}" >> $GITHUB_OUTPUT
 
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
