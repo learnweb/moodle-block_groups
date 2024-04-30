@@ -21,8 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
+namespace block_groups;
 
 /**
  * PHPUnit data generator testcase
@@ -32,14 +31,19 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_groups_generator_testcase extends advanced_testcase {
-    public function test_generator() {
+final class generator_test extends \advanced_testcase {
+
+    /**
+     * Test generator.
+     * @covers \block_groups_generator
+     */
+    public function test_generator(): void {
         global $DB;
         $this->resetAfterTest(true);
 
         $beforeblocks = $DB->count_records('block_instances');
 
-        /** @var block_online_users_generator $generator */
+        /** @var \block_groups_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('block_groups');
         $this->assertInstanceOf('block_groups_generator', $generator);
         $this->assertEquals('groups', $generator->get_blockname());

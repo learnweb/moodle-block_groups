@@ -22,6 +22,7 @@
  * @copyright 2016 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once('../../config.php');
 require_login();
 
@@ -30,24 +31,24 @@ $hide             = required_param('hide', PARAM_INT);
 
 $PAGE->set_url('/blocks/groups/changeallgroups.php');
 // In Case the given id of the course is not available in the database exit message is shown.
-if (empty($DB->get_record('course', array('id' => $courseid)))) {
+if (empty($DB->get_record('course', ['id' => $courseid]))) {
     exit(get_string('nocourse', 'block_groups'));
 }
 $PAGE->set_context(context_course::instance($courseid));
 // Check for capability beforehand not possible since a context is needed.
 require_capability('moodle/course:managegroups', context_course::instance($courseid));
 // Get all groups of the selected course.
-$groupsuitable = $DB->get_records('groups', array('courseid' => $courseid));
+$groupsuitable = $DB->get_records('groups', ['courseid' => $courseid]);
 // The Course has no groups therefore changing all is not possible.
 if (empty($groupsuitable)) {
     notice(get_string('nogroups', 'block_groups'),
         $CFG->wwwroot . '/course/view.php?id=' . $courseid);
     exit();
 }
-$groups = array();
-$groupsvisible = array();
+$groups = [];
+$groupsvisible = [];
 foreach ($groupsuitable as $group) {
-    $entry = $DB->get_records('block_groups_hide', array('id' => $group->id));
+    $entry = $DB->get_records('block_groups_hide', ['id' => $group->id]);
     // In the Case, that the group of the course has an entry in the 'block_groups_hide' table the group is visible.
     if (!empty($entry)) {
         $groupsvisible[$group->id] = $group->id;
@@ -58,7 +59,7 @@ $messageaction = 'hidden';
 
 if ($hide === 0) {
     $messageaction = 'visible';
-    $tempgroup = array();
+    $tempgroup = [];
     foreach ($groupsuitable as $group) {
         if (!empty($groupsvisible)) {
             if (!(in_array($group->id, $groups))) {

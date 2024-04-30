@@ -22,6 +22,7 @@
  * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once('../../config.php');
 require_login();
 
@@ -30,13 +31,13 @@ $groupid          = required_param('groupid', PARAM_INT);
 
 $PAGE->set_url('/blocks/groups/changevisibility.php');
 // In Case the given id of the course is not available in the database exit message is shown.
-if (empty($DB->get_record('course', array('id' => $courseid)))) {
+if (empty($DB->get_record('course', ['id' => $courseid]))) {
     exit(get_string('nocourse', 'block_groups'));
 }
 $PAGE->set_context(context_course::instance($courseid));
 // Check for capability beforehand not possible since a context is needed.
 require_capability('moodle/course:managegroups', context_course::instance($courseid));
-$groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
+$groupsuitable = $DB->get_record('groups', ['id' => $groupid, 'courseid' => $courseid]);
 
 if (empty($groupsuitable)) {
     notice(get_string('nochangeindatabasepossible', 'block_groups'),

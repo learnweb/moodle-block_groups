@@ -21,7 +21,8 @@
  * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
+
+namespace block_groups;
 
 /**
  * Class block_groups_testcase
@@ -31,7 +32,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright 2016/17 N Herrmann
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_groups_testcase extends advanced_testcase {
+final class block_groups_test extends \advanced_testcase {
 
     /**
      * Set up environment for phpunit test.
@@ -47,8 +48,9 @@ class block_groups_testcase extends advanced_testcase {
     }
     /**
      * Function to test the locallib functions.
+     * @covers \count_grouping_members
      */
-    public function test_locallib() {
+    public function test_locallib(): void {
         global $DB, $CFG;
         require_once($CFG->dirroot.'/blocks/groups/locallib.php');
         $data = $this->set_up();
@@ -56,8 +58,8 @@ class block_groups_testcase extends advanced_testcase {
         block_groups_db_transaction_change_visibility($data['group1']->id, $data['course2']->id);
         block_groups_db_transaction_change_visibility($data['group2']->id, $data['course2']->id);
         block_groups_db_transaction_change_visibility($data['group2']->id, $data['course2']->id);
-        $functionresultshow = $DB->get_records('block_groups_hide', array('id' => $data['group1']->id));
-        $functionresulthide = $DB->get_records('block_groups_hide', array('id' => $data['group2']->id));
+        $functionresultshow = $DB->get_records('block_groups_hide', ['id' => $data['group1']->id]);
+        $functionresulthide = $DB->get_records('block_groups_hide', ['id' => $data['group2']->id]);
         $booleanvisible = empty($functionresultshow);
         $booleandeleted = empty($functionresulthide);
 
@@ -75,8 +77,9 @@ class block_groups_testcase extends advanced_testcase {
     }
     /**
      * Methodes recommended by moodle to assure database and dataroot is reset.
+     * @coversNothing
      */
-    public function test_deleting() {
+    public function test_deleting(): void {
         global $DB;
         $this->resetAfterTest(true);
         $DB->delete_records('user');
@@ -86,10 +89,11 @@ class block_groups_testcase extends advanced_testcase {
     }
     /**
      * Methodes recommended by moodle to assure database is reset.
+     * @coversNothing
      */
-    public function test_user_table_was_reset() {
+    public function test_user_table_was_reset(): void {
         global $DB;
-        $this->assertEquals(2, $DB->count_records('user', array()));
-        $this->assertEquals(0, $DB->count_records('block_groups_hide', array()));
+        $this->assertEquals(2, $DB->count_records('user', []));
+        $this->assertEquals(0, $DB->count_records('block_groups_hide', []));
     }
 }
