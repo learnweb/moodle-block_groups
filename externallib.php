@@ -24,6 +24,9 @@
 defined('MOODLE_INTERNAL') || die();
 require_once("$CFG->libdir/externallib.php");
 
+// This is stupid, but for some reason the code checker forbids $PAGE in this file.
+// phpcs:disable moodle.PHP.ForbiddenGlobalUse.BadGlobal
+
 /**
  * block_groups external functions
  *
@@ -31,7 +34,7 @@ require_once("$CFG->libdir/externallib.php");
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since      Moodle 2.9
  */
-class block_groups_visibility_change extends external_api{
+class block_groups_visibility_change extends external_api {
 
     /**
      * Specifies the input parameters.
@@ -39,14 +42,14 @@ class block_groups_visibility_change extends external_api{
      */
     public static function create_output_parameters() {
         return new external_function_parameters(
-            array(
+            [
                 'groups' => new external_single_structure(
-                        array(
+                        [
                             'id' => new external_value(PARAM_INT, 'id of group'),
                             'courseid' => new external_value(PARAM_INT, 'id of course'),
-                        )
-                    )
-                )
+                        ]
+                    ),
+                ]
         );
     }
 
@@ -56,12 +59,12 @@ class block_groups_visibility_change extends external_api{
      */
     public static function create_output_returns() {
         return new external_single_structure(
-            array(
+            [
                 'id' => new external_value(PARAM_INT, 'id of group'),
                 'courseid' => new external_value(PARAM_INT, 'id of course'),
                 'newelement' => new external_value(PARAM_RAW, 'replace html-element'),
-                'visibility' => new external_value(PARAM_INT, 'returns the visibility value')
-            )
+                'visibility' => new external_value(PARAM_INT, 'returns the visibility value'),
+            ]
         );
     }
 
@@ -72,19 +75,19 @@ class block_groups_visibility_change extends external_api{
      */
     public static function create_output($groups) {
         global $PAGE, $CFG, $DB;
-        $params = self::validate_parameters(self::create_output_parameters(), array('groups' => $groups));
+        $params = self::validate_parameters(self::create_output_parameters(), ['groups' => $groups]);
         $PAGE->set_context(context_course::instance($params['groups']['courseid']));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
         require_once($CFG->dirroot.'/blocks/groups/locallib.php');
         block_groups_db_transaction_change_visibility($params['groups']['id'], $params['groups']['courseid']);
         $renderer = $PAGE->get_renderer('block_groups');
-        $href = new moodle_url('/blocks/groups/changevisibility.php', array('courseid' => $params['groups']['courseid'],
-            'groupid' => $params['groups']['id']));
+        $href = new moodle_url('/blocks/groups/changevisibility.php', ['courseid' => $params['groups']['courseid'],
+            'groupid' => $params['groups']['id']]);
         $countmembers = count(groups_get_members($params['groups']['id']));
         $group = groups_get_group($params['groups']['id']);
-        $output = array('id' => $params['groups']['id'], 'courseid' => $params['groups']['courseid']);
+        $output = ['id' => $params['groups']['id'], 'courseid' => $params['groups']['courseid']];
         // Generates the Output component.
-        $groupvisible = $DB->get_records('block_groups_hide', array('id' => $params['groups']['id']));
+        $groupvisible = $DB->get_records('block_groups_hide', ['id' => $params['groups']['id']]);
         if (empty($groupvisible)) {
             $output['newelement'] = $renderer->get_string_group($group, $href, $countmembers, true);
             $output['visibility'] = 1;
@@ -103,21 +106,21 @@ class block_groups_visibility_change extends external_api{
  * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_groups_visibilityall_change extends external_api{
+class block_groups_visibilityall_change extends external_api {
     /**
      * Specifies the input parameters.
      */
     public static function create_allgroups_output_parameters() {
         return new external_function_parameters(
-            array(
+            [
                 'groups' => new external_single_structure(
-                    array(
+                    [
                         // Insert 1 for hide groups 0 for show groups.
                         'action' => new external_value(PARAM_RAW, 'action'),
                         'courseid' => new external_value(PARAM_INT, 'id of course'),
-                    )
-                )
-            )
+                    ]
+                ),
+            ]
         );
     }
 
@@ -126,18 +129,18 @@ class block_groups_visibilityall_change extends external_api{
      */
     public static function create_allgroups_output_returns() {
         return new external_single_structure(
-            array(
+            [
                 'courseid' => new external_value(PARAM_INT, 'id of course'),
                 'newelement' => new external_value(PARAM_RAW, 'replace html-element'),
                 'visibility' => new external_value(PARAM_INT, 'returns the visibility value'),
                 'changedgroups' => new external_multiple_structure(
                     new external_single_structure(
-                        array(
-                            'groupid' => new external_value(PARAM_INT, 'group-id', VALUE_OPTIONAL)
-                        )
+                        [
+                            'groupid' => new external_value(PARAM_INT, 'group-id', VALUE_OPTIONAL),
+                        ]
                     )
-                )
-            )
+                ),
+            ]
         );
     }
     /**
@@ -148,30 +151,30 @@ class block_groups_visibilityall_change extends external_api{
      */
     public static function create_allgroups_output($groups) {
         global $PAGE, $CFG, $DB;
-        $params = self::validate_parameters(self::create_allgroups_output_parameters(), array('groups' => $groups));
+        $params = self::validate_parameters(self::create_allgroups_output_parameters(), ['groups' => $groups]);
 
         require_once($CFG->dirroot.'/blocks/groups/locallib.php');
 
         $PAGE->set_context(context_course::instance($params['groups']['courseid']));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
-        $groupsuitable = $DB->get_records('groups', array('courseid' => $params['groups']['courseid']), 'id ASC');
+        $groupsuitable = $DB->get_records('groups', ['courseid' => $params['groups']['courseid']], 'id ASC');
         // The Course has no groups therefore changing all is not possible.
 
         if (empty($groupsuitable)) {
             $output['courseid'] = $params['groups']['courseid'];
             $link = html_writer::link(new moodle_url('/group/index.php',
-                array('id' => $params['groups']['courseid'])), 'modify groups');
+                ['id' => $params['groups']['courseid']]), 'modify groups');
             $content = html_writer::div(get_string('nogroups', 'block_groups')) . $link;
-            $output['newelement'] = html_writer::div($content, array('class' => 'content'));
+            $output['newelement'] = html_writer::div($content, ['class' => 'content']);
             $output['visibility'] = '0';
-            $output['changedgroups'] = array();
+            $output['changedgroups'] = [];
             return $output;
         }
-        $groupsvisible = array();
+        $groupsvisible = [];
         $renderer = $PAGE->get_renderer('block_groups');
 
         foreach ($groupsuitable as $group) {
-            $entry = $DB->get_records('block_groups_hide', array('id' => $group->id));
+            $entry = $DB->get_records('block_groups_hide', ['id' => $group->id]);
 
             // In the Case, that the group of the course has an entry in the 'block_groups_hide' table the group is visible.
             if (!empty($entry)) {
@@ -182,7 +185,7 @@ class block_groups_visibilityall_change extends external_api{
         $outputvisibility = '3';
         if ($params['groups']['action'] == "show") {
             $outputvisibility = '4';
-            $tempgroup = array();
+            $tempgroup = [];
             if (!empty($groupsuitable)) {
                 foreach ($groupsuitable as $group) {
                     if (!empty($groupsvisible)) {
@@ -196,17 +199,17 @@ class block_groups_visibilityall_change extends external_api{
             }
             $groups = $tempgroup;
         }
-        $output['changedgroups'] = array();
+        $output['changedgroups'] = [];
         if (!empty($groups)) {
             foreach ($groups as $group) {
                 block_groups_db_transaction_change_visibility($group, $params['groups']['courseid']);
-                array_push($output['changedgroups'], array('groupid' => $group));
+                array_push($output['changedgroups'], ['groupid' => $group]);
             }
         }
         foreach ($groupsuitable as $group) {
             $fullgroup = groups_get_group($group->id);
             $href = new moodle_url('/blocks/groups/changevisibility.php',
-                array('courseid' => $params['groups']['courseid'], 'groupid' => $group->id));
+                ['courseid' => $params['groups']['courseid'], 'groupid' => $group->id]);
             $countmembers = count(groups_get_members($group->id));
             if ($params['groups']['action'] == 'hide') {
                 $visibility = true;
@@ -217,7 +220,7 @@ class block_groups_visibilityall_change extends external_api{
             }
             $groupsarray[] = $renderer->get_string_group($fullgroup, $href, $countmembers, $visibility);
         }
-        $output['newelement'] = html_writer::alist($groupsarray, array('class' => 'wrapperlistgroup'));
+        $output['newelement'] = html_writer::alist($groupsarray, ['class' => 'wrapperlistgroup']);
         $output['courseid'] = $params['groups']['courseid'];
 
         if (empty($groups)) {
@@ -235,3 +238,4 @@ class block_groups_visibilityall_change extends external_api{
         return $output;
     }
 }
+// phpcs:enable

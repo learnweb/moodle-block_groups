@@ -20,7 +20,7 @@
  * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
+
 /**
  * Executes a change in the block_groups_hide database
  * @param integer $groupid
@@ -29,15 +29,15 @@ defined('MOODLE_INTERNAL') || die();
 function block_groups_db_transaction_change_visibility($groupid, $courseid) {
     global $DB;
     $transaction = $DB->start_delegated_transaction();
-    $groupsuitable = $DB->get_record('groups', array('id' => $groupid, 'courseid' => $courseid));
-    $groupvisible = $DB->get_records('block_groups_hide', array('id' => $groupid));
+    $groupsuitable = $DB->get_record('groups', ['id' => $groupid, 'courseid' => $courseid]);
+    $groupvisible = $DB->get_records('block_groups_hide', ['id' => $groupid]);
     if (!empty($groupsuitable)) {
         if (empty($groupvisible)) {
             // Methode neccessary since id is the only column.
-            $DB->insert_record_raw('block_groups_hide', array('id' => $groupid), true, false, true);
+            $DB->insert_record_raw('block_groups_hide', ['id' => $groupid], true, false, true);
         }
         if (!empty($groupvisible)) {
-            $DB->delete_records('block_groups_hide', array('id' => $groupid));
+            $DB->delete_records('block_groups_hide', ['id' => $groupid]);
         }
     }
     $transaction->allow_commit();
@@ -48,7 +48,7 @@ function block_groups_db_transaction_change_visibility($groupid, $courseid) {
  * @return array of database records
  */
 function count_grouping_members ($courseid) {
-    global $DB;
+    global $DB, $PAGE;
     return  $DB->get_records_sql('SELECT g.id, Count(DISTINCT gm.userid) AS number
                                                  FROM {groups_members} gm
                                                  RIGHT JOIN {groupings_groups} gg

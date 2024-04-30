@@ -22,8 +22,8 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-$functions = array(
-    'block_groups_create_output' => array(
+$functions = [
+    'block_groups_create_output' => [
         'classname' => 'block_groups_visibility_change',
         'methodname' => 'create_output',
         'classpath'   => 'blocks/groups/externallib.php',
@@ -31,8 +31,8 @@ $functions = array(
         'type' => 'write',
         'capabilities' => 'moodle/course:managegroups',
         'ajax' => true,
-    ),
-    'block_groups_create_allgroups_output' => array(
+    ],
+    'block_groups_create_allgroups_output' => [
         'classname' => 'block_groups_visibilityall_change',
         'methodname' => 'create_allgroups_output',
         'classpath'   => 'blocks/groups/externallib.php',
@@ -40,5 +40,5 @@ $functions = array(
         'type' => 'write',
         'capabilities' => 'moodle/course:managegroups',
         'ajax' => true,
-    )
-);
+    ],
+];
