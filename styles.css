@@ -10,6 +10,9 @@
 
 .block_groups input.blockgroupsandgroupingcheckbox ~ label::before {
     content: url('[[pix:t/collapsed]]');
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
 }
 
 .block_groups input.blockgroupsandgroupingcheckbox:checked ~ label::before {
