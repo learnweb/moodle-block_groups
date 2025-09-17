@@ -1,6 +1,5 @@
 # moodle-block_groups
-[![Build Status](https://travis-ci.org/learnweb/moodle-block_groups.svg?branch=master)](https://travis-ci.org/learnweb/moodle-block_groups)
-[![codecov](https://codecov.io/gh/learnweb/moodle-block_groups/branch/master/graph/badge.svg)](https://codecov.io/gh/learnweb/moodle-block_groups)
+[![Moodle Plugin CI](https://github.com/learnweb/moodle-block_groups/actions/workflows/moodle-ci.yml/badge.svg)](https://github.com/learnweb/moodle-block_groups/actions/workflows/moodle-ci.yml)
 
 
 A Moodle block to display groups and groupings to users. The plugin differentiates between the capability rights of users
