@@ -1,6 +1,14 @@
 name: Moodle Plugin CI
-on: [ push, pull_request ]
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   call-moodle-ci:
+    name: "Run CI workflow for Learnweb plugins"
     uses: learnweb/moodle-workflows-learnweb/.github/workflows/moodle-ci.yml@main
