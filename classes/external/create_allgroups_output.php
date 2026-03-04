@@ -28,7 +28,7 @@ use core_external\external_value;
  * @copyright  2026 Daniel Meißner
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class create_allgroups_output extends external_api {
+class create_allgroups_output extends \core_external\external_api {
     /**
      * Specifies the input parameters.
      */
