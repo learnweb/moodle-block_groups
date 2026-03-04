@@ -14,102 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace block_groups\external;
+
+use core_external\external_function_parameters;
+use core_external\external_multiple_structure;
+use core_external\external_single_structure;
+use core_external\external_value;
+
 /**
- * External block_groups API
+ * create_allgroups_output external function
  *
  * @package    block_groups
- * @copyright  2016/17 N Herrmann
+ * @copyright  2026 Daniel Meißner
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
-require_once("$CFG->libdir/externallib.php");
-
-// This is stupid, but for some reason the code checker forbids $PAGE in this file.
-// phpcs:disable moodle.PHP.ForbiddenGlobalUse.BadGlobal
-
-/**
- * block_groups external functions
- *
- * @copyright  2016/17 N Herrmann
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @since      Moodle 2.9
- */
-class block_groups_visibility_change extends external_api {
-    /**
-     * Specifies the input parameters.
-     * @return external_function_parameters
-     */
-    public static function create_output_parameters() {
-        return new external_function_parameters(
-            [
-                'groups' => new external_single_structure(
-                    [
-                            'id' => new external_value(PARAM_INT, 'id of group'),
-                            'courseid' => new external_value(PARAM_INT, 'id of course'),
-                        ]
-                ),
-                ]
-        );
-    }
-
-    /**
-     * Specifies the output parameters.
-     * @return external_single_structure
-     */
-    public static function create_output_returns() {
-        return new external_single_structure(
-            [
-                'id' => new external_value(PARAM_INT, 'id of group'),
-                'courseid' => new external_value(PARAM_INT, 'id of course'),
-                'newelement' => new external_value(PARAM_RAW, 'replace html-element'),
-                'visibility' => new external_value(PARAM_INT, 'returns the visibility value'),
-            ]
-        );
-    }
-
-    /**
-     * Changed the Database and returns the updated html content.
-     * @param array $groups
-     * @return array of output_parameters
-     */
-    public static function create_output($groups) {
-        global $PAGE, $CFG, $DB;
-        $params = self::validate_parameters(self::create_output_parameters(), ['groups' => $groups]);
-        $PAGE->set_context(context_course::instance($params['groups']['courseid']));
-        require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
-        require_once($CFG->dirroot . '/blocks/groups/locallib.php');
-        block_groups_db_transaction_change_visibility($params['groups']['id'], $params['groups']['courseid']);
-        $renderer = $PAGE->get_renderer('block_groups');
-        $href = new moodle_url('/blocks/groups/changevisibility.php', ['courseid' => $params['groups']['courseid'],
-            'groupid' => $params['groups']['id']]);
-        $countmembers = count(groups_get_members($params['groups']['id']));
-        $group = groups_get_group($params['groups']['id']);
-        $output = ['id' => $params['groups']['id'], 'courseid' => $params['groups']['courseid']];
-        // Generates the Output component.
-        $groupvisible = $DB->get_records('block_groups_hide', ['id' => $params['groups']['id']]);
-        if (empty($groupvisible)) {
-            $output['newelement'] = $renderer->get_string_group($group, $href, $countmembers, true);
-            $output['visibility'] = 1;
-        }
-        if (!empty($groupvisible)) {
-            $output['newelement'] = $renderer->get_string_group($group, $href, $countmembers, false);
-            $output['visibility'] = 0;
-        }
-        return $output;
-    }
-}
-/**
- * Class to implement the External Api to change all groups
- *
- * @package    block_groups
- * @copyright  2016/17 N Herrmann
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class block_groups_visibilityall_change extends external_api {
+class create_allgroups_output extends external_api {
     /**
      * Specifies the input parameters.
      */
-    public static function create_allgroups_output_parameters() {
+    public static function execute_parameters() {
         return new external_function_parameters(
             [
                 'groups' => new external_single_structure(
@@ -126,7 +49,7 @@ class block_groups_visibilityall_change extends external_api {
     /**
      * Specifies the output parameters.
      */
-    public static function create_allgroups_output_returns() {
+    public static function execute_returns() {
         return new external_single_structure(
             [
                 'courseid' => new external_value(PARAM_INT, 'id of course'),
@@ -142,13 +65,14 @@ class block_groups_visibilityall_change extends external_api {
             ]
         );
     }
+
     /**
      * Changed the Database and returns the updated html content.
      * create_allgroups_output
      * @param array $groups
      * @return array
      */
-    public static function create_allgroups_output($groups) {
+    public static function execute($groups) {
         global $PAGE, $CFG, $DB;
         $params = self::validate_parameters(self::create_allgroups_output_parameters(), ['groups' => $groups]);
 
@@ -240,4 +164,3 @@ class block_groups_visibilityall_change extends external_api {
         return $output;
     }
 }
-// phpcs:enable
