@@ -40,11 +40,13 @@ require_capability('moodle/course:managegroups', context_course::instance($cours
 $groupsuitable = $DB->get_record('groups', ['id' => $groupid, 'courseid' => $courseid]);
 
 if (empty($groupsuitable)) {
-    notice(get_string('nochangeindatabasepossible', 'block_groups'),
-        $CFG->wwwroot . '/course/view.php?id=' . $courseid);
+    notice(
+        get_string('nochangeindatabasepossible', 'block_groups'),
+        $CFG->wwwroot . '/course/view.php?id=' . $courseid
+    );
     exit();
 }
-require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+require_once($CFG->dirroot . '/blocks/groups/locallib.php');
 block_groups_db_transaction_change_visibility($groupid, $courseid);
 redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid);
 exit();

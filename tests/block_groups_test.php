@@ -33,7 +33,6 @@ namespace block_groups;
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 final class block_groups_test extends \advanced_testcase {
-
     /**
      * Set up environment for phpunit test.
      * @return mixed data for test
@@ -52,7 +51,7 @@ final class block_groups_test extends \advanced_testcase {
      */
     public function test_locallib(): void {
         global $DB, $CFG;
-        require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+        require_once($CFG->dirroot . '/blocks/groups/locallib.php');
         $data = $this->set_up();
         // Test the function that changes the database.
         block_groups_db_transaction_change_visibility($data['group1']->id, $data['course2']->id);
@@ -73,7 +72,6 @@ final class block_groups_test extends \advanced_testcase {
         $this->assertEquals(3, $functioncount[$data['grouping2']->id]->number);
         // Test empty grouping.
         $this->assertEquals(0, $functioncount[$data['grouping3']->id]->number);
-
     }
     /**
      * Methodes recommended by moodle to assure database and dataroot is reset.

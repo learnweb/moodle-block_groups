@@ -25,7 +25,7 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+require_once($CFG->dirroot . '/blocks/groups/locallib.php');
 
 /**
  * The block_group class
@@ -37,7 +37,6 @@ require_once($CFG->dirroot.'/blocks/groups/locallib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_groups extends block_base {
-
     /**
      * Initializes the block.
      */
@@ -64,7 +63,7 @@ class block_groups extends block_base {
             return $this->content;
         }
 
-        $this->content = new stdClass;
+        $this->content = new stdClass();
         $this->content->text = '';
 
         if ($access === true) {
@@ -107,8 +106,10 @@ class block_groups extends block_base {
             // Checks availability of group and requests the content.
             if (is_object($value) && property_exists($value, 'name')) {
                 $countmembers = count(groups_get_members($value->id));
-                $href = new moodle_url('/blocks/groups/changevisibility.php',
-                    ['courseid' => $courseid, 'groupid' => $value->id]);
+                $href = new moodle_url(
+                    '/blocks/groups/changevisibility.php',
+                    ['courseid' => $courseid, 'groupid' => $value->id]
+                );
                 if (empty($DB->get_records('block_groups_hide', ['id' => $value->id]))) {
                     $groupsarray[] = $renderer->get_string_group($value, $href, $countmembers, true);
                 } else {
@@ -144,7 +145,7 @@ class block_groups extends block_base {
         $enrolledgroups = [];
         $allgroups = groups_get_my_groups();
         // Necessary to show hidden groups to Course Managers.
-        $access = has_capability('moodle/course:managegroups',  context_course::instance($COURSE->id));
+        $access = has_capability('moodle/course:managegroups', context_course::instance($COURSE->id));
         /** @var block_groups_renderer $renderer */
         $renderer = $this->page->get_renderer('block_groups');
         foreach ($allgroups as $group) {

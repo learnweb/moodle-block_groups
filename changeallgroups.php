@@ -41,8 +41,10 @@ require_capability('moodle/course:managegroups', context_course::instance($cours
 $groupsuitable = $DB->get_records('groups', ['courseid' => $courseid]);
 // The Course has no groups therefore changing all is not possible.
 if (empty($groupsuitable)) {
-    notice(get_string('nogroups', 'block_groups'),
-        $CFG->wwwroot . '/course/view.php?id=' . $courseid);
+    notice(
+        get_string('nogroups', 'block_groups'),
+        $CFG->wwwroot . '/course/view.php?id=' . $courseid
+    );
     exit();
 }
 $groups = [];
@@ -73,17 +75,23 @@ if ($hide === 0) {
 }
 if (empty($groups)) {
     // Shows course page with warning message.
-    redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid,
+    redirect(
+        $CFG->wwwroot . '/course/view.php?id=' . $courseid,
         get_string('allgroupsinstate' . $messageaction, 'block_groups'),
-        null, \core\output\notification::NOTIFY_WARNING);
+        null,
+        \core\output\notification::NOTIFY_WARNING
+    );
     exit();
 }
-require_once($CFG->dirroot.'/blocks/groups/locallib.php');
+require_once($CFG->dirroot . '/blocks/groups/locallib.php');
 foreach ($groups as $group) {
     block_groups_db_transaction_change_visibility($group, $courseid);
 }
 // Shows course page with success message.
-redirect($CFG->wwwroot . '/course/view.php?id=' . $courseid,
+redirect(
+    $CFG->wwwroot . '/course/view.php?id=' . $courseid,
     get_string('groupschanged' . $messageaction, 'block_groups'),
-    null, \core\output\notification::NOTIFY_SUCCESS);
+    null,
+    \core\output\notification::NOTIFY_SUCCESS
+);
 exit();

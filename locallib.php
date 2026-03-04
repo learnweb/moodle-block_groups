@@ -48,7 +48,7 @@ function block_groups_db_transaction_change_visibility($groupid, $courseid) {
  * @param integer $courseid
  * @return array of database records
  */
-function count_grouping_members ($courseid) {
+function count_grouping_members($courseid) {
     global $DB, $PAGE;
     return  $DB->get_records_sql('SELECT g.id, Count(DISTINCT gm.userid) AS number
                                                  FROM {groups_members} gm
@@ -60,4 +60,3 @@ function count_grouping_members ($courseid) {
                                                  GROUP BY g.id, gg.groupingid
                                                  ORDER BY gg.groupingid DESC');
 }
-

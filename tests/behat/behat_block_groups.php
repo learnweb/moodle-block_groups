@@ -44,8 +44,8 @@ class behat_block_groups extends behat_base {
      * @param string $labelname identifier of the checkbox
      */
     public function i_click_on_the_block_groups_label($labelname) {
-        $label = $this->find('xpath' , "//div[@class='wrapperblockgroupsandgroupingcheckbox']['checkboxgroup']//
-                                following-sibling::label[contains(.,'" .$labelname. "')]");
+        $label = $this->find('xpath', "//div[@class='wrapperblockgroupsandgroupingcheckbox']['checkboxgroup']//
+                                following-sibling::label[contains(.,'" . $labelname . "')]");
         $label->click();
     }
 
@@ -57,8 +57,8 @@ class behat_block_groups extends behat_base {
      * @param string $groupname identifier of the Group
      */
     public function i_click_on_the_eye_icon_of_group_name_with_javascript_enabled($groupname) {
-        $eyeicon = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]
-              //li[contains(.,'". $groupname . "')]//a[@class='block_groups_toggle']//i");
+        $eyeicon = $this->find('xpath', "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]
+              //li[contains(.,'" . $groupname . "')]//a[@class='block_groups_toggle']//i");
         $eyeicon->click();
     }
     /**
@@ -69,8 +69,8 @@ class behat_block_groups extends behat_base {
      * @param string $groupname identifier of the Group
      */
     public function i_click_on_the_eye_icon_of_group_name_without_javascript_enabled($groupname) {
-        $eyeicon = $this->find('xpath' ,  "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]
-              //li[contains(.,'". $groupname . "')]//a[@class='block_groups_toggle']");
+        $eyeicon = $this->find('xpath', "//div[@class='wrapperblockgroupsandgroupingcheckbox'][2]
+              //li[contains(.,'" . $groupname . "')]//a[@class='block_groups_toggle']");
         $eyeicon->click();
     }
     /**
@@ -82,14 +82,17 @@ class behat_block_groups extends behat_base {
      */
     public function i_click_in_the_groups_block_on_all_groups($action) {
         if ($action == 'hide') {
-            $eyeicon = $this->find('xpath' ,
-                "//span[@class='wrapperblockgroupsallgroups']//following::a[1]");
+            $eyeicon = $this->find(
+                'xpath',
+                "//span[@class='wrapperblockgroupsallgroups']//following::a[1]"
+            );
         }
         if ($action == 'show') {
-            $eyeicon = $this->find('xpath' ,
-                "//span[@class='wrapperblockgroupsallgroups']//following::a[2]");
+            $eyeicon = $this->find(
+                'xpath',
+                "//span[@class='wrapperblockgroupsallgroups']//following::a[2]"
+            );
         }
         $eyeicon->click();
     }
-
 }
