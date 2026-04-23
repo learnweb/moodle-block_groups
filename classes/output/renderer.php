@@ -14,13 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * block_groups renderer.
- *
- * @package    block_groups
- * @copyright  2016/17 N Herrmann
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+namespace block_groups\output;
+
+use plugin_renderer_base;
 
 /**
  * Class of the block_groups renderer.
@@ -29,7 +25,7 @@
  * @copyright  2016/17 N Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_groups_renderer extends plugin_renderer_base {
+class renderer extends plugin_renderer_base {
     /**
      * Lists grouping in html format
      *
