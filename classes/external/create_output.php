@@ -20,6 +20,8 @@ use core_external\external_function_parameters;
 use core_external\external_multiple_structure;
 use core_external\external_single_structure;
 use core_external\external_value;
+use context_course;
+use moodle_url;
 
 /**
  * create_output external function
@@ -68,7 +70,7 @@ class create_output extends \core_external\external_api {
      */
     public static function execute($groups) {
         global $PAGE, $CFG, $DB;
-        $params = self::validate_parameters(self::create_output_parameters(), ['groups' => $groups]);
+        $params = self::validate_parameters(self::execute_parameters(), ['groups' => $groups]);
         $PAGE->set_context(context_course::instance($params['groups']['courseid']));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
         require_once($CFG->dirroot . '/blocks/groups/locallib.php');

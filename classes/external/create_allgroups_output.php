@@ -20,6 +20,9 @@ use core_external\external_function_parameters;
 use core_external\external_multiple_structure;
 use core_external\external_single_structure;
 use core_external\external_value;
+use context_course;
+use html_writer;
+use moodle_url;
 
 /**
  * create_allgroups_output external function
@@ -74,7 +77,7 @@ class create_allgroups_output extends \core_external\external_api {
      */
     public static function execute($groups) {
         global $PAGE, $CFG, $DB;
-        $params = self::validate_parameters(self::create_allgroups_output_parameters(), ['groups' => $groups]);
+        $params = self::validate_parameters(self::execute_parameters(), ['groups' => $groups]);
 
         require_once($CFG->dirroot . '/blocks/groups/locallib.php');
 
