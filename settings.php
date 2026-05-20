@@ -25,7 +25,12 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-    $settings->add(new admin_setting_configcheckbox('block_groups_showgroupsdefaultsetting', get_string('showgroupsdefaultsetting', 'block_groups'),
-            get_string('configshowgroupsandgroupings', 'block_groups'), 0));
+    $settings->add(
+        new admin_setting_configcheckbox(
+            'block_groups/show_groups_default_setting',
+            get_string('showgroupsdefaultsetting', 'block_groups'),
+            get_string('configshowgroupsandgroupings', 'block_groups'),
+            0
+        )
+    );
 }
-
