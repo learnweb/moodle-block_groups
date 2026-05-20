@@ -78,29 +78,46 @@ class create_allgroups_output extends \core_external\external_api {
     public static function execute($groups) {
         global $PAGE, $CFG, $DB;
         $params = self::validate_parameters(self::execute_parameters(), ['groups' => $groups]);
-
-        require_once($CFG->dirroot . '/blocks/groups/locallib.php');
-
         $PAGE->set_context(context_course::instance($params['groups']['courseid']));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
+
         $groupsuitable = $DB->get_records('groups', ['courseid' => $params['groups']['courseid']], 'id ASC');
+
         // The Course has no groups therefore changing all is not possible.
-
         if (empty($groupsuitable)) {
-            $output['courseid'] = $params['groups']['courseid'];
-            $link = html_writer::link(new moodle_url(
-                '/group/index.php',
-                ['id' => $params['groups']['courseid']]
-            ), 'modify groups');
-            $content = html_writer::div(get_string('nogroups', 'block_groups')) . $link;
-            $output['newelement'] = html_writer::div($content, ['class' => 'content']);
-            $output['visibility'] = '0';
-            $output['changedgroups'] = [];
-            return $output;
+            return self::createNoGroupsResponse($params['groups']['courseid']);
         }
-        $groupsvisible = [];
-        $renderer = $PAGE->get_renderer('block_groups');
 
+        $groupsToChange = self::get_groups_to_change($params['groups']['action'], $groupsuitable);
+        $changedGroups = self::update_group_visibility($groupsToChange, $params['groups']['courseid']);
+        $html = self::genererate_groups_html($groupsuitable, $params['groups']['courseid'], $params['groups']['action']);
+        $statusCode = self::get_status_code($params['groups']['action'], $groupsToChange);
+
+        return [
+            'courseid' => $params['groups']['courseid'],
+            'newelement' => $html,
+            'visibility' => $statusCode,
+            'changedgroups' => $changedGroups
+        ];
+    }
+
+    private static function createNoGroupsResponse($courseid) {
+        $output['courseid'] = $courseid;
+        $link = html_writer::link(new moodle_url(
+                '/group/index.php',
+                ['id' => $courseid]
+        ), 'modify groups');
+        $content = html_writer::div(get_string('nogroups', 'block_groups')) . $link;
+        $output['newelement'] = html_writer::div($content, ['class' => 'content']);
+        $output['visibility'] = '0';
+        $output['changedgroups'] = [];
+        return $output;
+    }
+
+    private static function get_groups_to_change($action, $groupsuitable) {
+        global $DB;
+
+        $groupsvisible = [];
         foreach ($groupsuitable as $group) {
             $entry = $DB->get_records('block_groups_hide', ['id' => $group->id]);
 
@@ -109,61 +126,58 @@ class create_allgroups_output extends \core_external\external_api {
                 $groupsvisible[$group->id] = $group->id;
             }
         }
-        $groups = $groupsvisible;
-        $outputvisibility = '3';
-        if ($params['groups']['action'] == "show") {
-            $outputvisibility = '4';
+
+        if ($action == "show") {
             $tempgroup = [];
-            if (!empty($groupsuitable)) {
-                foreach ($groupsuitable as $group) {
-                    if (!empty($groupsvisible)) {
-                        if (!(in_array($group->id, $groups))) {
-                            $tempgroup[$group->id] = $group->id;
-                        }
-                    } else {
-                        $tempgroup[$group->id] = $group->id;
-                    }
+            foreach ($groupsuitable as $group) {
+                if (!in_array($group->id, $groupsvisible)) {
+                    $tempgroup[$group->id] = $group->id;
                 }
             }
-            $groups = $tempgroup;
+            return $tempgroup;
         }
-        $output['changedgroups'] = [];
-        if (!empty($groups)) {
-            foreach ($groups as $group) {
-                block_groups_db_transaction_change_visibility($group, $params['groups']['courseid']);
-                array_push($output['changedgroups'], ['groupid' => $group]);
-            }
+
+        return $groupsvisible;
+    }
+
+    private static function update_group_visibility($groups, $courseid) {
+        global $CFG;
+        require_once($CFG->dirroot . '/blocks/groups/locallib.php');
+
+        $changedgroups = [];
+        foreach ($groups as $groupid) {
+            block_groups_db_transaction_change_visibility($groupid, $courseid);
+            $changedgroups[] = ['groupid' => $groupid];
         }
+        return $changedgroups;
+    }
+
+    private static function genererate_groups_html($groupsuitable, $courseid, $action) {
+        global $PAGE;
+
+        $renderer = $PAGE->get_renderer('block_groups');
+        $groupsarray = [];
+
         foreach ($groupsuitable as $group) {
             $fullgroup = groups_get_group($group->id);
             $href = new moodle_url(
-                '/blocks/groups/changevisibility.php',
-                ['courseid' => $params['groups']['courseid'], 'groupid' => $group->id]
+                    '/blocks/groups/changevisibility.php',
+                    ['courseid' => $courseid, 'groupid' => $group->id]
             );
             $countmembers = count(groups_get_members($group->id));
-            if ($params['groups']['action'] == 'hide') {
-                $visibility = true;
-            }
-            if ($params['groups']['action'] == 'show') {
-                $visibility = false;
-            }
-            $groupsarray[] = $renderer->get_string_group($fullgroup, $href, $countmembers, $visibility);
+            $visibility = ($action == "show") ? false : true;
+            $groupsarray[] = $renderer->get_string_group(
+                    $fullgroup, $href, $countmembers, $visibility
+            );
         }
-        $output['newelement'] = html_writer::alist($groupsarray, ['class' => 'wrapperlistgroup']);
-        $output['courseid'] = $params['groups']['courseid'];
+        return html_writer::alist($groupsarray, ['class' => 'wrapperlistgroup']);
+    }
 
-        if (empty($groups)) {
-            $output['visibility'] = $outputvisibility;
-            return $output;
+    private static function get_status_code($action, $groupsToChange) {
+        if (empty($groupsToChange)) {
+            return ($action == "show") ? 4 : 3;
         }
-        // Parameter $outputvisibility 0->nogroups 1 -> hidden 2->visible 3-> all are hidden 4-> all are visible.
-        if ($params['groups']['action'] == 'hide') {
-            $outputvisibility = 1;
-        }
-        if ($params['groups']['action'] == 'show') {
-            $outputvisibility = 2;
-        }
-        $output['visibility'] = $outputvisibility;
-        return $output;
+
+        return ($action == "hide") ? 1 : 2;
     }
 }
