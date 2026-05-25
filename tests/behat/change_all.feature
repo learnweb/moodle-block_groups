@@ -5,35 +5,36 @@ Feature: Change all groups in a group block
   In need to change all groups
 
   Background:
-    Given the following "courses" exist:
+    Given the "show groups default setting" is set to default
+    And the following "courses" exist:
       | fullname | shortname | category |
-      | Course 1 | C1 | 0 |
+      | Course 1 | C1        | 0        |
     And the following "users" exist:
-      | username | firstname | lastname | email | idnumber |
-      | teacher1 | Teacher | 1 | teacher1@example.com | T1 |
-      | student1 | Student | 1 | student1@example.com | S1 |
-      | student2 | Student | 2 | student2@example.com | S2 |
-      | student3 | Student | 3 | student3@example.com | S3 |
+      | username | firstname | lastname | email                | idnumber |
+      | teacher1 | Teacher   | 1        | teacher1@example.com | T1       |
+      | student1 | Student   | 1        | student1@example.com | S1       |
+      | student2 | Student   | 2        | student2@example.com | S2       |
+      | student3 | Student   | 3        | student3@example.com | S3       |
     And the following "course enrolments" exist:
-      | user | course | role |
-      | teacher1 | C1 | editingteacher |
-      | student1 | C1 | student |
-      | student2 | C1 | student |
-      | student3 | C1 | student |
+      | user     | course | role           |
+      | teacher1 | C1     | editingteacher |
+      | student1 | C1     | student        |
+      | student2 | C1     | student        |
+      | student3 | C1     | student        |
     And the following "groups" exist:
-      | name | course | idnumber |
-      | Group 1   | C1 | G1   |
-      | Group 2   | C1 | G2   |
-      | Group 3   | C1 | G3   |
+      | name      | course | idnumber |
+      | Group 1   | C1     | G1       |
+      | Group 2   | C1     | G2       |
+      | Group 3   | C1     | G3       |
     And the following "groupings" exist:
-      | name | course | idnumber |
-      | Grouping 1 | C1 | GG1 |
-      | Grouping 2 | C1 | GG2 |
+      | name       | course | idnumber |
+      | Grouping 1 | C1     | GG1      |
+      | Grouping 2 | C1     | GG2      |
     And the following "group members" exist:
-      | user     | group   |
-      | student1 | G1 |
-      | student2 | G1 |
-      | student2 | G2 |
+      | user     | group  |
+      | student1 | G1     |
+      | student2 | G1     |
+      | student2 | G2     |
     And the following "grouping groups" exist:
       | grouping | group |
       | GG1      | G1    |
