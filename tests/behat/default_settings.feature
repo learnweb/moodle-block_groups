@@ -1,4 +1,4 @@
-@javascript
+@javascript @block @block_groups
 Feature: Group block default visibility settings
   In order to test that group visibility settings work properly
   As a teacher
