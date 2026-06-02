@@ -5,16 +5,15 @@ Feature: Make a group visible in a group block
   In need to make groups visible
 
   Background:
-    Given the "show groups default setting" is enabled
-    And the following "courses" exist:
+    Given the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
     And the following "users" exist:
-      | username | firstname   | lastname             | email                | idnumber |
-      | teacher1 | Teacher     | 1                    | teacher1@example.com | T1       |
-      | student1 | Student     | 1                    | student1@example.com | S1       |
-      | student2 | Student     | 2                    | student2@example.com | S2       |
-      | student3 | Student     | 3                    | student3@example.com | S3       |
+      | username | firstname   | lastname | email                | idnumber |
+      | teacher1 | Teacher     | 1        | teacher1@example.com | T1       |
+      | student1 | Student     | 1        | student1@example.com | S1       |
+      | student2 | Student     | 2        | student2@example.com | S2       |
+      | student3 | Student     | 3        | student3@example.com | S3       |
     And the following "course enrolments" exist:
       | user     | course | role           |
       | teacher1 | C1     | editingteacher |

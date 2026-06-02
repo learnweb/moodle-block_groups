@@ -5,8 +5,7 @@ Feature: Change all groups in a group block
   In need to change all groups
 
   Background:
-    Given the "show groups default setting" is set to default
-    And the following "courses" exist:
+    Given the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
     And the following "users" exist:

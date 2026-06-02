@@ -5,8 +5,7 @@ Feature: Hide a group in a group block
   In need to hide groups
 
   Background:
-    Given the "show groups default setting" is set to default
-    And the following "courses" exist:
+    Given the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
     And the following "users" exist:
@@ -16,11 +15,11 @@ Feature: Hide a group in a group block
       | student2 | Student   | 2        | student2@example.com | S2       |
       | student3 | Student   | 3        | student3@example.com | S3       |
     And the following "course enrolments" exist:
-      | user | course | role           |
-      | teacher1 | C1 | editingteacher |
-      | student1 | C1 | student        |
-      | student2 | C1 | student        |
-      | student3 | C1 | student        |
+      | user     | course | role           |
+      | teacher1 | C1     | editingteacher |
+      | student1 | C1     | student        |
+      | student2 | C1     | student        |
+      | student3 | C1     | student        |
     And the following "groups" exist:
       | name      | course | idnumber |
       | Group 1   | C1     | G1       |
