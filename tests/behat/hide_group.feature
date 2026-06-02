@@ -30,10 +30,10 @@ Feature: Hide a group in a group block
       | Grouping 1 | C1     | GG1      |
       | Grouping 2 | C1     | GG2      |
     And the following "group members" exist:
-      | user     | group   |
-      | student1 | G1      |
-      | student2 | G1      |
-      | student2 | G2      |
+      | user     | group |
+      | student1 | G1    |
+      | student2 | G1    |
+      | student2 | G2    |
     And the following "grouping groups" exist:
       | grouping | group |
       | GG1      | G1    |
