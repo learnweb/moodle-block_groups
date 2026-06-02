@@ -40,4 +40,3 @@ Feature: Group block default visibility settings
     When I log in as "student1"
     And I am on "Course 1" course homepage
     Then I should see "Group 1"
-
