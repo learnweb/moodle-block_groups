@@ -17,6 +17,8 @@
 namespace block_groups\output;
 
 use plugin_renderer_base;
+use html_writer;
+use moodle_url;
 
 /**
  * Class of the block_groups renderer.
