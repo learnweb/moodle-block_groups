@@ -76,7 +76,7 @@ class create_allgroups_output extends \core_external\external_api {
      * @return array
      */
     public static function execute($groups) {
-        global $PAGE, $CFG, $DB;
+        global $PAGE, $DB;
         $params = self::validate_parameters(self::execute_parameters(), ['groups' => $groups]);
         $PAGE->set_context(context_course::instance($params['groups']['courseid']));
         require_capability('moodle/course:managegroups', context_course::instance($params['groups']['courseid']));
