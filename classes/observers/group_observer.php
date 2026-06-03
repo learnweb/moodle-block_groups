@@ -52,6 +52,12 @@ class group_observer {
         }
     }
 
+    /**
+     * Handles the group_deleted event.
+     * Automatically deletes the groups from the block_groups_hide table when a group itself has been deleted.
+     *
+     * @param \core\event\group_deleted $event
+     */
     public static function group_deleted(\core\event\group_deleted $event) {
         global $DB;
 
