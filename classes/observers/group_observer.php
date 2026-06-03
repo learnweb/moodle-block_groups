@@ -51,4 +51,15 @@ class group_observer {
             $DB->insert_record_raw('block_groups_hide', ['id' => $groupid], true, false, true);
         }
     }
+
+    public static function group_deleted(\core\event\group_deleted $event) {
+        global $DB;
+
+        $groupid = $event->objectid;
+
+        // Remove the group from the block_groups_hide table if it exists.
+        if ($DB->record_exists('block_groups_hide', ['id' => $groupid])) {
+            $DB->delete_records('block_groups_hide', ['id' => $groupid]);
+        }
+    }
 }
