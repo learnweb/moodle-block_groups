@@ -15,17 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
- * @package   block_groups
- * @copyright 2016/17 N Herrmann
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Groups block settings
+ *
+ * @package    block_groups
+ * @copyright  2026 Lena Herfeldt
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
-
-$plugin->version   = 2026052001;     // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022112800;     // Requires 4.1+ Moodle version.
-$plugin->component = 'block_groups'; // Full name of the plugin (used for diagnostics).
-$plugin->release = 'v5.0-r1';
-$plugin->maturity = MATURITY_STABLE;
+if ($ADMIN->fulltree) {
+    $settings->add(
+        new admin_setting_configcheckbox(
+            'block_groups/show_groups_default_setting',
+            get_string('showgroupsdefaultsetting', 'block_groups'),
+            get_string('configshowgroupsandgroupings', 'block_groups'),
+            0
+        )
+    );
+}

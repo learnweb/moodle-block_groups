@@ -7,33 +7,33 @@ Feature: Make a group visible in a group block
   Background:
     Given the following "courses" exist:
       | fullname | shortname | category |
-      | Course 1 | C1 | 0 |
+      | Course 1 | C1        | 0        |
     And the following "users" exist:
-      | username | firstname | lastname | email | idnumber |
-      | teacher1 | Teacher | 1 | teacher1@example.com | T1 |
-      | student1 | Student | 1 | student1@example.com | S1 |
-      | student2 | Student | 2 | student2@example.com | S2 |
-      | student3 | Student | 3 | student3@example.com | S3 |
+      | username | firstname   | lastname | email                | idnumber |
+      | teacher1 | Teacher     | 1        | teacher1@example.com | T1       |
+      | student1 | Student     | 1        | student1@example.com | S1       |
+      | student2 | Student     | 2        | student2@example.com | S2       |
+      | student3 | Student     | 3        | student3@example.com | S3       |
     And the following "course enrolments" exist:
-      | user | course | role |
-      | teacher1 | C1 | editingteacher |
-      | student1 | C1 | student |
-      | student2 | C1 | student |
-      | student3 | C1 | student |
+      | user     | course | role           |
+      | teacher1 | C1     | editingteacher |
+      | student1 | C1     | student        |
+      | student2 | C1     | student        |
+      | student3 | C1     | student        |
     And the following "groups" exist:
-      | name | course | idnumber |
-      | Group 1   | C1 | 1   |
-      | Group 2   | C1 | 2   |
+      | name      | course | idnumber |
+      | Group 1   | C1     | 1        |
+      | Group 2   | C1     | 2        |
     And the following "groupings" exist:
-      | name | course | idnumber |
-      | Grouping 1 | C1 | GG1 |
-      | Grouping 2 | C1 | GG2 |
+      | name       | course | idnumber |
+      | Grouping 1 | C1     | GG1      |
+      | Grouping 2 | C1     | GG2      |
     And the following "group members" exist:
-      | user     | group   |
-      | student1 | 1 |
-      | student2 | 1 |
-      | student3 | 2 |
-      | teacher1  | 1 |
+      | user     | group |
+      | student1 | 1     |
+      | student2 | 1     |
+      | student3 | 2     |
+      | teacher1 | 1     |
     And the following "grouping groups" exist:
       | grouping | group |
       | GG1      | 1    |

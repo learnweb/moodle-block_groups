@@ -187,4 +187,12 @@ class block_groups extends block_base {
         }
         return $groupingsarray;
     }
+
+    /**
+     * Tells moodle, that the groups block has a settings file.
+     * @return bool true
+     */
+    public function has_config() {
+        return true;
+    }
 }

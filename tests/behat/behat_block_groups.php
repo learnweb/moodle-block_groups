@@ -95,4 +95,21 @@ class behat_block_groups extends behat_base {
         }
         $eyeicon->click();
     }
+
+    /**
+     * Sets the group default visibility setting to a specific value (0 or 1).
+     * This step allows tests to configure whether groups are visible or hidden by default.
+     *
+     * @Given /^the group default visibility setting is "(?P<value_string>(?:[^"]|\\")*)"$/
+     *
+     * @param string $value The value to set (0 for hidden, 1 for visible)
+     * @throws \Exception
+     */
+    public function the_group_default_visibility_setting_is($value) {
+        if ($value !== '0' && $value !== '1') {
+            throw new \Exception('Invalid value for group default visibility setting: ' . $value . '. Must be 0 or 1.');
+        }
+
+        set_config('show_groups_default_setting', $value, 'block_groups');
+    }
 }

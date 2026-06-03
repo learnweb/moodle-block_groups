@@ -15,17 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
- * @package   block_groups
- * @copyright 2016/17 N Herrmann
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Event observers for the groups block.
+ *
+ * @package    block_groups
+ * @copyright  2026 Lena Herfeldt
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-
-$plugin->version   = 2026052001;     // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022112800;     // Requires 4.1+ Moodle version.
-$plugin->component = 'block_groups'; // Full name of the plugin (used for diagnostics).
-$plugin->release = 'v5.0-r1';
-$plugin->maturity = MATURITY_STABLE;
+$observers = [
+    [
+        'eventname' => '\core\event\group_created',
+        'callback' => '\block_groups\observers\group_observer::group_created',
+    ],
+];
