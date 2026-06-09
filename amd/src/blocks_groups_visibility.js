@@ -91,6 +91,35 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         divgroups.find('.imggroup-' + groupid).hide();
     };
     /**
+     * Adds spinners for both visibility icons of one grouping.
+     *
+     * @param {Number} groupingid
+     */
+    var addGroupingSpinners = function(groupingid) {
+        var divgroups = $('.block_groups');
+        var imgurl = url.imageUrl("i/loading_small", 'moodle');
+
+        divgroups.find('.imggroup-grouping-' + groupingid).each(function() {
+            var spinner = document.createElement("img");
+            spinner.className = 'spinner-grouping-' + groupingid + ' spinner block-groups-spinner';
+            spinner.src = imgurl;
+            spinner.hidden = false;
+            $(this).before(spinner);
+            $(this).hide();
+        });
+    };
+    /**
+     * Removes spinners for both visibility icons of one grouping.
+     *
+     * @param {Number} groupingid
+     */
+    var removeGroupingSpinners = function(groupingid) {
+        var divgroups = $('.block_groups');
+
+        divgroups.find('.spinner-grouping-' + groupingid).remove();
+        divgroups.find('.imggroup-grouping-' + groupingid).show();
+    };
+    /**
      * Adds a warning(triangle with exclamation mark) in case the response is empty or the response throws an error.
      * @param {(Number|String)} identifier
      * @returns {Boolean} false
@@ -293,6 +322,120 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
     };
 
     /**
+     * Method that calls for an ajax script and changes the visibility of all groups in one grouping.
+     *
+     * @param {*} event
+     * @return {Boolean}
+     */
+    var changeVisibilityGrouping = function(event) {
+        var divgroups = $('.block_groups');
+        var groupingid = $(this).data('groupingid');
+        var action = $(this).data('action');
+
+        if (divgroups.find('.spinner').length > 0) {
+            return false;
+        }
+
+        var warningexist = divgroups.find('.block-groups-warning');
+        if (typeof warningexist !== 'undefined' && warningexist.length > 0) {
+            addWarning(groupingid);
+            return false;
+        }
+
+        addGroupingSpinners(groupingid);
+
+        var promises = ajax.call([
+            {
+                methodname: "block_groups_create_grouping_output",
+                args: {
+                    grouping: {
+                        groupingid: groupingid,
+                        courseid:event.data.courseid,
+                        action: action
+                    }
+                }
+            }
+        ]);
+
+        $(document).ajaxError(function() {
+            addWarning(groupingid);
+            return false;
+        });
+
+        promises[0].then(function(response) {
+            if (response === null || response.error === true) {
+                addWarning(groupingid);
+                return false;
+            }
+
+            divgroups.find('.wrapperlistgroup').replaceWith(response.newelement);
+            divgroups.find('.block_groups_toggle').on(
+                'click',
+                {courseid: event.data.courseid}, changevisibility);
+            divgroups.find('.block_groups_grouping_toggle').on(
+                'click',
+                {courseid: event.data.courseid},
+                changeVisibilityGrouping
+            );
+            checkGroupingMembers(response);
+
+            str.get_strings([
+                {key: 'groupschangedhidden', component: 'block_groups'},
+                {key: 'groupschangedvisible', component: 'block_groups'},
+                {key: 'allgroupsinstatehidden', component: 'block_groups'},
+                {key: 'allgroupsinstatevisible', component: 'block_groups'},
+                {key: 'nogroups', component: 'block_groups'}
+            ]).done(function(s) {
+                switch (response.visibility) {
+                    case 0:
+                        addNotification('warning', s[4]);
+                        break;
+                    case 1:
+                        addNotification('success', s[0]);
+                        break;
+                    case 2:
+                        addNotification('success', s[1]);
+                        break;
+                    case 3:
+                        addNotification('warning', s[2]);
+                        break;
+                    case 4:
+                        addNotification('warning', s[3]);
+                        break;
+                    default:
+                        break;
+                }
+            }).fail(notification.exception);
+
+            removeGroupingSpinners(groupingid);
+            return false;
+        }).fail(function() {
+            addWarning(groupingid);
+            return false;
+        });
+        return false;
+    };
+
+    /**
+     * Updates member group visibility only for groups changed by grouping action.
+     *
+     * @param {Object} response
+     */
+    var checkGroupingMembers = function(response) {
+        response.changedgroups.forEach(function(group) {
+            var membergroup = $('.membergroup-' + group.groupid);
+
+            if (response.visibility === 2) {
+                membergroup.removeClass('hiddengroups');
+            }
+
+            if (response.visibility === 1) {
+                membergroup.addClass('hiddengroups');
+            }
+        });
+    };
+
+    /**
      * Calls for the main method. Either single groups are changed with block_groups_toggle or all groups with
      * block_groups_all_toggle.
      * @param {Number} courseid
@@ -301,7 +444,7 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
         initialise: function(courseid) {
             $('.block_groups_toggle').on('click', {courseid: courseid}, changevisibility);
             $('.block_groups_all_toggle').on('click', {courseid: courseid}, changeVisibilityAll);
-
+            $('.block_groups_grouping_toggle').on('click', {courseid: courseid}, changeVisibilityGrouping);
         }
     };
 });
