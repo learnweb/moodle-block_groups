@@ -39,9 +39,9 @@ class create_grouping_output extends external_api {
      */
     public static function execute_parameters() {
         return new external_function_parameters(
-                [
+            [
                         'grouping' => new external_single_structure(
-                                [
+                            [
                                         'groupingid' => new external_value(PARAM_INT, 'id of grouping'),
                                         'courseid' => new external_value(PARAM_INT, 'id of course'),
                                         'action' => new external_value(PARAM_ALPHA, 'show or hide'),
@@ -57,17 +57,17 @@ class create_grouping_output extends external_api {
      */
     public static function execute_returns() {
         return new external_single_structure(
-                [
+            [
                         'courseid' => new external_value(PARAM_INT, 'id of course'),
                         'groupingid' => new external_value(PARAM_INT, 'id of grouping'),
                         'newelement' => new external_value(PARAM_RAW, 'replace html-element'),
                         'visibility' => new external_value(PARAM_INT, 'returns the visibility value'),
                         'changedgroups' => new external_multiple_structure(
-                                new external_single_structure(
-                                        [
+                            new external_single_structure(
+                                [
                                                 'groupid' => new external_value(PARAM_INT, 'group-id'),
                                         ]
-                                )
+                            )
                         ),
                 ]
         );
@@ -85,9 +85,6 @@ class create_grouping_output extends external_api {
         $courseid = $params['grouping']['courseid'];
         $groupingid = $params['grouping']['groupingid'];
         $action = $params['grouping']['action'];
-        if ($action !== 'show' && $action !== 'hide') {
-            throw new \invalid_parameter_exception('Invalid action. Use show or hide.');
-        }
         $context = context_course::instance($courseid);
 
         $PAGE->set_context($context);
@@ -103,7 +100,7 @@ class create_grouping_output extends external_api {
                 ]);
 
         if (!$groupingexists) {
-            throw new \invalid_parameter_exception('Grouping does not exist or belongs to course');
+            throw new \invalid_parameter_exception('Grouping does not exist or does not belong to course');
         }
 
         $groupids = self::get_group_ids_for_grouping($groupingid, $courseid);
@@ -148,7 +145,7 @@ class create_grouping_output extends external_api {
 
         $records = $DB->get_records_sql($sql, [
                 'groupingid' => $groupingid,
-                'courseid' => $courseid
+                'courseid' => $courseid,
         ]);
 
         return array_keys($records);
@@ -196,8 +193,8 @@ class create_grouping_output extends external_api {
         foreach ($groups as $group) {
             $fullgroup = groups_get_group($group->id);
             $href = new moodle_url(
-                    '/blocks/groups/changevisibility.php',
-                    [
+                '/blocks/groups/changevisibility.php',
+                [
                             'courseid' => $courseid,
                             'groupid' => $group->id,
                     ]
@@ -206,10 +203,10 @@ class create_grouping_output extends external_api {
             $groupvisible = $DB->record_exists('block_groups_hide', ['id' => $group->id]);
             $hiddenforrenderer = !$groupvisible;
             $groupsarray[] = $renderer->get_string_group(
-                    $fullgroup,
-                    $href,
-                    $countmembers,
-                    $hiddenforrenderer,
+                $fullgroup,
+                $href,
+                $countmembers,
+                $hiddenforrenderer,
             );
         }
         return html_writer::alist($groupsarray, ['class' => 'wrapperlistgroup']);
