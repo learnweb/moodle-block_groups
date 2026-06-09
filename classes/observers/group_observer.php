@@ -63,9 +63,7 @@ class group_observer {
 
         $groupid = $event->objectid;
 
-        // Remove the group from the block_groups_hide table if it exists.
-        if ($DB->record_exists('block_groups_hide', ['id' => $groupid])) {
-            $DB->delete_records('block_groups_hide', ['id' => $groupid]);
-        }
+        // Remove the group from the block_groups_hide table.
+        $DB->delete_records('block_groups_hide', ['id' => $groupid]);
     }
 }
