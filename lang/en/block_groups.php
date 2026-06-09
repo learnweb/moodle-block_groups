@@ -46,4 +46,6 @@ $string['pluginname'] = 'Groups and Groupings';
 $string['pluginname2'] = 'Groups';
 $string['privacy:metadata'] = 'The Group block only displays information about groups, but does not effect or store any personal data. The existing groups and groupings data are stored in other locations.';
 $string['showgroup'] = 'show group';
+$string['showgrouping'] = 'show grouping';
+$string['hidegrouping'] = 'hide grouping';
 $string['showgroupsdefaultsetting'] = 'Show groups and groupings by default';
