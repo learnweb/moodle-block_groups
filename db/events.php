@@ -29,4 +29,8 @@ $observers = [
         'eventname' => '\core\event\group_created',
         'callback' => '\block_groups\observers\group_observer::group_created',
     ],
+    [
+        'eventname' => '\core\event\group_deleted',
+        'callback' => '\block_groups\observers\group_observer::group_deleted',
+    ],
 ];
