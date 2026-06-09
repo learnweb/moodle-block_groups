@@ -92,12 +92,20 @@ class renderer extends plugin_renderer_base {
     }
     /**
      * Generates string for a grouping list item
-     * @param string $name
+     * @param stdClass $grouping
      * @param integer $counter
      * @return string html-string
      */
-    public function get_grouping($name, $counter) {
-        return $name . '   ' . get_string('brackets', 'block_groups', $counter);
+    public function get_grouping($grouping, $counter) {
+        $line = html_writer::span(
+            $grouping->name . '   ' . get_string('brackets', 'block_groups', $counter),
+            'wrapperblockgroupsgrouping'
+        );
+
+        $showlink = $this->create_grouping_link('show', $grouping->id, false);
+        $hidelink = $this->create_grouping_link('hide', $grouping->id, false);
+
+        return html_writer::span($line . $showlink . $hidelink, 'grouping-' . $grouping->id);
     }
     /**
      * Renders line to change all groups.
@@ -165,5 +173,46 @@ class renderer extends plugin_renderer_base {
         );
         $rightaligndiv = html_writer::div($icon, 'rightalign');
         return html_writer::link($urlhide, $rightaligndiv, ['data-action' => $reverse, 'class' => 'block_groups_all_toggle']);
+    }
+
+    /**
+     * Creates a link to change visibility of all groups in one grouping.
+     *
+     * @param int $groupingid
+     * @param string $action show/hide
+     * @return string html-link
+     */
+    private function create_grouping_link($action, $groupingid, $reverseimage = true) {
+        global $CFG, $COURSE;
+        if ($action === 'hide') {
+            $actionnumber = 0;
+            $reverse = 'show';
+        } else {
+            $actionnumber = 1;
+            $reverse = 'hide';
+        }
+
+        $url = new moodle_url(
+            $CFG->wwwroot . '/blocks/groups/changegrouping.php',
+            ['courseid' => $COURSE->id, 'groupingid' => $groupingid, 'hide' => $actionnumber]
+        );
+
+        $icon = $this->output->pix_icon(
+            't/' . ($reverseimage ? $reverse : $action),
+            get_string($reverse . 'grouping', 'block_groups'),
+            'moodle',
+            ['class' => 'imggroup-grouping-' . $groupingid . ' imggroup']
+        );
+        $rightaligndiv = html_writer::div($icon, 'rightalign');
+
+        return html_writer::link(
+            $url,
+            $rightaligndiv,
+            [
+                    'data-groupingid' => $groupingid,
+                    'data-action' => $reverse,
+                    'class' => 'block_groups_grouping_toggle',
+                ]
+        );
     }
 }
