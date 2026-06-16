@@ -51,4 +51,19 @@ class group_observer {
             $DB->insert_record_raw('block_groups_hide', ['id' => $groupid], true, false, true);
         }
     }
+
+    /**
+     * Handles the group_deleted event.
+     * Automatically deletes the groups from the block_groups_hide table when a group itself has been deleted.
+     *
+     * @param \core\event\group_deleted $event
+     */
+    public static function group_deleted(\core\event\group_deleted $event) {
+        global $DB;
+
+        $groupid = $event->objectid;
+
+        // Remove the group from the block_groups_hide table.
+        $DB->delete_records('block_groups_hide', ['id' => $groupid]);
+    }
 }
