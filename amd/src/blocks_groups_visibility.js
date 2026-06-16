@@ -380,10 +380,10 @@ define(['jquery', 'core/ajax', 'core/url', 'core/notification', 'core/str'], fun
             checkGroupingMembers(response);
 
             str.get_strings([
-                {key: 'groupschangedhidden', component: 'block_groups'},
-                {key: 'groupschangedvisible', component: 'block_groups'},
-                {key: 'allgroupsinstatehidden', component: 'block_groups'},
-                {key: 'allgroupsinstatevisible', component: 'block_groups'},
+                {key: 'groupingchangedhidden', component: 'block_groups'},
+                {key: 'groupingchangedvisible', component: 'block_groups'},
+                {key: 'groupinginstatehidden', component: 'block_groups'},
+                {key: 'groupinginstatevisible', component: 'block_groups'},
                 {key: 'nogroups', component: 'block_groups'}
             ]).done(function(s) {
                 switch (response.visibility) {
