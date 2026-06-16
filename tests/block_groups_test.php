@@ -74,6 +74,36 @@ final class block_groups_test extends \advanced_testcase {
         $this->assertEquals(0, $functioncount[$data['grouping3']->id]->number);
     }
     /**
+     * Function to test setting the grouping visibility.
+     * @covers \block_groups_set_visibility
+     */
+    public function test_block_groups_set_visibility(): void {
+        global $DB, $CFG;
+        require_once($CFG->dirroot . '/blocks/groups/locallib.php');
+        $data = $this->set_up();
+        $groupid = $data['group1']->id;
+        $courseid = $data['course2']->id;
+
+        // At first, the groups are all hidden.
+        $this->assertFalse($DB->record_exists('block_groups_hide', ['id' => $groupid]));
+
+        // Setting the group to visible should add a record to the database and report a change.
+        $this->assertTrue(block_groups_set_visibility($groupid, $courseid, true));
+        $this->assertTrue($DB->record_exists('block_groups_hide', ['id' => $groupid]));
+
+        // Setting the group to visible again should not change anything.
+        $this->assertFalse(block_groups_set_visibility($groupid, $courseid, true));
+        $this->assertTrue($DB->record_exists('block_groups_hide', ['id' => $groupid]));
+
+        // Setting the group to hidden should remove the record from the database and report a change.
+        $this->assertTrue(block_groups_set_visibility($groupid, $courseid, false));
+        $this->assertFalse($DB->record_exists('block_groups_hide', ['id' => $groupid]));
+
+        // Setting the group to hidden again should not change anything.
+        $this->assertFalse(block_groups_set_visibility($groupid, $courseid, false));
+        $this->assertFalse($DB->record_exists('block_groups_hide', ['id' => $groupid]));
+    }
+    /**
      * Methodes recommended by moodle to assure database and dataroot is reset.
      * @coversNothing
      */
