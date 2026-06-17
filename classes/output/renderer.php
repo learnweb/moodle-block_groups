@@ -180,6 +180,7 @@ class renderer extends plugin_renderer_base {
      *
      * @param int $groupingid
      * @param string $action show/hide
+     * @param bool $reverseimage whether to reverse the icon (show crossed out eye for 'show' action).
      * @return string html-link
      */
     private function create_grouping_link($action, $groupingid, $reverseimage = true) {
