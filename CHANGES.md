@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+Changes in v5.2-r1
+----------------------------------
+
+- support for Moodle 5.2
+- add CHANGES.md for user-visible changes
+
 Changes in v5.0-r1 (since v4.5-r1)
 ----------------------------------
 

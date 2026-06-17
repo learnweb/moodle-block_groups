@@ -24,8 +24,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-$plugin->version   = 2026060905;     // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022112800;     // Requires 4.1+ Moodle version.
+$plugin->version   = 2026061700;     // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2024100712;     // Requires 4.5+ Moodle version.
 $plugin->component = 'block_groups'; // Full name of the plugin (used for diagnostics).
-$plugin->release = 'v5.0-r1';
+$plugin->release = 'v5.2-r1';
 $plugin->maturity = MATURITY_STABLE;
