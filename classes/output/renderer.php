@@ -178,9 +178,9 @@ class renderer extends plugin_renderer_base {
     /**
      * Creates a link to change visibility of all groups in one grouping.
      *
-     * @param int $groupingid
      * @param string $action show/hide
-     * @param bool $reverseimage whether to reverse the icon (show crossed out eye for 'show' action).
+     * @param int $groupingid grouping id
+     * @param bool $reverseimage whether to reverse the icon.
      * @return string html-link
      */
     private function create_grouping_link($action, $groupingid, $reverseimage = true) {
