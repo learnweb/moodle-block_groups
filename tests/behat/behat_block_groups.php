@@ -113,13 +113,13 @@ class behat_block_groups extends behat_base {
 
         if ($action == 'hide') {
             $eyeicon = $this->find(
-                    'xpath',
-                    "//span[contains(@class, 'grouping-')][contains(., " . behat_context_helper::escape($groupingname) . ")]//a[1]"
+                'xpath',
+                "//span[contains(@class, 'grouping-')][contains(., " . behat_context_helper::escape($groupingname) . ")]//a[1]"
             );
         } else if ($action == 'show') {
             $eyeicon = $this->find(
-                    'xpath',
-                    "//span[contains(@class, 'grouping-')][contains(., " . behat_context_helper::escape($groupingname) . ")]//a[2]"
+                'xpath',
+                "//span[contains(@class, 'grouping-')][contains(., " . behat_context_helper::escape($groupingname) . ")]//a[2]"
             );
         } else {
             throw new \Exception('Unknwon action: ' . $action);
