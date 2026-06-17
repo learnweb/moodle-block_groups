@@ -60,3 +60,41 @@ function count_grouping_members($courseid) {
                                                  GROUP BY g.id, gg.groupingid
                                                  ORDER BY gg.groupingid DESC');
 }
+
+/**
+ * Sets the visibility of a group.
+ * @param int $groupid
+ * @param int $courseid
+ * @param bool $visible if target visibility is visible or not
+ * @return bool true if something changed, false otherwise
+ */
+function block_groups_set_visibility($groupid, $courseid, $visible) {
+    global $DB;
+
+    $transaction = $DB->start_delegated_transaction();
+    $groupsuitable = $DB->get_record('groups', ['id' => $groupid, 'courseid' => $courseid]);
+
+    if (empty($groupsuitable)) {
+        $transaction->allow_commit();
+        return false;
+    }
+
+    $currentlyvisible = $DB->record_exists('block_groups_hide', ['id' => $groupid]);
+
+    // The group is currently not visible and should be visible now.
+    if ($visible && !$currentlyvisible) {
+        $DB->insert_record_raw('block_groups_hide', ['id' => $groupid], true, false, true);
+        $transaction->allow_commit();
+        return true;
+    }
+
+    // The group is currently visible and should be not visible now.
+    if (!$visible && $currentlyvisible) {
+        $DB->delete_records('block_groups_hide', ['id' => $groupid]);
+        $transaction->allow_commit();
+        return true;
+    }
+
+    $transaction->allow_commit();
+    return false;
+}

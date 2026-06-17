@@ -38,4 +38,11 @@ $functions = [
         'capabilities' => 'moodle/course:managegroups',
         'ajax' => true,
     ],
+    'block_groups_create_grouping_output' => [
+        'classname' => 'block_groups\external\create_grouping_output',
+        'description' => 'Service to allow changing the visibility of groupings',
+        'type' => 'write',
+        'capabilities' => 'moodle/course:managegroups',
+        'ajax' => true,
+    ],
 ];
