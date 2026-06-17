@@ -78,7 +78,7 @@ class behat_block_groups extends behat_base {
      *
      * @When /^I click in the groups block on all groups "(?P<action_string>(?:[^"]|\\")*)"$/
      *
-     * @param string $action identifier of the Group
+     * @param string $action identifier of the action show/hide
      */
     public function i_click_in_the_groups_block_on_all_groups($action) {
         if ($action == 'hide') {
@@ -92,6 +92,37 @@ class behat_block_groups extends behat_base {
                 'xpath',
                 "//span[@class='wrapperblockgroupsallgroups']//following::a[2]"
             );
+        }
+        $eyeicon->click();
+    }
+
+    /**
+     * Clicks on all groups
+     *
+     * @When /^I click in the groups block on the grouping "(?P<groupingname>(?:[^"]|\\")*)" "(?P<action>(?:[^"]|\\")*)"$/
+     *
+     * @param string $groupingname identifier of the grouping
+     * @param string $action identifier of the action show/hide
+     */
+    public function i_click_in_the_groups_block_on_the_grouping($groupingname, $action) {
+        $checkbox = $this->find('css', '#checkboxgrouping');
+        if (!$checkbox->isChecked()) {
+            $label = $this->find('css', 'label[for="checkboxgrouping"]');
+            $label->click();
+        }
+
+        if ($action == 'hide') {
+            $eyeicon = $this->find(
+                    'xpath',
+                    "//span[contains(@class, 'grouping-')][contains(., " . behat_context_helper::escape($groupingname) . ")]//a[1]"
+            );
+        } else if ($action == 'show') {
+            $eyeicon = $this->find(
+                    'xpath',
+                    "//span[contains(@class, 'grouping-')][contains(., " . behat_context_helper::escape($groupingname) . ")]//a[2]"
+            );
+        } else {
+            throw new \Exception('Unknwon action: ' . $action);
         }
         $eyeicon->click();
     }
