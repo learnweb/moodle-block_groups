@@ -46,7 +46,7 @@ class renderer extends plugin_renderer_base {
                 'type' => "checkbox",
                 'value' => "1",
                 'class' => "blockgroupsandgroupingcheckbox",
-                'id' => 'checkbox' . $type
+                'id' => 'checkbox' . $type,
             ]) .
             html_writer::tag('label', $labeltext, ['for' => "checkbox" . $type]);
         $contentgroups .= html_writer::alist($elementarray, ['class' => 'wrapperlist' . $type]);
