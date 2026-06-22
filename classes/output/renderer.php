@@ -41,9 +41,14 @@ class renderer extends plugin_renderer_base {
         } else {
             $type = 'grouping';
         }
-        $contentgroups = html_writer::tag('input', '', ['type' => "checkbox", 'value' => "1",
-                'class' => "blockgroupsandgroupingcheckbox", 'id' => 'checkbox' . $type]) .
-            html_writer::tag('label', get_string($type, 'block_groups'), ['for' => "checkbox" . $type]);
+        $labeltext = get_string($type, 'block_groups') . ' (' . count($elementarray) . ')';
+        $contentgroups = html_writer::tag('input', '', [
+                'type' => "checkbox",
+                'value' => "1",
+                'class' => "blockgroupsandgroupingcheckbox",
+                'id' => 'checkbox' . $type
+            ]) .
+            html_writer::tag('label', $labeltext, ['for' => "checkbox" . $type]);
         $contentgroups .= html_writer::alist($elementarray, ['class' => 'wrapperlist' . $type]);
         return html_writer::tag('div', $contentgroups, ['class' => 'wrapperblockgroupsandgroupingcheckbox']);
     }
