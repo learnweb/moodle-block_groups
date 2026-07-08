@@ -101,7 +101,7 @@ class renderer extends plugin_renderer_base {
      * @param integer $counter
      * @return string html-string
      */
-    public function get_grouping($grouping, $counter) {
+    public function get_grouping($grouping, $counter, $groups = []) {
         $line = html_writer::span(
             $grouping->name . '   ' . get_string('brackets', 'block_groups', $counter),
             'wrapperblockgroupsgrouping'
@@ -110,7 +110,18 @@ class renderer extends plugin_renderer_base {
         $showlink = $this->create_grouping_link('show', $grouping->id, false);
         $hidelink = $this->create_grouping_link('hide', $grouping->id, false);
 
-        return html_writer::span($line . $showlink . $hidelink, 'grouping-' . $grouping->id);
+        if (!empty($groups)) {
+            $groupitems = [];
+
+            foreach ($groups as $group) {
+                $groupitems[] = s($group->name);
+            }
+            $groupslist = html_writer::alist($groupitems, [
+                    'class' => 'wrapperlistgroupinggroups',
+            ]);
+        }
+
+        return html_writer::span($line . $showlink . $hidelink . $groupslist, 'grouping-' . $grouping->id);
     }
     /**
      * Renders line to change all groups.

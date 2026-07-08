@@ -70,3 +70,7 @@
 .block_groups input.blockgroupsandgroupingcheckbox:checked ~ label::before {
     content: "▾";
 }
+
+    .block_groups .wrapperlistgroupinggroups {
+        opacity: 0.85;
+    }
