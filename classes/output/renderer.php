@@ -99,9 +99,9 @@ class renderer extends plugin_renderer_base {
     /**
      * Generates string for a grouping list item
      *
-     * @param $grouping
-     * @param $counter
-     * @param $groups
+     * @param stdClass $grouping
+     * @param integer $counter
+     * @param array $groups
      * @return string
      * @throws \coding_exception
      */
