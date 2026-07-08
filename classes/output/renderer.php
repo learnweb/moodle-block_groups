@@ -95,11 +95,15 @@ class renderer extends plugin_renderer_base {
                 'data-action' => $action]);
         return html_writer::span($line, 'group-' . $value->id);
     }
+
     /**
      * Generates string for a grouping list item
-     * @param stdClass $grouping
-     * @param integer $counter
-     * @return string html-string
+     *
+     * @param $grouping
+     * @param $counter
+     * @param $groups
+     * @return string
+     * @throws \coding_exception
      */
     public function get_grouping($grouping, $counter, $groups = []) {
         $line = html_writer::span(

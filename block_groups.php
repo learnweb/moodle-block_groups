@@ -198,8 +198,8 @@ class block_groups extends block_base {
     /**
      * Returns the names of all groups belonging to a grouping.
      *
-     * @param $groupingid
-     * @param $courseid
+     * @param integer $groupingid
+     * @param integer $courseid
      * @return array
      * @throws dml_exception
      */
