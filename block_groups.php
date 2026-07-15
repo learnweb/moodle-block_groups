@@ -187,10 +187,36 @@ class block_groups extends block_base {
                     $countgroupingmember = $arrayofmembers[$value->id]->number;
                 }
 
-                $groupingsarray[$g] = $renderer->get_grouping($value, $countgroupingmember);
+                $groupnames = $this->get_groups_for_grouping($value->id, $courseid);
+
+                $groupingsarray[$g] = $renderer->get_grouping($value, $countgroupingmember, $groupnames);
             }
         }
         return $groupingsarray;
+    }
+
+    /**
+     * Returns the names of all groups belonging to a grouping.
+     *
+     * @param integer $groupingid
+     * @param integer $courseid
+     * @return array
+     * @throws dml_exception
+     */
+    private function get_groups_for_grouping($groupingid, $courseid) {
+        global $DB;
+
+        $sql = "SELECT g.id, g.name
+              FROM {groups} g
+              JOIN {groupings_groups} gg ON gg.groupid = g.id
+             WHERE gg.groupingid = :groupingid
+               AND g.courseid = :courseid
+          ORDER BY g.name ASC";
+
+        return $DB->get_records_sql($sql, [
+                'groupingid' => $groupingid,
+                'courseid' => $courseid,
+        ]);
     }
 
     /**

@@ -48,3 +48,29 @@
 .block_groups .block-groups-spinner {
     padding-right: 6px;
 }
+
+.block_groups input.blockgroupsandgroupingcheckbox {
+    cursor: pointer;
+    display: none;
+    text-align: left;
+}
+
+.block_groups input.blockgroupsandgroupingcheckbox ~ label {
+    cursor: pointer;
+}
+
+.block_groups input.blockgroupsandgroupingcheckbox ~ label::before {
+    content: "▸";
+    display: inline-block;
+    width: 0.8em;
+    margin-right: 0.2rem;
+    font-size: 1.5em;
+}
+
+.block_groups input.blockgroupsandgroupingcheckbox:checked ~ label::before {
+    content: "▾";
+}
+
+.block_groups .wrapperlistgroupinggroups {
+    opacity: 0.85;
+}

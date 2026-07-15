@@ -41,9 +41,14 @@ class renderer extends plugin_renderer_base {
         } else {
             $type = 'grouping';
         }
-        $contentgroups = html_writer::tag('input', '', ['type' => "checkbox", 'value' => "1",
-                'class' => "blockgroupsandgroupingcheckbox", 'id' => 'checkbox' . $type]) .
-            html_writer::tag('label', get_string($type, 'block_groups'), ['for' => "checkbox" . $type]);
+        $labeltext = get_string($type, 'block_groups') . ' (' . count($elementarray) . ')';
+        $contentgroups = html_writer::tag('input', '', [
+                'type' => "checkbox",
+                'value' => "1",
+                'class' => "blockgroupsandgroupingcheckbox",
+                'id' => 'checkbox' . $type,
+            ]) .
+            html_writer::tag('label', $labeltext, ['for' => "checkbox" . $type]);
         $contentgroups .= html_writer::alist($elementarray, ['class' => 'wrapperlist' . $type]);
         return html_writer::tag('div', $contentgroups, ['class' => 'wrapperblockgroupsandgroupingcheckbox']);
     }
@@ -90,13 +95,17 @@ class renderer extends plugin_renderer_base {
                 'data-action' => $action]);
         return html_writer::span($line, 'group-' . $value->id);
     }
+
     /**
      * Generates string for a grouping list item
+     *
      * @param stdClass $grouping
      * @param integer $counter
-     * @return string html-string
+     * @param array $groups
+     * @return string
+     * @throws \coding_exception
      */
-    public function get_grouping($grouping, $counter) {
+    public function get_grouping($grouping, $counter, $groups = []) {
         $line = html_writer::span(
             $grouping->name . '   ' . get_string('brackets', 'block_groups', $counter),
             'wrapperblockgroupsgrouping'
@@ -105,7 +114,18 @@ class renderer extends plugin_renderer_base {
         $showlink = $this->create_grouping_link('show', $grouping->id, false);
         $hidelink = $this->create_grouping_link('hide', $grouping->id, false);
 
-        return html_writer::span($line . $showlink . $hidelink, 'grouping-' . $grouping->id);
+        if (!empty($groups)) {
+            $groupitems = [];
+
+            foreach ($groups as $group) {
+                $groupitems[] = s($group->name);
+            }
+            $groupslist = html_writer::alist($groupitems, [
+                    'class' => 'wrapperlistgroupinggroups',
+            ]);
+        }
+
+        return html_writer::span($line . $showlink . $hidelink . $groupslist, 'grouping-' . $grouping->id);
     }
     /**
      * Renders line to change all groups.
